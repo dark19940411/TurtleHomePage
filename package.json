@@ -1,0 +1,15 @@
+{
+  "name": "turtlehomepage",
+  "version": "1.0.0",
+  "description": "This is Turtle's home page",
+  "main": "server.js",
+  "scripts": {
+    "test": "turtest",
+    "start": "node server.js"
+  },
+  "author": "Turtle",
+  "license": "MIT",
+  "dependencies": {
+    "minimist": "^1.2.0"
+  }
+}
