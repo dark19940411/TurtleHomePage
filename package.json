@@ -10,6 +10,8 @@
   "author": "Turtle",
   "license": "MIT",
   "dependencies": {
+    "gray-matter": "^3.1.1",
+    "marked": "^0.3.6",
     "minimist": "^1.2.0"
   }
 }
