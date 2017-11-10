@@ -4,7 +4,7 @@
   "description": "This is Turtle's home page",
   "main": "server.js",
   "scripts": {
-    "test": "turtest",
+    "test": "mocha",
     "start": "node server.js"
   },
   "author": "Turtle",
@@ -13,5 +13,8 @@
     "gray-matter": "^3.1.1",
     "marked": "^0.3.6",
     "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^4.0.1"
   }
 }
