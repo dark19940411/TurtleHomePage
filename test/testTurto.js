@@ -14,7 +14,7 @@ var metadata = {
 };
 
 describe('RegularizedArticleMetaData', function () {
-    var RegularizedArticleMetaData = require('../Turto/MarkdownFileProcess/RegularizedArticleMetaData')
+    var RegularizedArticleMetaData = require('../Turto/MarkdownFileProcess/RegularizedArticleMetaData');
 
     describe('#constructor', function () {
         it('should construct a RegularizedArticleMetaData with data processed by gray-matter', function () {
@@ -28,14 +28,17 @@ describe('RegularizedArticleMetaData', function () {
 });
 
 describe('MarkdownFileTransformer', function () {
+    var marked = require("marked");
     var MarkdownFileTransformer = require('../Turto/MarkdownFileProcess/MarkdownFileTransformer');
+    var RegularizedArticleMetaData = require('../Turto/MarkdownFileProcess/RegularizedArticleMetaData');
     describe('#startTransform(metadata, callback)', function () {
-        it('should transform raw metadata\'s content to html and regularize raw metadata', function (done) {
+        it('should transform metadata\'s markdown content to html', function (done) {
             var transformer = new MarkdownFileTransformer();
             var rawdata = new RegularizedArticleMetaData(metadata);
-            
-            transformer.startTransform(rawdata, function (data) {
 
+            var content = rawdata.content;
+            transformer.startTransform(rawdata, function (data) {
+                assert(data.content === marked(content));
                 done();
             });
         });
