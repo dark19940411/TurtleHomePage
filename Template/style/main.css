@@ -100,6 +100,14 @@ a {
     color: #ffffff;
 }
 
+.panel-social-jump-btn {
+    color: #ffffff;
+}
+
+.panel-social-jump-btn:hover {
+    color: #ffffff;
+}
+
 @media (max-width: 960px) {
     .social-media-menu {
         display: flex;
