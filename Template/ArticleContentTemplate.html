@@ -5,14 +5,22 @@
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="libraries/font-awesome-4.7.0/css/font-awesome.min.css">
     <script src="../node_modules/popper.js/dist/popper.min.js"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <title>Article Content</title>
 </head>
 <body>
-    <div class="social-media-menu d-flex justify-content-center">
-        <i class="social-media-menu-icon weibo"></i>
+    <div class="social-media-menu justify-content-end">
+        <span class="social-media-menu-inner">
+            <a>
+                <i class="fa fa-github"></i>
+            </a>
+            <a>
+                <i class="fa fa-weibo"></i>
+            </a>
+        </span>
     </div>
     <header class="main-panel">
         <div class="main-panel-cover d-flex justify-content-center">
@@ -20,6 +28,15 @@
                 <img class="icon" src="images/Icon.jpeg">
                 <div class="panel-name-label">Turtle</div>
                 <div class="panel-subtitle">虽然慢，但是我有在爬呀</div>
+                <hr class="panel-divider">
+                <div class="panel-social-container">
+                    <a>
+                        <i class="fa fa-github fa-lg"></i>
+                    </a>
+                    <a>
+                        <i class="fa fa-weibo fa-lg"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </header>

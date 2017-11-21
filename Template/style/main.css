@@ -23,7 +23,16 @@ a {
     height: 35px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(51, 51, 51, 0.98);
+    font-size: 22px;
+    color: #ffffff;
+}
 
+.social-media-menu-inner {
+    position: relative;
+    width: 10%;
+    display: flex;
+    justify-content: space-around;
+    top: 1px;
 }
 
 .main-panel {
@@ -75,24 +84,25 @@ a {
     -webkit-font-smoothing: antialiased;
 }
 
+.panel-divider {
+    width: 50%;
+    margin: 20px auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.panel-social-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 4.5em;
+    margin-top: 0;
+    height: 1.5em;
+    color: #ffffff;
+}
+
 @media (max-width: 960px) {
     .social-media-menu {
-        display: block;
-        font-size: 22px;
-        color: #ffffff;
-    }
-
-    .social-media-menu-icon {
-        display: inline-block;
-        font-family: FontAwesome;
-        font-style: normal;
-        font-weight: normal;
-        line-height: 1;
-        -webkit-font-smoothing: antialiased;
-    }
-
-    .weibo:before {
-        content: "\f18a";
+        display: flex;
     }
 
     .main-panel {
@@ -111,6 +121,14 @@ a {
         width: 60px;
         height: 60px;
         border-width: 2px;
+    }
+    
+    .panel-divider {
+        display: none;
+    }
+
+    .panel-social-container {
+        display: none;
     }
 }
 
