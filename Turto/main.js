@@ -1,7 +1,7 @@
 /**
  * Created by turtle on 2017/11/8.
  */
-var Generator = require('./generator');
+var Generator = require('./Tools/generator');
 
 (function main() {
     var argv = require("minimist")(process.argv.slice(2));

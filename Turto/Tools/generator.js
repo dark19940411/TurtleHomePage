@@ -1,10 +1,10 @@
 /**
  * Created by turtle on 2017/11/8.
  */
-require('./Tools/utilities');
+require('./utilities');
 
 function Generator() {
-    var DataReader = require('./MarkdownFileProcess/datareader');
+    var DataReader = require('./../MarkdownFileProcess/datareader');
 
     this.generate = function () {
         var datareader = new DataReader();
