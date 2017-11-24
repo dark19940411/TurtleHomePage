@@ -11,7 +11,7 @@ function BlogPostPageViewModel() {
             }
             var jsonobj = JSON.parse(data.toString());
             jsonobj.title = regularizedArticleMetaData.title;
-            jsonobj.content = regularizedArticleMetaData.content;
+            jsonobj.generatedContent = regularizedArticleMetaData.content;
             callBack(null, jsonobj);
         });
     }
