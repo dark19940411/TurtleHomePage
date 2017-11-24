@@ -27,7 +27,6 @@ function DataReader() {
             });
         });
     }
-
 }
 
 module.exports = DataReader;
