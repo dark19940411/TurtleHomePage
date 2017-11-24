@@ -3,8 +3,11 @@
  */
 var gulp = require('gulp');
 
-gulp.task('default', function() {
-    // place code for your default task here
+gulp.task('Move-libraries', function () {
     gulp.src("Template/libraries")
         .pipe(gulp.dest("dist"));
+});
+
+gulp.task('Turto', function () {
+    require('Turto/main');
 });

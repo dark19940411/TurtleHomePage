@@ -42,7 +42,7 @@ a {
     width: 30%;
     height: 100%;
     z-index: 100;
-    background: url("../../Turto/images/background-min.jpg") bottom right no-repeat #666666;
+    background: url("../images/background-min.jpg") bottom right no-repeat #666666;
     background-size: cover;
 }
 
