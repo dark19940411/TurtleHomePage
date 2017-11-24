@@ -44,3 +44,30 @@ describe('MarkdownFileTransformer', function () {
         });
     });
 });
+
+describe('BlogPostPageViewModel', function () {
+    var BlogPostPageViewModel = require('../Turto/ViewModel/BlogPostPageViewModel');
+    var regularizedData = {
+        title: 'Test',
+        content: 'This is a test',
+        date: '2016-12-07 11:50:59',
+        tags: null,
+    };
+    var viewmodel = new BlogPostPageViewModel();
+    describe('#formPageRenderData(regData, callBack)', function () {
+        it('should form page render data through config.json', function (done) {
+            viewmodel.formPageRenderData(regularizedData, function (err, renderdata) {
+                console.log(renderdata);
+                assert(renderdata.title === 'Test');
+                assert(renderdata.content === 'This is a test');
+                assert(renderdata.icon === 'Icon.jpeg');
+                assert(renderdata.panelBackground === 'background-min.jpg');
+                assert(renderdata.name === 'Turtle');
+                assert(renderdata.slogan === '虽然慢，但是我有在爬呀');
+                assert(renderdata.weibo === 'https://weibo.com/1950154683');
+                assert(renderdata.github === 'https://github.com/dark19940411');
+                done();
+            });
+        });
+    });
+});
