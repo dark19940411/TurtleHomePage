@@ -24,7 +24,21 @@ function Generator() {
                 };
                 var tempstr = fs.readFileSync(mainPanelTempPath, options);
                 var renderedHtml = ejs.render(tempstr, formeddata);
-                
+
+                var blogPostPageFolderPath = path.resolve(__dirname, '../../dist/blogpost');
+                var pagePath = blogPostPageFolderPath + '/' + formeddata.title + '.html';
+                fs.exists(blogPostPageFolderPath, function (exists) {
+                    if(exists) {
+                        fs.writeFileSync(pagePath, renderedHtml);
+                    } else {
+                        fs.mkdir(blogPostPageFolderPath, function (err) {
+                            if (err) {
+                                return console.error(err);
+                            }
+                            fs.writeFileSync(pagePath, renderedHtml);
+                        });
+                    }
+                });
             });
         });
     }
