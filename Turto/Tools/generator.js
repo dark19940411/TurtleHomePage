@@ -18,7 +18,7 @@ function Generator() {
                 if (err) {
                     return console.error(err);
                 }
-                var mainPanelTempPath = path.resolve(__dirname, '../../Template/main_panel.ejs');
+                var mainPanelTempPath = path.resolve(__dirname, '../../build/Template/main_panel.ejs');
                 var options = {
                     encoding: 'utf8'
                 };
