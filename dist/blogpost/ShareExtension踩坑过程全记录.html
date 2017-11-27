@@ -6,15 +6,13 @@
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../libraries/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../libraries/google-code-prettify/prettify.css">
-
     <script src="../node_modules/popper.js/dist/popper.min.js"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../libraries/google-code-prettify/prettify.js"></script>
+    <link rel="stylesheet" href="../node_modules/highlight.js/styles/dark.css">
     <title>ShareExtension踩坑过程全记录</title>
 </head>
-<body onload="PR.prettyPrint()">
+<body>
     <div class="social-media-menu justify-content-end">
         <span class="social-media-menu-inner">
             <a class="panel-social-jump-btn" href="https://github.com/dark19940411" target="_blank">
@@ -49,24 +47,24 @@
 <p>这是一篇记录踩坑的文章，而不是教程，所以如果你打算用这篇文章开启你ShareExtension世界的大门，那么你来错地方了。但是如果你已经对ShareExtension有所了解，打算开发一个ShareExtension，那这篇文章所提到的内容将有可能对你有所帮助。</p>
 <h2 id="-">第一坑——繁琐的取数据过程</h2>
 <p>假如你写过ShareExtension，那么你知道一段从extension里获取所选文件的过程可能长这样：</p>
-<pre><code class="lang-objc">[self.extensionContext.inputItems enumerateObjectsUsingBlock:^(NSExtensionItem  * extItem, NSUInteger idx, BOOL * stop) {  
-        //选择了多少个文件就有多少个attachments
-        [extItem.attachments enumerateObjectsUsingBlock:^(NSItemProvider * itemProvider, NSUInteger idx, BOOL * stop) {  
-            //为了方便，所以这里直接对itemProvider.registeredTypeIdentifiers进行了遍历处理，表示接受所有文件类型。实际上你是要按你所需要的类型进行筛选的。
-            for (NSString * typeId in itemProvider.registeredTypeIdentifiers) {
-                [itemProvider loadItemForTypeIdentifier:typeId options:nil completionHandler:^(id&lt;NSSecureCoding&gt;   item, NSError *  error) {
-                    //进入到异步线程里了
+<pre><code class="lang-objc">[<span class="hljs-keyword">self</span>.extensionContext.inputItems enumerateObjectsUsingBlock:^(<span class="hljs-built_in">NSExtensionItem</span>  * extItem, <span class="hljs-built_in">NSUInteger</span> idx, <span class="hljs-built_in">BOOL</span> * stop) {  
+        <span class="hljs-comment">//选择了多少个文件就有多少个attachments</span>
+        [extItem.attachments enumerateObjectsUsingBlock:^(<span class="hljs-built_in">NSItemProvider</span> * itemProvider, <span class="hljs-built_in">NSUInteger</span> idx, <span class="hljs-built_in">BOOL</span> * stop) {  
+            <span class="hljs-comment">//为了方便，所以这里直接对itemProvider.registeredTypeIdentifiers进行了遍历处理，表示接受所有文件类型。实际上你是要按你所需要的类型进行筛选的。</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSString</span> * typeId <span class="hljs-keyword">in</span> itemProvider.registeredTypeIdentifiers) {
+                [itemProvider loadItemForTypeIdentifier:typeId options:<span class="hljs-literal">nil</span> completionHandler:^(<span class="hljs-keyword">id</span>&lt;<span class="hljs-built_in">NSSecureCoding</span>&gt;   item, <span class="hljs-built_in">NSError</span> *  error) {
+                    <span class="hljs-comment">//进入到异步线程里了</span>
 
-                    //item多数情况下是文件在本地沙盒下的url，让你通过这个url去读取它。但是根据文档，它还有可能是NSData，不过我并没有遇到过这种情况。
+                    <span class="hljs-comment">//item多数情况下是文件在本地沙盒下的url，让你通过这个url去读取它。但是根据文档，它还有可能是NSData，不过我并没有遇到过这种情况。</span>
 
-                    //获取文件，通常再通过app group来存储到和宿主程序（host app）共用的plist里实现分享到主程序的功能。但是注意一点，share extension并不能打开宿主程序（然而有黑科技可以实现这个功能，见下文）。
+                    <span class="hljs-comment">//获取文件，通常再通过app group来存储到和宿主程序（host app）共用的plist里实现分享到主程序的功能。但是注意一点，share extension并不能打开宿主程序（然而有黑科技可以实现这个功能，见下文）。</span>
 
-                    if (error) {
-                        NSLog(@&quot;%@&quot;, error.localizedDescription);
+                    <span class="hljs-keyword">if</span> (error) {
+                        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>, error.localizedDescription);
                     }
 
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                          [self.extensionContext completeRequestReturningItems:@[extItem] completionHandler:nil];
+                    <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), ^{
+                          [<span class="hljs-keyword">self</span>.extensionContext completeRequestReturningItems:@[extItem] completionHandler:<span class="hljs-literal">nil</span>];
                     });
                 }];
 
