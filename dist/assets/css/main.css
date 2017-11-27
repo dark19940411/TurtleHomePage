@@ -13,6 +13,10 @@ a {
     text-decoration: none;
 }
 
+pre code {
+    /*background: darkgray;*/
+}
+
 .social-media-menu {
     display: none;
     position: fixed;

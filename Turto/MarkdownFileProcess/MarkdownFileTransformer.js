@@ -6,16 +6,20 @@ function MarkdownFileTransformer() {
     var marked = require("marked");
     var hljs = require('highlight.js');
     this.startTransform = function (metadata, callback) {
-        marked.setOptions({
-            highlight: function(code, lang) {
-                if (typeof lang === 'undefined') {
-                    return hljs.highlightAuto(code).value;
-                } else if (lang === 'nohighlight') {
-                    return code;
-                } else {
-                    return hljs.highlight(lang, code).value;
-                }
+        var renderer = new marked.Renderer();
+        renderer.code = function (code, lang) {
+            if (typeof lang === 'undefined') {
+                var codecls = 'hljs ' + lang;
+                return '<pre><code class="' + codecls + '">' + hljs.highlightAuto(code).value + '</code></pre>';
+            } else if (lang === 'nohighlight') {
+                return code;
+            } else {
+                var codecls = 'hljs ' + lang;
+                return '<pre><code class="' + codecls + '">' + hljs.highlight(lang, code).value + '</code></pre>';
             }
+        };
+        marked.setOptions({
+            renderer: renderer
         });
         metadata.content = marked(metadata.content);
         callback(metadata);

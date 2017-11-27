@@ -6,10 +6,10 @@
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../libraries/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../node_modules/highlight.js/styles/dark.css">
     <script src="../node_modules/popper.js/dist/popper.min.js"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../node_modules/highlight.js/styles/dark.css">
     <title>ShareExtension踩坑过程全记录</title>
 </head>
 <body>
@@ -47,7 +47,7 @@
 <p>这是一篇记录踩坑的文章，而不是教程，所以如果你打算用这篇文章开启你ShareExtension世界的大门，那么你来错地方了。但是如果你已经对ShareExtension有所了解，打算开发一个ShareExtension，那这篇文章所提到的内容将有可能对你有所帮助。</p>
 <h2 id="-">第一坑——繁琐的取数据过程</h2>
 <p>假如你写过ShareExtension，那么你知道一段从extension里获取所选文件的过程可能长这样：</p>
-<pre><code class="lang-objc">[<span class="hljs-keyword">self</span>.extensionContext.inputItems enumerateObjectsUsingBlock:^(<span class="hljs-built_in">NSExtensionItem</span>  * extItem, <span class="hljs-built_in">NSUInteger</span> idx, <span class="hljs-built_in">BOOL</span> * stop) {  
+<pre><code class="hljs objc">[<span class="hljs-keyword">self</span>.extensionContext.inputItems enumerateObjectsUsingBlock:^(<span class="hljs-built_in">NSExtensionItem</span>  * extItem, <span class="hljs-built_in">NSUInteger</span> idx, <span class="hljs-built_in">BOOL</span> * stop) {  
         <span class="hljs-comment">//选择了多少个文件就有多少个attachments</span>
         [extItem.attachments enumerateObjectsUsingBlock:^(<span class="hljs-built_in">NSItemProvider</span> * itemProvider, <span class="hljs-built_in">NSUInteger</span> idx, <span class="hljs-built_in">BOOL</span> * stop) {  
             <span class="hljs-comment">//为了方便，所以这里直接对itemProvider.registeredTypeIdentifiers进行了遍历处理，表示接受所有文件类型。实际上你是要按你所需要的类型进行筛选的。</span>
@@ -70,9 +70,7 @@
 
             }
         }];
-}];
-</code></pre>
-<p>从代码里可以看到，为了取到数据，我嵌套遍历了很多重。你要在share extension里面获取到用户所选取的文件，你得通过<code>self.extensionContext.inputItems[0].attachments[0].itemProvider</code>去<code>loadItemForTypeIdentifier:completionHandler:</code> ... 这真是一个有够长的链式调用，多得让人感觉总有一些属性是多余的。  </p>
+}];</code></pre><p>从代码里可以看到，为了取到数据，我嵌套遍历了很多重。你要在share extension里面获取到用户所选取的文件，你得通过<code>self.extensionContext.inputItems[0].attachments[0].itemProvider</code>去<code>loadItemForTypeIdentifier:completionHandler:</code> ... 这真是一个有够长的链式调用，多得让人感觉总有一些属性是多余的。  </p>
 <p>而在实际应用中，当你的Share Extension触发起上面那段代码的时候，<code>self.extensionContext.inputItems</code>往往只有一个，而<code>NSExtensionItem</code>的<code>attachments</code>里存放的对象的数量恰好是被选择分享的文件的数量。而<code>attachments</code>里都是<code>NSItemProvider</code>，<code>NSItemProvider</code>对应的就是每个被选取的文件，可是一个<code>NSItemProvider</code>却不仅仅只有一个<code>typeIdentifier</code>，它可能有多个<code>typeIdentifier</code>——比如一个pdf会有两个typeIdentifier:一个是<code>&quot;public.file-url&quot;</code>，一个是<code>&quot;com.adobe.pdf&quot;</code>。在这之中，<code>&quot;public.file-url&quot;</code>是一个通用的type，由他可以直接获取到当前<code>NSItemProvider</code>的url，而另外一个是PDF独有的<code>typeIdentifier</code>，同样的例如.doc, .ppt这些文件也有一个，专门用来告诉你它是什么类型的文件的。  </p>
 <h2 id="-host-app-">第二坑——打不开宿主程序（host app)</h2>
 <p>写过extensions的我们知道要从extension打开宿主程序通常是使用<code>self.extensionContext</code>的<code>-openURL:completionHandler:</code>方法。但是这个方法在share extension里使用会直接crash（<a href="http://stackoverflow.com/questions/27506413/share-extension-to-open-host-app">参考这里</a>）。并且在官方文档上也表明，share extension不能打开主程序。<br>但是<code>openURL</code>方法不适用，不代表就没有办法打开宿主程序了。这里有一个比较间接的方法，可以打开宿主程序，但是不保证你使用了这个方法能够通过苹果的审核，这个方法就是用<code>SFSafari​View​Controller</code>来打开你的宿主程序的URL，这样就能从share extension跳转到host app了。  </p>
