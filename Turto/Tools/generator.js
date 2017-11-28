@@ -23,7 +23,7 @@ function Generator() {
                     return console.error(err);
                 }
 
-                var renderedMainPanel = renderedMainPanel(mpdata);
+                var renderedMainPanel = renderMainPanel(mpdata);
                 viewmodel.formPageRenderData(metadata, renderedMainPanel, function (err, msdata) {
                     if (err) {
                         return console.error(err);
@@ -57,13 +57,13 @@ function Generator() {
             var pagePath = blogPostPageFolderPath + '/' + msdata.title + '.html';
             var exists = fs.existsSync(blogPostPageFolderPath);
             if(exists) {
-                fs.writeFileSync(pagePath, renderedHtml);
+                fs.writeFileSync(pagePath, pagecontent);
             } else {
                 fs.mkdir(blogPostPageFolderPath, function (err) {
                     if (err) {
                         return console.error(err);
                     }
-                    fs.writeFileSync(pagePath, renderedHtml);
+                    fs.writeFileSync(pagePath, pagecontent);
                 });
             }
         }

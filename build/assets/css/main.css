@@ -111,6 +111,7 @@ a {
 .content-container {
     width: 70%;
     margin-left: 30%;
+    padding: 10% 5%;
 }
 
 @media (max-width: 960px) {

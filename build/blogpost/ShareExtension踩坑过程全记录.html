@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../libraries/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../node_modules/highlight.js/styles/atom-one-dark.css">
+<script src="../node_modules/popper.js/dist/popper.min.js"></script>
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <title>ShareExtension踩坑过程全记录</title>
+</head>
+<body>
+<div class="social-media-menu justify-content-end">
+        <span class="social-media-menu-inner">
+            <a class="panel-social-jump-btn" href="https://github.com/dark19940411" target="_blank">
+                <i class="fa fa-github"></i>
+            </a>
+            <a class="panel-social-jump-btn" href="https://weibo.com/1950154683" target="_blank">
+                <i class="fa fa-weibo"></i>
+            </a>
+        </span>
+</div>
+
+<header class="main-panel">
+    <div class="main-panel-cover d-flex justify-content-center">
+        <div class="panel-info-flow-table d-flex align-content-center align-items-center justify-content-center flex-column">
+            <img class="icon" src="../assets/images/Icon.jpeg">
+            <div class="panel-name-label">Turtle</div>
+            <div class="panel-subtitle">虽然慢，但是我有在爬呀</div>
+            <hr class="panel-divider">
+            <div class="panel-social-container">
+                <a class="panel-social-jump-btn" href="https://github.com/dark19940411" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+                <a class="panel-social-jump-btn" href="https://weibo.com/1950154683" target="_blank">
+                    <i class="fa fa-weibo fa-lg"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="content-container">
+    <h2 id="-">前言</h2>
+<p>这是一篇记录踩坑的文章，而不是教程，所以如果你打算用这篇文章开启你ShareExtension世界的大门，那么你来错地方了。但是如果你已经对ShareExtension有所了解，打算开发一个ShareExtension，那这篇文章所提到的内容将有可能对你有所帮助。</p>
+<h2 id="-">第一坑——繁琐的取数据过程</h2>
+<p>假如你写过ShareExtension，那么你知道一段从extension里获取所选文件的过程可能长这样：</p>
+<pre><code class="hljs objc">[<span class="hljs-keyword">self</span>.extensionContext.inputItems enumerateObjectsUsingBlock:^(<span class="hljs-built_in">NSExtensionItem</span>  * extItem, <span class="hljs-built_in">NSUInteger</span> idx, <span class="hljs-built_in">BOOL</span> * stop) {  
+        <span class="hljs-comment">//选择了多少个文件就有多少个attachments</span>
+        [extItem.attachments enumerateObjectsUsingBlock:^(<span class="hljs-built_in">NSItemProvider</span> * itemProvider, <span class="hljs-built_in">NSUInteger</span> idx, <span class="hljs-built_in">BOOL</span> * stop) {  
+            <span class="hljs-comment">//为了方便，所以这里直接对itemProvider.registeredTypeIdentifiers进行了遍历处理，表示接受所有文件类型。实际上你是要按你所需要的类型进行筛选的。</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSString</span> * typeId <span class="hljs-keyword">in</span> itemProvider.registeredTypeIdentifiers) {
+                [itemProvider loadItemForTypeIdentifier:typeId options:<span class="hljs-literal">nil</span> completionHandler:^(<span class="hljs-keyword">id</span>&lt;<span class="hljs-built_in">NSSecureCoding</span>&gt;   item, <span class="hljs-built_in">NSError</span> *  error) {
+                    <span class="hljs-comment">//进入到异步线程里了</span>
+
+                    <span class="hljs-comment">//item多数情况下是文件在本地沙盒下的url，让你通过这个url去读取它。但是根据文档，它还有可能是NSData，不过我并没有遇到过这种情况。</span>
+
+                    <span class="hljs-comment">//获取文件，通常再通过app group来存储到和宿主程序（host app）共用的plist里实现分享到主程序的功能。但是注意一点，share extension并不能打开宿主程序（然而有黑科技可以实现这个功能，见下文）。</span>
+
+                    <span class="hljs-keyword">if</span> (error) {
+                        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>, error.localizedDescription);
+                    }
+
+                    <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), ^{
+                          [<span class="hljs-keyword">self</span>.extensionContext completeRequestReturningItems:@[extItem] completionHandler:<span class="hljs-literal">nil</span>];
+                    });
+                }];
+
+            }
+        }];
+}];</code></pre><p>从代码里可以看到，为了取到数据，我嵌套遍历了很多重。你要在share extension里面获取到用户所选取的文件，你得通过<code>self.extensionContext.inputItems[0].attachments[0].itemProvider</code>去<code>loadItemForTypeIdentifier:completionHandler:</code> ... 这真是一个有够长的链式调用，多得让人感觉总有一些属性是多余的。  </p>
+<p>而在实际应用中，当你的Share Extension触发起上面那段代码的时候，<code>self.extensionContext.inputItems</code>往往只有一个，而<code>NSExtensionItem</code>的<code>attachments</code>里存放的对象的数量恰好是被选择分享的文件的数量。而<code>attachments</code>里都是<code>NSItemProvider</code>，<code>NSItemProvider</code>对应的就是每个被选取的文件，可是一个<code>NSItemProvider</code>却不仅仅只有一个<code>typeIdentifier</code>，它可能有多个<code>typeIdentifier</code>——比如一个pdf会有两个typeIdentifier:一个是<code>&quot;public.file-url&quot;</code>，一个是<code>&quot;com.adobe.pdf&quot;</code>。在这之中，<code>&quot;public.file-url&quot;</code>是一个通用的type，由他可以直接获取到当前<code>NSItemProvider</code>的url，而另外一个是PDF独有的<code>typeIdentifier</code>，同样的例如.doc, .ppt这些文件也有一个，专门用来告诉你它是什么类型的文件的。  </p>
+<h2 id="-host-app-">第二坑——打不开宿主程序（host app)</h2>
+<p>写过extensions的我们知道要从extension打开宿主程序通常是使用<code>self.extensionContext</code>的<code>-openURL:completionHandler:</code>方法。但是这个方法在share extension里使用会直接crash（<a href="http://stackoverflow.com/questions/27506413/share-extension-to-open-host-app">参考这里</a>）。并且在官方文档上也表明，share extension不能打开主程序。<br>但是<code>openURL</code>方法不适用，不代表就没有办法打开宿主程序了。这里有一个比较间接的方法，可以打开宿主程序，但是不保证你使用了这个方法能够通过苹果的审核，这个方法就是用<code>SFSafari​View​Controller</code>来打开你的宿主程序的URL，这样就能从share extension跳转到host app了。  </p>
+<h2 id="-app-icon-">第三坑——App Icon在模拟器中不显示</h2>
+<p>在开发share extension的过程中，我发现模拟器里的的share extension的icon一直是非常丑的一个白色的默认的开发图标，就连我在share extension的<code>assets catalog</code>添加了App Icon都没有反应。于是，经过了一顿查阅，我发现了share extension的app icon是跟宿主程序一样的，在<code>assets catalog</code>里添加的App Icon也会被忽略。根据这一点，我在模拟器里无论是删应用，重启，还是换模拟器，都没用。为此我甚至在stackoverflow上问了<a href="http://stackoverflow.com/questions/43114881/ios-share-extensions-app-icon-not-showing-up">一个问题</a>，最终也没有得到回答。<br>后来我将应用装到真机上，App Icon就出现了:)。顺带一提，我的Xcode版本是8.2。  </p>
+<h2 id="-share-extension-">第四坑——Share Extension的应用名的国际化</h2>
+<p>首先得在extension的<code>info.plist</code>里添加一个<code>LSHasLocalizedDisplayName</code>的键，值填YES(类型是布尔)。完了再创建一个叫<code>InfoPlist.strings</code>（请注意大小写）的多语言文件，里面添加<code>CFBundleDisplayName</code>的键值就可以实现对extension的应用名的国际化。但是正是这么简单的一个过程，却难住了我。创建的多语言文件必须得叫<code>InfoPlist.strings</code>，只要差一个字母<code>CFBundleDisplayName</code>就完全不起作用，大小写对不上号也不行，但是其它的所有多语言键值对都可以被使用，只有应用名的这个键值是必须得再<code>InfoPlist.strings</code>内才能起作用。  </p>
+<p>以上的内容就是我在开发ShareExtension过程中遇到的坑。</p>
+
+</div>
+</body>
+</html>

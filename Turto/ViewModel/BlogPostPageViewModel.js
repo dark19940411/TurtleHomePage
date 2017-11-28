@@ -30,6 +30,7 @@ function BlogPostPageViewModel() {
                 return console.error(error);
             }
             var jsonobj = JSON.parse(data.toString());
+            jsonobj.icon = '../assets/images/' + jsonobj.icon;
             var mpdata = new MPData(jsonobj);
             callback(null, mpdata);
         });
