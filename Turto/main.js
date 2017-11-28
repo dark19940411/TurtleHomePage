@@ -8,7 +8,7 @@ var fs = require('fs-extra');
 (function main() {
     var argv = require("minimist")(process.argv.slice(2));
 
-    if (argv._[0] == 'g' || argv._[0] == 'generate') {
+    if (argv._[0] === 'g' || argv._[0] === 'generate') {
 
         prepareForBuild();
 
@@ -24,11 +24,10 @@ function prepareForBuild() {
 }
 
 function moveNodeModulesDirToBuild() {
-    console.log('copy node_modules into build directory...');
     fs.copy(path.resolve(__dirname, '../node_modules'), path.resolve(__dirname, '../build/node_modules'), function (err) {
         if (err) {
             return console.error(err);
         }
-        console.log('copy completed...');
+        console.log('copy node_modules completed...');
     });
 }

@@ -25,7 +25,7 @@ function Generator() {
                 var tempstr = fs.readFileSync(mainPanelTempPath, options);
                 var renderedHtml = ejs.render(tempstr, formeddata);
 
-                var blogPostPageFolderPath = path.resolve(__dirname, '../../dist/blogpost');
+                var blogPostPageFolderPath = path.resolve(__dirname, '../../build/blogpost');
                 var pagePath = blogPostPageFolderPath + '/' + formeddata.title + '.html';
                 var exists = fs.existsSync(blogPostPageFolderPath);
                 if(exists) {
