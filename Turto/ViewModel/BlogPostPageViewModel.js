@@ -1,6 +1,8 @@
 function BlogPostPageViewModel() {
     var path = require('path');
     var fs = require('fs');
+    var MPData = require('../Model/MainPanelData');
+    var MSData = require('../Model/MainStructureData');
 
     this.formPageRenderData = function (regularizedArticleMetaData, mainPanelContent, callBack) {
         var filerefpath = path.resolve(__dirname, '../../build/Template/blogpost_fileref');
@@ -9,14 +11,14 @@ function BlogPostPageViewModel() {
                callBack(err);
                return console.error(err);
            }
-           var obj = {
+           var msdata = new MSData({
                fileref: data.toString(),
                title: regularizedArticleMetaData.title,
                mainPanel: mainPanelContent,
                generatedContent: regularizedArticleMetaData.content,
-           };
+           });
 
-           callBack(null, obj);
+           callBack(null, msdata);
         });
     }
 
@@ -28,7 +30,8 @@ function BlogPostPageViewModel() {
                 return console.error(error);
             }
             var jsonobj = JSON.parse(data.toString());
-            callback(null, jsonobj);
+            var mpdata = new MPData(jsonobj);
+            callback(null, mpdata);
         });
     }
 }
