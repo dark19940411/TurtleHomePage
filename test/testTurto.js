@@ -54,18 +54,32 @@ describe('BlogPostPageViewModel', function () {
         tags: null,
     };
     var viewmodel = new BlogPostPageViewModel();
-    describe('#formPageRenderData(regData, callBack)', function () {
-        it('should form page render data through config.json', function (done) {
-            viewmodel.formPageRenderData(regularizedData, function (err, renderdata) {
-                // console.log(renderdata);
-                assert(renderdata.title === 'Test');
-                assert(renderdata.generatedContent === 'This is a test');
-                assert(renderdata.icon === 'Icon.jpeg');
-                assert(renderdata.panelBackground === 'background-min.jpg');
-                assert(renderdata.username === 'Turtle');
-                assert(renderdata.slogan === '虽然慢，但是我有在爬呀');
-                assert(renderdata.weibo === 'https://weibo.com/1950154683');
-                assert(renderdata.github === 'https://github.com/dark19940411');
+    describe('#formPageRenderData(regData, mainPanelContent, callBack)', function () {
+        it('should form page render data to be put in main_structure.ejs template', function (done) {
+            viewmodel.formPageRenderData(regularizedData, '<div>this is a fake main panel</div>', function (err, data) {
+                if (err) {
+                    done(err);
+                }
+                assert(data.title === 'Test');
+                assert(data.generatedContent === 'This is a test');
+                assert(typeof(data.fileref) !== 'undefined');
+                assert(data.mainPanel === '<div>this is a fake main panel</div>');
+                done();
+            });
+        });
+    });
+
+    describe('#formMainPanelRenderData(callback)', function () {
+        it('should form MainPanel\'s render data by config.json properly', function (done) {
+            viewmodel.formMainPanelRenderData(function (err, data) {
+                if (err) {
+                    done(err);
+                }
+                assert(data.icon === 'Icon.jpeg');
+                assert(data.username === 'Turtle');
+                assert(data.slogan === '虽然慢，但是我有在爬呀');
+                assert(data.github === 'https://github.com/dark19940411');
+                assert(data.weibo === 'https://weibo.com/1950154683');
                 done();
             });
         });

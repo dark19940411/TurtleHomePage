@@ -24,11 +24,11 @@ function BlogPostPageViewModel() {
         var configFilePath = path.resolve(__dirname, '../config.json');
         fs.readFile(configFilePath, function (error, data) {
             if (error) {
-                callBack(error);
+                callback(error);
                 return console.error(error);
             }
             var jsonobj = JSON.parse(data.toString());
-            callBack(null, jsonobj);
+            callback(null, jsonobj);
         });
     }
 }
