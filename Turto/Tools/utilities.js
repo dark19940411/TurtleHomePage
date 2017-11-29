@@ -25,3 +25,11 @@ var path = require('path');
         return this.replace(path.dirname(String(this)) + '/', '');
     }
 }());
+
+global.__builddir = path.resolve(__dirname, '../../build');
+global.__buildingBlogPostDir = __builddir.stringByAppendingPathComponent('blogpost');
+global.__buildingTemplateDir = __builddir.stringByAppendingPathComponent('Template');
+
+global.__postdir = path.resolve(__dirname, '../../Posts');
+
+global.__distdir = path.resolve(__dirname, '../../dist');

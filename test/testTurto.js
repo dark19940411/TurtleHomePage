@@ -132,4 +132,20 @@ describe('utilities.StringExtension', function () {
             assert(str === 'folder/', str + '=== folder/');
         });
     });
+
+    describe('#global variables', function () {
+        var fs = require('fs');
+        it('should contain correct paths to specific places', function () {
+            console.log('builddir: ' + __builddir + '\n'
+                + 'buildingBlogPostDir: ' + __buildingBlogPostDir + '\n'
+                + 'buildingTemplateDir: ' + __buildingTemplateDir + '\n'
+                + 'distdir: ' + __distdir + '\n'
+                + 'postdir: ' + __postdir + '\n');
+            assert(fs.existsSync(__builddir), '__builddir exists.');
+            assert(fs.existsSync(__buildingBlogPostDir), '__buildingBlogPostDir exists.');
+            assert(fs.existsSync(__buildingTemplateDir), '__buildingTemplateDir exists.');
+            assert(fs.existsSync(__distdir), '__distdir exists.');
+            assert(fs.existsSync(__postdir), '__postdir exists.');
+        });
+    });
 });
