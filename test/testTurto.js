@@ -9,8 +9,8 @@ var metadata = {
     data: {
         title: "testtitle",
         date: "2016-12-07 11:50:59",
-        tags: null,
-    },
+        tags: null
+    }
 };
 
 describe('RegularizedArticleMetaData', function () {
@@ -32,15 +32,13 @@ describe('MarkdownFileTransformer', function () {
     var MarkdownFileTransformer = require('../Turto/MarkdownFileProcess/MarkdownFileTransformer');
     var RegularizedArticleMetaData = require('../Turto/MarkdownFileProcess/RegularizedArticleMetaData');
     describe('#startTransform(metadata, callback)', function () {
-        it('should transform metadata\'s markdown content to html', function (done) {
+        it('should transform metadata\'s markdown content to html', function () {
             var transformer = new MarkdownFileTransformer();
             var rawdata = new RegularizedArticleMetaData(metadata);
 
             var content = rawdata.content;
-            transformer.startTransform(rawdata, function (data) {
-                assert(data.content === marked(content));
-                done();
-            });
+            var data = transformer.transform(rawdata)
+            assert(data.content === marked(content));
         });
     });
 });
@@ -75,13 +73,63 @@ describe('BlogPostPageViewModel', function () {
                 if (err) {
                     done(err);
                 }
-                assert(data.icon === 'Icon.jpeg');
+
+                assert(data.icon.lastPathcomponent() === 'Icon.jpeg');
                 assert(data.username === 'Turtle');
                 assert(data.slogan === '虽然慢，但是我有在爬呀');
                 assert(data.github === 'https://github.com/dark19940411');
                 assert(data.weibo === 'https://weibo.com/1950154683');
                 done();
             });
+        });
+    });
+});
+
+require('../Turto/Tools/utilities');
+
+describe('utilities.StringExtension', function () {
+    describe('#lastPathComponent', function () {
+        it('should return a path string\' s last path component.', function () {
+            var path = 'test.txt';
+            var comp = path.lastPathcomponent();
+            assert(comp === 'test.txt');
+
+            path = 'a/test.txt';
+            comp = path.lastPathcomponent();
+            assert(comp === 'test.txt');
+
+            path = 'a/b/test.txt';
+            comp = path.lastPathcomponent();
+            assert(comp === 'test.txt');
+
+            path = 'a';
+            comp = path.lastPathcomponent();
+            assert(comp === 'a');
+
+            path = 'a/b';
+            comp = path.lastPathcomponent();
+            assert(comp === 'b');
+
+            path = 'a/b/c';
+            comp = path.lastPathcomponent();
+            assert(comp === 'c');
+
+            path = 'a/';
+            comp = path.lastPathcomponent();
+            assert(comp === 'a/');
+        });
+    });
+
+    describe('#stringByAppendingPathComponent', function () {
+        it('should append a file name string to a path string making a new path.', function () {
+            var str = 'test'.stringByAppendingPathComponent('name');
+            assert(str === 'test/name', 'str === \'test/name\'');
+            str = 'test/astes/123124/test'.stringByAppendingPathComponent('file.format');
+            assert(str === 'test/astes/123124/test/file.format', 'str === \'test/astes/123124/test/file.format\'');
+            str = ''.stringByAppendingPathComponent('file');
+            assert(str === '/file', '\'\' add \'file\' as path component must equal to \'/file\'');
+            str = 'folder'.stringByAppendingPathComponent('');
+            assert(str === 'folder/', str + '=== folder/');
         });
     });
 });

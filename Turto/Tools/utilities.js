@@ -22,6 +22,6 @@ var path = require('path');
     }
 
     String.prototype.lastPathcomponent = function () {
-        return this.replace(path.dirname(this) + '/', '');
+        return this.replace(path.dirname(String(this)) + '/', '');
     }
 }());
