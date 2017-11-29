@@ -20,7 +20,8 @@ var fs = require('fs-extra');
 
 function prepareForBuild() {
     console.log('prepare for building...');
-    moveNodeModulesDirToBuild();
+    fs.emptyDirSync(path.resolve(__dirname, '../build/blogpost'));
+    // moveNodeModulesDirToBuild();
 }
 
 function moveNodeModulesDirToBuild() {

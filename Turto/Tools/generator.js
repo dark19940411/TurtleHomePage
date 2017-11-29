@@ -58,18 +58,18 @@ function Generator() {
             var pagePath = pageFolder.stringByAppendingPathComponent(msdata.title + '.html');
 
             var articleImgsPath = path.dirname(mdfilepath).stringByAppendingPathComponent('images');
+            var pageImgsPath = pageFolder.stringByAppendingPathComponent(articleImgsPath.lastPathcomponent());
 
             fs.ensureDir(pageFolder, function (err) {
                 if (err) {
                     return console.error(err);
                 }
-                fs.ensureDir(articleImgsPath, function (err) {
-                    if (err) {
-                        return console.error(err);
-                    }
-                    fs.copy(articleImgsPath, pageFolder);
-                });
-                fs.writeFileSync(pagePath, pagecontent);
+
+                var exist = fs.existsSync(articleImgsPath);
+                if (exist) {
+                    fs.copy(articleImgsPath, pageImgsPath);
+                }
+                fs.writeFile(pagePath, pagecontent);
             });
         }
     }

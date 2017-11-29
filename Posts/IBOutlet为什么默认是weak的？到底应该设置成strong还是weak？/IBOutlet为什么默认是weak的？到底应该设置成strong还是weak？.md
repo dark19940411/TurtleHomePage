@@ -22,7 +22,7 @@ tags:
 总结起来就是，一般来说load nib file获取到的对象都推荐使用弱引用，除了顶层的对象，因为没有父对象进行持有，所以不使用强引用进行持有的话，这时候outlet就会释放。  
 所以苹果工程师建议用strong，官方文档建议用weak？  
 什么鬼？？？  
-![](/images/黑人问号.png)  
+![](images/黑人问号.png)  
 
 但是其实上面两段话并不冲突，苹果工程师认为视图层级不能长久持有某个子视图而推荐使用strong。但是官方文档给出的第一个原因也很好地解释了这个问题，**“由于outlet之间的引用是随意的，并没有暗示outlet和对象之间的从属关系。”**  举个简单的例子，假如我有一个customView内部有对controllerA的强引用，这时候我们再将这个customView的outlet拉到controllerA上，那么假如这个outlet是strong的话，是不是就循环引用了？是的。正是如此，为了防止这种情况的出现，所以苹果推荐outlet都使用weak引用。  
 
@@ -35,7 +35,7 @@ tags:
 简单来说，这个weak的outlet其实是被视图层级（view hierarchy）所持有了。那什么是视图层级呢？让我们来看一种常见情况——假如你在viewDidLoad方法的作用域里创建里一个临时变量view，然后将它addSubview，等到方法执行结束后，却依然可以在对应的视图里看到这个view。这是为什么呢？唯一引用了这个view的临时变量不是被释放了吗？这个view对象不也应该被释放掉才对吗？
 不不不，这时候，正是视图层级（view hierarchy）对它进行了引用。看了[官方文档解释view hierarchy](https://developer.apple.com/library/content/documentation/General/Conceptual/Devpedia-CocoaApp/View%20Hierarchy.html)我们知道view hierarchy其实就是苹果将window和其下的子视图整合成的一颗颠倒树形结构。构建它的原因官方文档并没有说（但是其实估计就是为了保证视图们在屏幕上的显示吧，免得出现明明add了subview却被释放了而无法正常显示的情况）。  
 视图层级示意图：  
-![](/images/view_hierarchy_enclose.jpg)  
+![](images/view_hierarchy_enclose.jpg)  
 视图层级引用链：Controller.view.subviews.subviews.......以此类推
 ***
 再来看第二个问题。  
@@ -49,7 +49,7 @@ tags:
 6. 运行程序  
 
 让我们来看看结果：  
-![](/images/littleExperimentsResult.png)  
+![](images/littleExperimentsResult.png)  
 So[冷漠脸], What the f\*\*k is that? 讲道理这个outlet不是应该一初始化就会被释放了吗？为什么？？？无法理解啊  
 而在拖取这个outlet的时候默认引用属性也像意料之中的变成了strong，但是为什么结果却是这样子的啊？
 好吧，到了这里我已经没辙了。我这个model并不是一个视图型的对象，所以它必然不会被视图层级引用，因此它理应只会被controller所引用啊。而在我仅在controller内设置了一个weak的model的outlet情况下，model竟然还是不会释放。对于这个问题，我并不想再深究下去，有兴趣的人可以继续挖掘。我认为的原因是——**在controller从storyboard里生成的时候，系统会以runtime的形式创建它的属性并将强引用绑定到controller上，以此防止神奇的开发者将顶层对象的弱引用拖入到controller时而出乎意料的释放。**（这一段话都挺绕的，希望你有看懂）  
@@ -59,11 +59,11 @@ So[冷漠脸], What the f\*\*k is that? 讲道理这个outlet不是应该一初�
 然而事实真的是这样吗？为了解决我的这个疑问，我又做了一个小实验。  
 **实验：** 我在Model类里设置了一个ViewController的strong property。然后再在StoryBoard里拖入一个新的RootViewController用来present起ViewController，然后给ViewController也加了一个button用来dismiss掉ViewController（因为只有这样，系统才会去回收ViewController对象实体）。然后拖一个weak的Model的outlet到controller里。这时候打开Profile（Instruments)里的Leaks运行程序，等到ViewController被present起来后点击button将它dismiss。这时候，我们就会**惊奇**地发现内存泄漏了？！  
 weak的modelOutlet的内存泄漏情况(两个model，是因为我dismiss了ViewController两次)：  
-![](/images/weak版outlet内存泄漏.png)  
+![](images/weak版outlet内存泄漏.png)  
 然后我们将IBOutlet的引用改成strong的再次执行同样的操作，可以看到内存还是泄漏了。  
-![](/images/strong outlet内存泄漏.png)  
+![](images/strong outlet内存泄漏.png)  
 再来看看outlet为weak时，model泄漏时，它的retain/release情况：  
-![](/images/outlet有leaks的log.png)  
+![](images/outlet有leaks的log.png)  
 我们可以看到，在viewDidAppear以后，它还是保持着1的引用计数。为什么？不应该吧，outlet是weak啊，还有谁能引用它？（接下来是一段没有证据的猜测）那就只能是controller引用了它。意思就是尽管你是weak的outlet，UIKit在用storyBoard初始化ViewController的时候，还是会持有model，这就很奇怪了，感觉和设计的原意不符，但是用instruments来跟踪的结果，似乎就是这样。
 所以，无论你是用强引用的outlet，还是弱引用的outlet，这种情况下都会内存泄漏。而这一点就恰恰证明了我在第二个问题时的猜测——**在controller从storyboard里生成的时候，系统会以runtime的形式创建它的属性并将强引用绑定到controller上，以此防止神奇的开发者将顶层对象的弱引用拖入到controller时而出乎意料的释放。**  
 ### 怪！！！！  

@@ -6,13 +6,13 @@ tags:
 Yep，finally，eventually，迎来了我的第一篇源码解读类的文章。相比之前粗略看过的ASDK，Lottie可谓是**对开发者来说十分之不友好**——因为几乎没有注释，本文作为自己的学习记录，也给大家参考。
 ### 从Lottie的官方Demo讲起
 Lottie的[官方Demo](https://github.com/airbnb/lottie-ios)的一开始是一个很酷炫的header，以及一个只有三行的tableView：  
-![](/images/Lottie1.gif)   
+![](images/Lottie1.gif)   
 从每一行里点进去就发现第二个是一个打字相关的动画（显然作者把A-Z的字母显示都用AfterEffects做了一套动画用在了这里），第三行则是一个页面切换的动画。第一行里则是一个让你浏览整个demo里用到的动画的view——这里的动画甚至不是播放的，而是可以自己拖动进度条来带动变化。在第一第二行对应的demo里着重用到了lottie里的一个类——LOTAnimationView来显示动画，而在Animated Transition Demo中则是着重使用LOTAnimationTransitionController，跳到LOTAnimationTransitionController里看一看，原来这个controller不过是一个实现了`<UIViewControllerAnimatedTransitioning>`协议，结合LOTAnimationView来实现页面动画切换的一个类而已。  
    
 所以，非常明显，Lottie始于LOTAnimationView。  
   
 在我们开始进一步地阅读Lottie的源码之前，我们必须得搞明白Lottie总的来说干了什么，还有我写这篇文章的目的是什么。首先Lottie的作用就是你输入一个由AE制作的动画再由其插件bodymovin转成的JSON，然后Lottie就将里面的动画添加到LOTAnimationView之上并返还给你。  
-![](/images/Lottie主线.png)  
+![](images/Lottie主线.png)  
 都说阅读源码就像拼图，一块块的找到缺失的拼图块，最后把拼图完成，你也就读懂了这个源码，而这幅示意图就是拼图的主线。所以现在我们知道，Lottie干了两件事——接收JSON文件解析获得数据，并把数据用来生成动画并最后返回给你一个可视的view。而这篇文章的目的，是要告诉你它是怎么获得数据的，获得了哪些数据，怎么封装的，还有整个项目的结构以及它用到的核心技术。Lottie生成动画的核心技术是使用了苹果的动画库Core Animation，但是由于我才疏学浅，对Core Animation了解不深，所以也是边查边阅读的源码，如有理解上的错误还望指出纠正。
    
 那么，正文开始。哦还有，本文解析的是Lottie-iOS，如果想看别的版本的解析，请移步别处，并且Lottie里关于Mac OS的部分，只会有少量的解释甚至不解释。
@@ -104,9 +104,9 @@ Lottie的[官方Demo](https://github.com/airbnb/lottie-ios)的一开始是一个
 }
 ```
 看了上面的代码，我想你应该明白了LOTAnimationView是如何控制好数据层和动画层的关系，而且上面也引入了一个重要的类——LOTLayerView——它本质上是一个CALayer，也是真正运用了动画的地方。那么在LOTLayerView里一定也有许多有趣的动画技术等着我们去了解，但在我们更加深入之前，我们得理清一下我们现在所接触到的类以及它们的关系。  
-![](/images/Lottie-chaos.jpg)  
+![](images/Lottie-chaos.jpg)  
 一直看着代码和文字解释一定让人头昏脑胀，现在让我贴上一张关系示意图：  
-![](/images/LOTAnimationView里的动画层和数据层关系图.png)  
+![](images/LOTAnimationView里的动画层和数据层关系图.png)  
 从图中来看，下半部分是一个整合了所有动画图层的view和所有的动画图层LOTLayerView，上半部分则是两个数据大头LOTComposition和LOTLayer。外部数据JSON从LOTAnimationView中流入，被解析进入到LOTComposition和LOTLayer里，最后LOTAnimationView再利用解析好的LOTLayer初始化所有的图层LOTLayerView并添加到自己的CALayer容器里，那么一个从AE里导出的动画就生成了。  
 ### 动画层——LOTLayerView  
 LOTLayerView，我们依然从它的初始化方法看起。  
@@ -189,9 +189,9 @@ LOTLayerView，我们依然从它的初始化方法看起。
 首先，从前文我们就知道了Lottie会在LOTAnimationView里根据LOTLayer初始化所有的LOTLayerView，但是这里的while循环很奇怪，这里说明每个LOTLayerView还会随着LOTLayer里的parentID通过LOTComposition找到一个父LOTLayer来初始化一个LOTParentLayer（这玩意本质和LOTLayerView一样，都是带有动画的CALayer），然后将子layer加到父layer之上，在while循环里重复这个操作直到找到祖先为止。那所有的LOTLayerView叠加到LOTAnimationView之上并非都是单一的图层，每个LOTLayerView又有自己的一条图层链，而且LOTLayerView的图层链里的图层又有可能和别的LOTAnimationView的图层链里的某个图层在数据上一模一样（内存不一样）。这里绕得都快可以rap出来了，所以我决定举例子再解释一遍。  
   
 来看一个极端情况：  
-![](/images/LOTLayerView里的图层链极端例子.png)  
+![](images/LOTLayerView里的图层链极端例子.png)  
 如图，假设一个动画总共有三个图层，然后关系是1是2的父，2是3的父。那么我们来看看它们最后在LOTAnimationView上生成的结果是什么样的：  
-![](/images/LOTLayerView例子生成结果.png)  
+![](images/LOTLayerView例子生成结果.png)  
 这就是最后会在LOTAnimationView上会生成的三个LOTLayerView，第一个layerView挺正常的，但是到了第二个layerView里，我们发现会存在一个和第一个layerView里用同样的LOTLayer生成layer，第三个layerView里面则有两个重复layer。这样做不觉得很浪费内存么？既然这些layer从值上是一模一样的，为什么不干脆共用呢？  
   
 这里有一个原因是，子layer的动画是基于父layer的动画之上实现的，比如父layer的动画速度是2，子layer也是2的画，那子layer的绝对速度就是4。所以必须要有父layer的动画支持，子layer的动画才能正确实现。但是就算是为了正确性，layer难道不能共用么？上面的例子比如只要一个LOTLayerView3是不是就有正确的动画效果了。  
@@ -259,12 +259,12 @@ Lottie最终使用了CAKeyframeAnimation来生成动画。而我们知道CAKeyfr
 ### 最后，我们来讲讲Lottie的设计模式
 #### 迅速将数据转换为动画的统一接口模式
 先来讲讲Lottie里一个比较有趣的设计模式——AnimatableProperties文件夹下的所有类都遵循于`<LOTAnimatableValue>`，实现其中的`-(CAKeyframeAnimation *)animationForKeypath:(NSString *)keypath`便于方便和快速地将数据转化为CAKeyframeAnimation。  
-![](/images/Lottie——AnimatableProperties设计模式.png)  
+![](images/Lottie——AnimatableProperties设计模式.png)  
 #### Lottie的整体架构
 由于涉及到的类众多，而Lottie也用文件夹区分好了这些类，那我在介绍Lottie的整体架构的时候就不用类名而用Lottie的文件夹名来做解释吧。首先，JSON从LOTAnimationView进入（这里没办法，文件夹名没很好的表达出这个类的意思）。然后进入到Models解析并存储，紧接着利用Models初始化AnimatableLayers，AnimatableLayers在初始化过程中利用传入的Models里的AnimatableProperties生成CAKeyframeAnimation添加到自身之上，最后返还给LOTAnimationView，这就是整个Lottie的运作机制。  
   
 上个整体架构图：  
-![](/images/Lottie整体架构图.png)  
+![](images/Lottie整体架构图.png)  
 那么，拼图完整了，Lottie解读完毕！
 
 

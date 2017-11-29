@@ -38,6 +38,20 @@ tags:
 	
 	@end
 ```
-最终通过在category里的配置
+最终通过在`CALayer`的category里的配置block的内容——`置nil CALayer`的属性，接着再将`__DeallocTracker`绑定到`animationDelegate`上，那么在`animationDelegate`所引用的对象被释放时，自然也会调用到`__DeallocTracker`的`-dealloc`方法，此时自然会`置nil CALayer`下的`animationDelegate`属性。  
+  
+贴上`animationDelegate`的setter实现：  
+```objc
+- (void)setAnimationDelegate:(id<Protocol>)animationDelegate {
+  __DeallocTracker * tracker = [[__DeallocTracker alloc] initWithDeallocBlock:^{
+    objc_setAssociatedObject:(self, &animationDelegateKey, nil, OBJC_ASSOCIATION_ASSIGN);
+  }];
+  objc_setAssociatedObject(animationDelegate, (__bridge const void *)(tracker.deallockBlock), tracker, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  objc_setAssociatedObject(self, &animationDelegateKey, animationDelegate, OBJC_ASSOCIATION_ASSIGN);
+}
+```
+贴上示意图：
+![](images/Category创建weak属性.png)  
+收工！
 
 

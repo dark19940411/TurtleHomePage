@@ -19,7 +19,7 @@ function DataReader() {
             }
             files.forEach(function(foldername) {
                 var fullpath = postspath.stringByAppendingPathComponent(foldername);
-                fullpath = postspath.stringByAppendingPathComponent(foldername + '.md');
+                fullpath = fullpath.stringByAppendingPathComponent(foldername + '.md');
                 fs.readFile(fullpath, function (err, data) {
                     if (err) {
                         return console.error(err);

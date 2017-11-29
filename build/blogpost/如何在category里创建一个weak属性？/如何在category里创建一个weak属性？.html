@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../libraries/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../../node_modules/highlight.js/styles/atom-one-dark.css">
+<script src="../../node_modules/popper.js/dist/popper.min.js"></script>
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <title>如何在category里创建一个weak属性？</title>
+</head>
+<body>
+<div class="social-media-menu justify-content-end">
+        <span class="social-media-menu-inner">
+            <a class="panel-social-jump-btn" href="https://github.com/dark19940411" target="_blank">
+                <i class="fa fa-github"></i>
+            </a>
+            <a class="panel-social-jump-btn" href="https://weibo.com/1950154683" target="_blank">
+                <i class="fa fa-weibo"></i>
+            </a>
+        </span>
+</div>
+
+<header class="main-panel">
+    <div class="main-panel-cover d-flex justify-content-center">
+        <div class="panel-info-flow-table d-flex align-content-center align-items-center justify-content-center flex-column">
+            <img class="icon" src="../../assets/images/Icon.jpeg">
+            <div class="panel-name-label">Turtle</div>
+            <div class="panel-subtitle">虽然慢，但是我有在爬呀</div>
+            <hr class="panel-divider">
+            <div class="panel-social-container">
+                <a class="panel-social-jump-btn" href="https://github.com/dark19940411" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+                <a class="panel-social-jump-btn" href="https://weibo.com/1950154683" target="_blank">
+                    <i class="fa fa-weibo fa-lg"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="content-container">
+    <h3 id="-">简介</h3>
+<p>最近在实现一个需求，为了使代码看起来更干净整洁，我给CALayer写了一个category，里面有一个<code>animationDelegate</code>的weak属性，由于<code>layer</code>的释放时间要比<code>animationDelegate</code>晚，所以<code>animationDelegate</code>得有在内存回收时自动置<code>nil</code>的的功能。然而，用过category创建属性的我们都知道，category创建的属性的setter和getter都只能是动态生成的(<code>@dynamic</code>)的，并且在category里我们不能添加ivar，所以只能通过runtime的形式为category里的属性配置对应的ivar。而在runtime的属性绑定策略里和引用计数有关的只有<code>retain、assign、copy</code>三种方式，我们知道要使绑定的属性不增加引用计数，只有使用assign标识，但是assign的属性并不会在<code>dealloc</code>以后自动置nil。所以当我的<code>layer</code>的生命周期大于<code>animationDelegate</code>时，就会出现野指针访问的问题。那么现在提供一种在category里实现weak属性的方法。  </p>
+<p>其实这篇文章也是相当于对<a href="http://www.zhimengzhe.com/IOSkaifa/190588.html">另一篇文章</a>的记录。因为方法是从那里学来的。  </p>
+<h3 id="-">实现思路</h3>
+<p>要实现这个功能，其实关键的问题就是：“我该如何知道<code>animationDelegate</code>所指向的对象何时被销毁呢？”。其实就是要从category里捕捉到<code>animationDelegate</code>的<code>dealloc</code>方法，并且还不要从外部直接修改<code>animationDelegate</code>的<code>dealloc</code>方法。<br>那么，该如何做到呢？<br>方法就是，我们可以实现一个类专门用来追踪<code>animationDelegate</code>对象的<code>dealloc</code>方法，并且这个类可以直接私有地创建在category的.m文件里，于是我现在姑且为它起名<code>__DeallocTracker</code>类。给它配置一个block作为属性，然后让它在它的<code>-dealloc</code>方法里调用该block，接着在category里创建<code>__DeallocTracker</code>的对象，将属性置<code>nil</code>的方法传进<code>__DeallocTracker</code>的block里作为回调。贴上代码：  </p>
+<pre><code class="hljs objc">        <span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">__DeallocTracker</span> : <span class="hljs-title">NSObject</span></span>
+
+        <span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) DeallocBlock deallockBlock;
+
+        - (<span class="hljs-keyword">instancetype</span>)initWithDeallocBlock:(DeallocBlock)block;
+
+        <span class="hljs-keyword">@end</span>
+
+        <span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">__DeallocTracker</span></span>
+
+        - (<span class="hljs-keyword">instancetype</span>)initWithDeallocBlock:(DeallocBlock)block {
+            <span class="hljs-keyword">self</span> = [<span class="hljs-keyword">super</span> init];
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>) {
+                <span class="hljs-keyword">self</span>.deallockBlock = block;
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;
+        }
+
+        - (<span class="hljs-keyword">void</span>)dealloc {
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.deallockBlock) {
+                <span class="hljs-keyword">self</span>.deallockBlock();
+            }
+        }
+
+    <span class="hljs-keyword">@end</span></code></pre><p>最终通过在<code>CALayer</code>的category里的配置block的内容——<code>置nil CALayer</code>的属性，接着再将<code>__DeallocTracker</code>绑定到<code>animationDelegate</code>上，那么在<code>animationDelegate</code>所引用的对象被释放时，自然也会调用到<code>__DeallocTracker</code>的<code>-dealloc</code>方法，此时自然会<code>置nil CALayer</code>下的<code>animationDelegate</code>属性。  </p>
+<p>贴上<code>animationDelegate</code>的setter实现：  </p>
+<pre><code class="hljs objc">- (<span class="hljs-keyword">void</span>)setAnimationDelegate:(<span class="hljs-keyword">id</span>&lt;Protocol&gt;)animationDelegate {
+  __DeallocTracker * tracker = [[__DeallocTracker alloc] initWithDeallocBlock:^{
+    objc_setAssociatedObject:(<span class="hljs-keyword">self</span>, &amp;animationDelegateKey, <span class="hljs-literal">nil</span>, OBJC_ASSOCIATION_ASSIGN);
+  }];
+  objc_setAssociatedObject(animationDelegate, (__bridge <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *)(tracker.deallockBlock), tracker, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  objc_setAssociatedObject(<span class="hljs-keyword">self</span>, &amp;animationDelegateKey, animationDelegate, OBJC_ASSOCIATION_ASSIGN);
+}</code></pre><p>贴上示意图：
+<img src="images/Category创建weak属性.png" alt=""><br>收工！</p>
+
+</div>
+</body>
+</html>
