@@ -7,16 +7,16 @@ function Generator() {
     var DataReader = require('./../MarkdownFileProcess/datareader');
     var BlogPostPageViewModel = require('../ViewModel/BlogPostPageViewModel');
     var ejs = require('ejs');
-    var fs = require('fs');
+    var fs = require('fs-extra');
     var path = require('path');
 
     this.generate = function () {
         var datareader = new DataReader();
-        datareader.readIn(function(metadata) {
-            renderBlogPostPage(metadata);
+        datareader.readIn(function(mdfilepath, metadata) {
+            renderBlogPostPage(mdfilepath, metadata);
         });
 
-        function renderBlogPostPage(metadata) {
+        function renderBlogPostPage(mdfilepath, metadata) {
             var viewmodel = new BlogPostPageViewModel();
             viewmodel.formMainPanelRenderData(function (err, mpdata) {
                 if (err) {
@@ -29,7 +29,7 @@ function Generator() {
                         return console.error(err);
                     }
                     var renderedMainStructure = renderMainStructure(msdata);
-                    writeBlogPostPageToDisk(msdata, renderedMainStructure);
+                    writeBlogPostPageToDisk(mdfilepath, msdata, renderedMainStructure);
                 });
             });
         }
@@ -52,20 +52,25 @@ function Generator() {
             return ejs.render(tempstr, msdata);
         }
 
-        function writeBlogPostPageToDisk(msdata, pagecontent) {
+        function writeBlogPostPageToDisk(mdfilepath, msdata, pagecontent) {
             var blogPostPageFolderPath = path.resolve(__dirname, '../../build/blogpost');
-            var pagePath = blogPostPageFolderPath + '/' + msdata.title + '.html';
-            var exists = fs.existsSync(blogPostPageFolderPath);
-            if(exists) {
-                fs.writeFileSync(pagePath, pagecontent);
-            } else {
-                fs.mkdir(blogPostPageFolderPath, function (err) {
+            var pageFolder = blogPostPageFolderPath.stringByAppendingPathComponent(msdata.title);
+            var pagePath = pageFolder.stringByAppendingPathComponent(msdata.title + '.html');
+
+            var articleImgsPath = path.dirname(mdfilepath).stringByAppendingPathComponent('images');
+
+            fs.ensureDir(pageFolder, function (err) {
+                if (err) {
+                    return console.error(err);
+                }
+                fs.ensureDir(articleImgsPath, function (err) {
                     if (err) {
                         return console.error(err);
                     }
-                    fs.writeFileSync(pagePath, pagecontent);
+                    fs.copy(articleImgsPath, pageFolder);
                 });
-            }
+                fs.writeFileSync(pagePath, pagecontent);
+            });
         }
     }
 }
