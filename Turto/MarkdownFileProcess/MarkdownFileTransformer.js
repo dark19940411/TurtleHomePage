@@ -5,7 +5,7 @@
 function MarkdownFileTransformer() {
     var marked = require("marked");
     var hljs = require('highlight.js');
-    this.startTransform = function (metadata, callback) {
+    this.transform = function (metadata) {
         var renderer = new marked.Renderer();
         renderer.code = function (code, lang) {
             if (typeof lang === 'undefined') {
@@ -22,7 +22,7 @@ function MarkdownFileTransformer() {
             renderer: renderer
         });
         metadata.content = marked(metadata.content);
-        callback(metadata);
+        return metadata;
     };
 }
 

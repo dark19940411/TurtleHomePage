@@ -17,12 +17,17 @@ function DataReader() {
             if (err) {
                 return console.error(err);
             }
-            files.forEach(function(file) {
-                var fullpath = postspath.stringByAppendingPathComponent(file);
+            files.forEach(function(foldername) {
+                var fullpath = postspath.stringByAppendingPathComponent(foldername);
+                fullpath = postspath.stringByAppendingPathComponent(foldername + '.md');
                 fs.readFile(fullpath, function (err, data) {
+                    if (err) {
+                        return console.error(err);
+                    }
                     var metadata = new RegularizedArticleMetaData(grayMatter(data.toString()));
                     var transformer = new MarkdownFileTransformer();
-                    transformer.startTransform(metadata, eachFileContentCallBack);
+                    metadata = transformer.transform(metadata);
+                    eachFileContentCallBack(fullpath, metadata);
                 });
             });
         });
