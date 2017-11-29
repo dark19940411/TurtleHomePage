@@ -35,7 +35,7 @@ function Generator() {
         }
 
         function renderMainPanel(mpdata) {
-            var mainPanelTempPath = path.resolve(__dirname, '../../build/Template/main_panel.ejs');
+            var mainPanelTempPath = __buildingTemplateDir.stringByAppendingPathComponent('main_panel.ejs');
             var options = {
                 encoding: 'utf8'
             };
@@ -44,7 +44,7 @@ function Generator() {
         }
 
         function renderMainStructure(msdata) {
-            var mainStructureTempPath = path.resolve(__dirname, '../../build/Template/main_structure.ejs');
+            var mainStructureTempPath = __buildingTemplateDir.stringByAppendingPathComponent('main_structure.ejs');
             var options = {
                 encoding: 'utf8'
             };
@@ -53,7 +53,7 @@ function Generator() {
         }
 
         function writeBlogPostPageToDisk(mdfilepath, msdata, pagecontent) {
-            var blogPostPageFolderPath = path.resolve(__dirname, '../../build/blogpost');
+            var blogPostPageFolderPath = __buildingBlogPostDir;
             var pageFolder = blogPostPageFolderPath.stringByAppendingPathComponent(msdata.title);
             var pagePath = pageFolder.stringByAppendingPathComponent(msdata.title + '.html');
 

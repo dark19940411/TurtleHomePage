@@ -7,8 +7,7 @@ function DataReader() {
 
     var grayMatter = require("gray-matter");
     var fs = require("fs");
-    var path = require('path');
-    var postspath = path.resolve(__dirname, '../../Posts');
+    var postspath = __postdir;
     var RegularizedArticleMetaData = require('./RegularizedArticleMetaData');
     var MarkdownFileTransformer = require('./MarkdownFileTransformer');
 

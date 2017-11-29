@@ -1,6 +1,8 @@
 /**
  * Created by turtle on 2017/11/8.
  */
+require('./Tools/utilities');
+
 var Generator = require('./Tools/generator');
 var path = require('path');
 var fs = require('fs-extra');
@@ -20,7 +22,7 @@ var fs = require('fs-extra');
 
 function prepareForBuild() {
     console.log('prepare for building...');
-    fs.emptyDirSync(path.resolve(__dirname, '../build/blogpost'));
+    fs.emptyDirSync(__buildingBlogPostDir);
     // moveNodeModulesDirToBuild();
 }
 
