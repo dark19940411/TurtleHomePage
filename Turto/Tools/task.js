@@ -1,6 +1,26 @@
-function task() {
-    this.start = function (name, task) {
-        var async = task && task.length;
+require('utilities');
 
+function Task() {
+    this.do = function (name, task) {
+        var async = task && task.length;
+        var startdate = new Date();
+        console.log('Task ' + name.title + ' starts...');
+        if (async) {
+            task(function () {
+                completion(name, startdate);
+            });
+        }
+        else {
+            task();
+            completion(name, startdate);
+        }
+    }
+
+    function completion(name, startdate) {
+        var finishedDate = new Date();
+        var mstaken = finishedDate.getTime() - startdate.getTime();
+        console.log('Task ' + name.title + 'finished - ' + mstaken.title + 'ms'.prompt);
     }
 }
+
+module.exports = new Task();

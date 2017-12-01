@@ -3,6 +3,20 @@
  */
 
 var path = require('path');
+var colors = require('colors');
+
+colors.setTheme({
+    silly: 'rainbow',
+    input: 'grey',
+    title: 'cyan',
+    prompt: 'grey',
+    info: 'green',
+    data: 'grey',
+    help: 'cyan',
+    warn: 'yellow',
+    debug: 'blue',
+    error: 'red'
+});
 
 (function ArrayExtension() {
     Array.prototype.contains = function(obj) {
