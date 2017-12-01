@@ -19,6 +19,7 @@ function DataReader() {
             files.forEach(function(foldername) {
                 var fullpath = postspath.stringByAppendingPathComponent(foldername);
                 fullpath = fullpath.stringByAppendingPathComponent(foldername + '.md');
+                if (!fs.existsSync(fullpath)) {return;}
                 fs.readFile(fullpath, function (err, data) {
                     if (err) {
                         return console.error(err);

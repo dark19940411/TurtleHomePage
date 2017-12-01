@@ -6,22 +6,21 @@ require('./Tools/utilities');
 var Generator = require('./Tools/generator');
 var path = require('path');
 var fs = require('fs-extra');
+var task = require('./Tools/task');
 
 (function main() {
     var argv = require("minimist")(process.argv.slice(2));
 
     if (argv._[0] === 'g' || argv._[0] === 'generate') {
 
-        prepareForBuild();
+        task.do('Clear last generated results', clearjob);
 
-        console.log('generating pages...');
         var generator = new Generator();
-        generator.generate();
+        task.do('generating pages', generator.generate);
     }
 }());
 
-function prepareForBuild() {
-    console.log('prepare for building...');
+function clearjob() {
     fs.emptyDirSync(__buildingBlogPostDir);
     // moveNodeModulesDirToBuild();
 }
@@ -31,6 +30,5 @@ function moveNodeModulesDirToBuild() {
         if (err) {
             return console.error(err);
         }
-        console.log('copy node_modules completed...');
     });
 }
