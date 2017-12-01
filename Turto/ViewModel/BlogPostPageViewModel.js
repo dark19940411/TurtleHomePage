@@ -3,9 +3,10 @@ function BlogPostPageViewModel() {
     var fs = require('fs');
     var MPData = require('../Model/MainPanelData');
     var MSData = require('../Model/MainStructureData');
+    require('../Tools/utilities');
 
     this.formPageRenderData = function (regularizedArticleMetaData, mainPanelContent, callBack) {
-        var filerefpath = path.resolve(__dirname, '../../build/Template/blogpost_fileref');
+        var filerefpath = __buildingTemplateDir.stringByAppendingPathComponent('blogpost_fileref');
         fs.readFile(filerefpath, function (err, data) {
            if (err) {
                callBack(err);
