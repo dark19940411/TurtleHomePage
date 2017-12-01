@@ -10,25 +10,18 @@ function DataReader() {
     var postspath = __postdir;
     var RegularizedArticleMetaData = require('./RegularizedArticleMetaData');
     var MarkdownFileTransformer = require('./MarkdownFileTransformer');
+    var pdenumerator = require('../Tools/postsdir-enumerator');
 
     this.readIn = function (eachFileContentCallBack) {
-        fs.readdir(postspath, function (err, files) {
-            if (err) {
-                return console.error(err);
-            }
-            files.forEach(function(foldername) {
-                var fullpath = postspath.stringByAppendingPathComponent(foldername);
-                fullpath = fullpath.stringByAppendingPathComponent(foldername + '.md');
-                if (!fs.existsSync(fullpath)) {return;}
-                fs.readFile(fullpath, function (err, data) {
-                    if (err) {
-                        return console.error(err);
-                    }
-                    var metadata = new RegularizedArticleMetaData(grayMatter(data.toString()));
-                    var transformer = new MarkdownFileTransformer();
-                    metadata = transformer.transform(metadata);
-                    eachFileContentCallBack(fullpath, metadata);
-                });
+        pdenumerator.forEach(function (fullpath) {
+            fs.readFile(fullpath, function (err, data) {
+                if (err) {
+                    return console.error(err);
+                }
+                var metadata = new RegularizedArticleMetaData(grayMatter(data.toString()));
+                var transformer = new MarkdownFileTransformer();
+                metadata = transformer.transform(metadata);
+                eachFileContentCallBack(fullpath, metadata);
             });
         });
     }
