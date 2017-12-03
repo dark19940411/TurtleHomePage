@@ -31,7 +31,7 @@ function ArticleChainsBuilder() {
 
     this.chain = [];
 
-    this.build = function () {
+    this.build = function (callback) {
         pdenumerator.forEach(function (fullpath) {
             fs.readFile(fullpath, function (err, data) {
                 if (err) {
@@ -42,8 +42,11 @@ function ArticleChainsBuilder() {
                     title: obj.title,
                     date: Date.parse(obj.date)
                 };
+                this.chain.__insert(chainItem);
 
             });
+        }, function () {
+            callback(this.chain);
         });
     }
 }
