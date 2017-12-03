@@ -149,3 +149,48 @@ describe('utilities.StringExtension', function () {
         });
     });
 });
+
+describe('ArticleChainBuilder', function () {
+    var ACBuilder = require('../Turto/Tools/ArticlesChainBuilder');
+    var builder = new ACBuilder();
+    describe('#build', function () {
+        it('should build article chain orderly', function () {
+            builder.build();
+        });
+    });
+
+    describe('#Array.prototype.__insert', function () {
+        it('should insert item into articles chain orderly with a binary search.', function () {
+            var chain = [];
+            var item1 = {
+                title: 'IBOutlet',
+                date: Date.parse('2016-12-07 11:50:59')
+            };
+            var item2 = {
+                title: 'Share Ext',
+                date: Date.parse('2017-04-07 12:07:46')
+            };
+            var item3 = {
+                title: '单例',
+                date: Date.parse('2016-10-21 11:48:38')
+            }
+
+            chain.__insert(item1);
+
+            assert(chain.length === 1, 'first insert: chain.length === 1');
+            assert(chain[0].title === item1.title, 'first insert: chain[0] title cmp');
+
+            chain.__insert(item2);
+            assert(chain.length === 2, 'second insert: chain.length === 2');
+            assert(chain[0].title === item1.title, 'second insert: chain[0].title cmp');
+            assert(chain[1].title === item2.title, 'second insert: chain[1].title cmp');
+
+            chain.__insert(item3);
+            var assertmsgprefix = 'third insert:';
+            assert(chain.length === 3, 'third insert: chain.length === 3');
+            assert(chain[0].title === item3.title, assertmsgprefix + 'chain[0].title cmp');
+            assert(chain[1].title === item1.title, assertmsgprefix + 'chain[1].title cmp');
+            assert(chain[2].title === item2.title, assertmsgprefix + 'chain[2] title cmp');
+        });
+    });
+});
