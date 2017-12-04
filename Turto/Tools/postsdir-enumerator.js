@@ -13,7 +13,7 @@ function PostsDirEnumerator() {
 
                 eachcb(fullpath);
 
-                if (index === files.length - 1) {
+                if (index === files.length - 1 && completioncb) {
                     completioncb();
                 }
             });

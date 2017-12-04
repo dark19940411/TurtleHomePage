@@ -3,6 +3,7 @@
  */
 
 var assert = require('assert');
+require('../Turto/Tools/utilities');
 
 var metadata = {
     content: "content",
@@ -13,7 +14,7 @@ var metadata = {
     }
 };
 
-describe('RegularizedArticleMetaData', function () {
+describe('RegularizedArticleMetaData'.blue, function () {
     var RegularizedArticleMetaData = require('../Turto/MarkdownFileProcess/RegularizedArticleMetaData');
 
     describe('#constructor', function () {
@@ -27,7 +28,7 @@ describe('RegularizedArticleMetaData', function () {
     });
 });
 
-describe('MarkdownFileTransformer', function () {
+describe('MarkdownFileTransformer'.blue, function () {
     var marked = require("marked");
     var MarkdownFileTransformer = require('../Turto/MarkdownFileProcess/MarkdownFileTransformer');
     var RegularizedArticleMetaData = require('../Turto/MarkdownFileProcess/RegularizedArticleMetaData');
@@ -43,7 +44,7 @@ describe('MarkdownFileTransformer', function () {
     });
 });
 
-describe('BlogPostPageViewModel', function () {
+describe('BlogPostPageViewModel'.blue, function () {
     var BlogPostPageViewModel = require('../Turto/ViewModel/BlogPostPageViewModel');
     var regularizedData = {
         title: 'Test',
@@ -85,9 +86,7 @@ describe('BlogPostPageViewModel', function () {
     });
 });
 
-require('../Turto/Tools/utilities');
-
-describe('utilities.StringExtension', function () {
+describe('utilities.StringExtension'.blue, function () {
     describe('#lastPathComponent', function () {
         it('should return a path string\' s last path component.', function () {
             var path = 'test.txt';
@@ -150,14 +149,14 @@ describe('utilities.StringExtension', function () {
     });
 });
 
-describe('ArticleChainBuilder', function () {
+describe('ArticleChainBuilder'.blue, function () {
     var ACBuilder = require('../Turto/Tools/ArticlesChainBuilder');
     var builder = new ACBuilder();
-    describe('#build', function () {
-        it('should build article chain orderly', function () {
-            builder.build();
-        });
-    });
+    // describe('#build', function () {
+    //     it('should build article chain orderly', function () {
+    //         builder.build();
+    //     });
+    // });
 
     describe('#Array.prototype.__insert', function () {
         it('should insert item into articles chain orderly with a binary search.', function () {
@@ -173,7 +172,12 @@ describe('ArticleChainBuilder', function () {
             var item3 = {
                 title: '单例',
                 date: Date.parse('2016-10-21 11:48:38')
-            }
+            };
+
+            var item4 = {
+                title: 'Lottie',
+                date: Date.parse('2017-02-26 17:39:59')
+            };
 
             chain.__insert(item1);
 
@@ -191,6 +195,15 @@ describe('ArticleChainBuilder', function () {
             assert(chain[0].title === item3.title, assertmsgprefix + 'chain[0].title cmp');
             assert(chain[1].title === item1.title, assertmsgprefix + 'chain[1].title cmp');
             assert(chain[2].title === item2.title, assertmsgprefix + 'chain[2] title cmp');
+
+            chain.__insert(item4);
+            assertmsgprefix = 'fourth insert: ';
+            assert(chain.length === 4, assertmsgprefix + 'chain.length === 4');
+            assert(chain[0].title === item3.title, assertmsgprefix + 'chain[0].title cmp');
+            assert(chain[1].title === item1.title, assertmsgprefix + 'chain[1].title cmp');
+            assert(chain[2].title === item4.title, assertmsgprefix + 'chain[2].title cmp');
+            assert(chain[3].title === item2.title, assertmsgprefix + 'chain[3].title cmp');
+
         });
     });
 });
