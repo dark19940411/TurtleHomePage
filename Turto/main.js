@@ -28,7 +28,10 @@ var buildchainjobfinshed = false;
         task.do('build article chain', function (done) {
             var builder = new ArticlesChainBuilder();
             builder.build(function (chain) {
-                console.log(chain);
+                // chain.forEach(function (obj, index) {
+                //     console.log('index: '.blue + index);
+                //     console.log('date:'.blue + obj.date);
+                // });
                 buildchainjobfinshed = true;
                 done()
                 setupGenerationTask();

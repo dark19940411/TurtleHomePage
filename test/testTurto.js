@@ -163,20 +163,20 @@ describe('ArticleChainBuilder'.blue, function () {
             var chain = [];
             var item1 = {
                 title: 'IBOutlet',
-                date: Date.parse('2016-12-07 11:50:59')
+                date: 1481111459000
             };
             var item2 = {
                 title: 'Share Ext',
-                date: Date.parse('2017-04-07 12:07:46')
+                date: 1492421085000
             };
             var item3 = {
                 title: '单例',
-                date: Date.parse('2016-10-21 11:48:38')
+                date: 1477050518000
             };
 
             var item4 = {
                 title: 'Lottie',
-                date: Date.parse('2017-02-26 17:39:59')
+                date: 1491566866000
             };
 
             chain.__insert(item1);
@@ -204,6 +204,92 @@ describe('ArticleChainBuilder'.blue, function () {
             assert(chain[2].title === item4.title, assertmsgprefix + 'chain[2].title cmp');
             assert(chain[3].title === item2.title, assertmsgprefix + 'chain[3].title cmp');
 
+            chain = [];
+            chain.__insert(item3);
+            chain.__insert(item4);
+            chain.__insert(item1);
+            assertmsgprefix = 'specific test1 third insert: ';
+            assert(chain[0].title === item3.title, assertmsgprefix + 'chain[0].title cmp');
+            assert(chain[1].title === item1.title, assertmsgprefix + 'chain[1].title cmp');
+            assert(chain[2].title === item4.title, assertmsgprefix + 'chain[2].title cmp');
+
+            chain = [];
+            chain.__insert(item3);
+            chain.__insert(item4);
+            chain.__insert(item2);
+            assertmsgprefix = 'specific test2 third insert: ';
+            assert(chain[0].title === item3.title, assertmsgprefix + 'chain[0].title cmp');
+            assert(chain[1].title === item4.title, assertmsgprefix + 'chain[1].title cmp');
+            assert(chain[2].title === item2.title, assertmsgprefix + 'chain[2].title cmp');
+
+            chain = [];
+            chain.__insert(item1);
+            chain.__insert(item2);
+            chain.__insert(item3);
+            assertmsgprefix = 'specific test3 third insert: ';
+            assert(chain[0].title === item3.title, assertmsgprefix + 'chain[0].title cmp');
+            assert(chain[1].title === item1.title, assertmsgprefix + 'chain[1].title cmp');
+            assert(chain[2].title === item2.title, assertmsgprefix + 'chain[2].title cmp');
+
+            chain = [];
+            chain.__insert(item1);
+            chain.__insert(item2);
+            chain.__insert(item4);
+            assertmsgprefix = 'specific test4 third insert: ';
+            assert(chain[0].title === item1.title, assertmsgprefix + 'chain[0].title cmp');
+            assert(chain[1].title === item4.title, assertmsgprefix + 'chain[1].title cmp');
+            assert(chain[2].title === item2.title, assertmsgprefix + 'chain[2].title cmp');
+
+            chain = [];
+            chain.__insert(item3);
+            chain.__insert(item2);
+            chain.__insert(item1);
+            chain.__insert(item4);
+            assertmsgprefix = 'specific test for fourth insert:';
+            assert(chain[0].title === item3.title, assertmsgprefix + 'chain[0].title cmp');
+            assert(chain[1].title === item1.title, assertmsgprefix + 'chain[1].title cmp');
+            assert(chain[2].title === item4.title, assertmsgprefix + 'chain[2].title cmp');
+            assert(chain[3].title === item2.title, assertmsgprefix + 'chain[3].title cmp');
+
+
+            item1 = {
+                title: '1',
+                date: 1475071893000
+            };
+
+            item2 = {
+                title: '2',
+                date: 1477050518000
+            };
+
+            item3 = {
+                title: '3',
+                date: 1481111459000
+            };
+
+            item4 = {
+                title: '4',
+                date: 1488130799000
+            };
+
+            var item5 = {
+                title: '5',
+                date: 1491566866000
+            };
+
+            var item6 = {
+                title: '6',
+                date: 1492421085000
+            };
+
+            chain = [];
+            chain.__insert(item3);
+            chain.__insert(item5);
+            chain.__insert(item2);
+            chain.__insert(item4);
+            chain.__insert(item6);
+
+            assert(chain[4].title === item6.title);
         });
     });
 });

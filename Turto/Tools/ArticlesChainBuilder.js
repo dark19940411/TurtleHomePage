@@ -1,27 +1,49 @@
 Array.prototype.__insert = function (item) {        //二分型插入算法
     if (this.length < 1) {
         this[0] = item;
+    } else if (this.length === 1) {
+        if (item.date < this[0].date) {
+            this.splice(0, 0, item);
+        } else  {
+            this.splice(1, 0, item);
+        }
     }
     else {
         var head = 0;
         var tail = this.length - 1;
         while (tail - head > 1) {
             var idx = Math.floor((head + tail)/2);
-            // console.log('head: ' + head + '\n'
+            //console.log('enumeration starts.'.red);
+            //console.log('head: ' + head + '\n'
             //     + 'tail: ' + tail + '\n'
             //     + 'idx: ' + idx + '\n');
-            // var selectedobj = this[idx];
+            var selectedobj = this[idx];
             if (item.date < selectedobj.date) {
+                //console.log(item.date + ' < ' + selectedobj.date);
                 tail = idx;
             } else {
+                //console.log(item.date + ' >= ' + selectedobj.date);
                 head = idx;
             }
         }
-        var obj = this[head];
-        if (item.date <= obj.date) {
+
+        //console.log('head: ' + head + '\n'
+        // + 'tail: ' + tail);
+        if (tail === head) {
+            //console.log('insert place: '.red + head);
             this.splice(head, 0, item);
+            //console.log(this);
         } else {
-            this.splice(head + 1, 0, item);
+            if (item.date < this[head].date) {
+                this.splice(head, 0, item);
+                //console.log('insert place: '.red + head);
+            } else if(item.date > this[tail].date) {
+                this.splice(tail + 1, 0, item);
+                //console.log('insert place: '.red + (tail + 1));
+            } else {
+                this.splice(tail, 0, item);
+                //console.log('insert place: '.red + tail);
+            }
         }
     }
 };
@@ -35,20 +57,25 @@ function ArticleChainsBuilder() {
     this.chain = [];
 
     this.build = function (callback) {
-        pdenumerator.forEach(function (fullpath) {
+        var count = 0;
+        pdenumerator.forEach(function (fullpath, index, titles) {
             fs.readFile(fullpath, function (err, data) {
                 if (err) {
                     return console.error(err);
                 }
                 var obj = grayMatter(data.toString());
                 var chainItem = {
-                    title: obj.title,
-                    date: Date.parse(obj.date)
+                    title: obj.data.title,
+                    date: Date.parse(obj.data.date)
                 };
                 self.chain.__insert(chainItem);
+
+                count++;
+
+                if (count === titles.length && callback) {
+                    callback(self.chain);
+                }
             });
-        }, function () {
-            callback(self.chain);
         });
     }
 }
