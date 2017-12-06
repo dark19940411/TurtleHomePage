@@ -18,7 +18,9 @@ function Generator() {
             }
 
             var renderedMainPanel = renderMainPanel(mpdata);
-            viewmodel.formPageRenderData(metadata, renderedMainPanel, function (err, msdata) {
+            var renderedbpContent = renderBlogpostContent(metadata);
+            metadata.content = renderedbpContent;
+            viewmodel.formMainStructureRenderData(metadata, renderedMainPanel, function (err, msdata) {
                 if (err) {
                     return console.error(err);
                 }
@@ -35,6 +37,16 @@ function Generator() {
         };
         var tempstr = fs.readFileSync(mainPanelTempPath, options);
         return ejs.render(tempstr, mpdata);
+    }
+
+    function renderBlogpostContent(regularizedData) {
+        var articleContentRenderData = viewmodel.formPageContentRenderData(regularizedData);
+        var bpcontentTempPath = __buildingTemplateDir.stringByAppendingPathComponent('blogpost_content.ejs');
+        var options = {
+            encoding: 'utf8'
+        };
+        var tempstr = fs.readFileSync(bpcontentTempPath, options);
+        return ejs.render(tempstr, articleContentRenderData);
     }
 
     function renderMainStructure(msdata) {

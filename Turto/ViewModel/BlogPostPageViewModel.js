@@ -5,7 +5,16 @@ function BlogPostPageViewModel() {
     var MSData = require('../Model/MainStructureData');
     require('../Tools/utilities');
 
-    this.formPageRenderData = function (regularizedArticleMetaData, mainPanelContent, callBack) {
+    // 生成页面右侧内容(文章以及标题以及导航按钮等)的渲染数据
+    this.formPageContentRenderData = function (regularizedArticleMetaData) {
+        var data = {
+            articleContent: regularizedArticleMetaData.content
+        };
+        return data;
+    };
+
+    // 生成渲染完整的博客发布页面所需要的数据
+    this.formMainStructureRenderData = function (regularizedArticleMetaData, mainPanelContent, callBack) {
         var filerefpath = __buildingTemplateDir.stringByAppendingPathComponent('blogpost_fileref');
         fs.readFile(filerefpath, function (err, data) {
            if (err) {
@@ -21,8 +30,9 @@ function BlogPostPageViewModel() {
 
            callBack(null, msdata);
         });
-    }
+    };
 
+    // 生成渲染主面板所需要的数据
     this.formMainPanelRenderData = function (callback) {
         var configFilePath = path.resolve(__dirname, '../config.json');
         fs.readFile(configFilePath, function (error, data) {
@@ -35,7 +45,9 @@ function BlogPostPageViewModel() {
             var mpdata = new MPData(jsonobj);
             callback(null, mpdata);
         });
-    }
+    };
+
+
 }
 
 module.exports = BlogPostPageViewModel;

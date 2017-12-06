@@ -53,9 +53,9 @@ describe('BlogPostPageViewModel'.blue, function () {
         tags: null,
     };
     var viewmodel = new BlogPostPageViewModel();
-    describe('#formPageRenderData(regData, mainPanelContent, callBack)', function () {
+    describe('#formMainStructureRenderData(regData, mainPanelContent, callBack)', function () {
         it('should form page render data to be put in main_structure.ejs template', function (done) {
-            viewmodel.formPageRenderData(regularizedData, '<div>this is a fake main panel</div>', function (err, data) {
+            viewmodel.formMainStructureRenderData(regularizedData, '<div>this is a fake main panel</div>', function (err, data) {
                 if (err) {
                     done(err);
                 }
