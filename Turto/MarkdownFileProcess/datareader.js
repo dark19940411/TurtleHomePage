@@ -13,7 +13,9 @@ function DataReader() {
     var pdenumerator = require('../Tools/postsdir-enumerator');
 
     this.readIn = function (eachFileContentCallBack) {
-        pdenumerator.forEach(function (fullpath) {
+        articlesChain.forEach(function (item, idx) {
+            var fullpath = __postdir.stringByAppendingPathComponent(item.title);
+            fullpath = fullpath.stringByAppendingPathComponent(item.title + '.md');
             fs.readFile(fullpath, function (err, data) {
                 if (err) {
                     return console.error(err);
