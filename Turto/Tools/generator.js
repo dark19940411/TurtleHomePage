@@ -40,6 +40,7 @@ function Generator() {
     }
 
     function renderBlogpostContent(regularizedData) {
+        var viewmodel = new BlogPostPageViewModel();
         var articleContentRenderData = viewmodel.formPageContentRenderData(regularizedData);
         var bpcontentTempPath = __buildingTemplateDir.stringByAppendingPathComponent('blogpost_content.ejs');
         var options = {
