@@ -18,6 +18,10 @@ function MarkdownFileTransformer() {
                 return '<pre><code class="' + codecls + '">' + hljs.highlight(lang, code).value + '</code></pre>';
             }
         };
+
+        renderer.image = function (href, title) {
+            return '<img class="content-img" src="' + href + '" alt="' + title + '">';
+        };
         marked.setOptions({
             renderer: renderer
         });

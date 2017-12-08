@@ -68,14 +68,6 @@ code {
     background: #F5F5F5;
 }
 
-img {
-    max-width: 100%;
-    margin: 0 auto;
-    border-radius: 3px;
-    text-align: center;
-    display: block;
-}
-
 blockquote {
     padding: 10px 20px;
     margin: 0 0 20px;
@@ -195,6 +187,14 @@ blockquote {
 .content-stamp {
     margin: 0 0 .4em 0;
     color: #c7c7c7;
+}
+
+.content-img {
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 3px;
+    text-align: center;
+    display: block;
 }
 
 .content-readmore {
