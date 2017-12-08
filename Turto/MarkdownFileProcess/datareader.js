@@ -16,15 +16,16 @@ function DataReader() {
         articlesChain.forEach(function (item, idx) {
             var fullpath = __postdir.stringByAppendingPathComponent(item.title);
             fullpath = fullpath.stringByAppendingPathComponent(item.title + '.md');
-            fs.readFile(fullpath, function (err, data) {
-                if (err) {
-                    return console.error(err);
-                }
+            try {
+                var data = fs.readFileSync(fullpath);
                 var metadata = new RegularizedArticleMetaData(grayMatter(data.toString()));
                 var transformer = new MarkdownFileTransformer();
                 metadata = transformer.transform(metadata);
                 eachFileContentCallBack(fullpath, metadata);
-            });
+            }
+            catch (e) {
+                console.error(e);
+            }
         });
     }
 }
