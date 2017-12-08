@@ -5,6 +5,13 @@
 function MarkdownFileTransformer() {
     var marked = require("marked");
     var hljs = require('highlight.js');
+    var cheerio = require('cheerio');
+
+    function getBreviaryOfArticleContent(content) {
+        var $ = cheerio.load(content);
+        return $('p').text().substring(0, 250) + '……';
+    }
+
     this.transform = function (metadata) {
         var renderer = new marked.Renderer();
         renderer.code = function (code, lang) {
@@ -26,6 +33,8 @@ function MarkdownFileTransformer() {
             renderer: renderer
         });
         metadata.content = marked(metadata.content);
+        metadata.brev = getBreviaryOfArticleContent(metadata.content);
+
         return metadata;
     };
 }

@@ -4,6 +4,7 @@ function ArticleRenderBufferPoolItem(options) {
     this.brev = options.brev;//摘要
     this.formerItem = options.formerItem;
     this.latterItem = options.latterItem;
+    this.didRender = false;
 }
 
 module.exports = ArticleRenderBufferPoolItem;

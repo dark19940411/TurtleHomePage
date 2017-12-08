@@ -11,21 +11,24 @@ function DataReader() {
     var RegularizedArticleMetaData = require('./RegularizedArticleMetaData');
     var MarkdownFileTransformer = require('./MarkdownFileTransformer');
     var pdenumerator = require('../Tools/postsdir-enumerator');
+    var task = require('../Tools/task');
 
     this.readIn = function (eachFileContentCallBack) {
         articlesChain.forEach(function (item, idx) {
-            var fullpath = __postdir.stringByAppendingPathComponent(item.title);
-            fullpath = fullpath.stringByAppendingPathComponent(item.title + '.md');
-            try {
-                var data = fs.readFileSync(fullpath);
-                var metadata = new RegularizedArticleMetaData(grayMatter(data.toString()));
-                var transformer = new MarkdownFileTransformer();
-                metadata = transformer.transform(metadata);
-                eachFileContentCallBack(fullpath, metadata);
-            }
-            catch (e) {
-                console.error(e);
-            }
+            task.do('Reading article file named: ' + item.title, function () {
+                var fullpath = __postdir.stringByAppendingPathComponent(item.title);
+                fullpath = fullpath.stringByAppendingPathComponent(item.title + '.md');
+                try {
+                    var data = fs.readFileSync(fullpath);
+                    var metadata = new RegularizedArticleMetaData(grayMatter(data.toString()));
+                    var transformer = new MarkdownFileTransformer();
+                    metadata = transformer.transform(metadata);
+                    eachFileContentCallBack(fullpath, metadata);
+                }
+                catch (e) {
+                    console.error(e);
+                }
+            });
         });
     }
 }

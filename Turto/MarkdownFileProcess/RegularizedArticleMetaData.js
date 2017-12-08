@@ -7,6 +7,7 @@ function RegularizedArticleMetaData(metadata) {
     this.date = metadata.data.date;
     this.tags = metadata.data.tags;
     this.content = metadata.content;
+    this.brev = metadata.brev;
 }
 
 module.exports = RegularizedArticleMetaData;
