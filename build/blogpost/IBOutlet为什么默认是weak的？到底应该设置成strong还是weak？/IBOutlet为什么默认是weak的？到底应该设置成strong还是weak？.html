@@ -44,6 +44,11 @@
 </header>
 
 <div class="content-container">
+    <div class="content-inner-wraper">
+    <header>
+        <div class="content-stamp">2016-11-3  19: 50</div>
+        <h1>IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？</h1>
+    </header>
     <p>这个问题困扰了我许久了，于是今天我决定终结这个疑惑。<br>我谷歌了一下这个问题，于是在stackOverflow上看到了不同的答案，其中一个回答是说WWDC2015中的一个视频“Implementing UI Designs in Interface Builder”里的Apple工程师是这么说的：  </p>
 <blockquote>
 <p>And the last option I want to point out is the storage type, which can either be strong or weak. In general you should make your outlet strong, especially if you are connecting an outlet to a subview or to a constraint that&#39;s not always going to be retained by the view hierarchy. The only time you really need to make an outlet weak is if you have a custom view that references something back up the view hierarchy and in general that&#39;s not recommended.  </p>
@@ -88,6 +93,7 @@
 <h3 id="-">怪！！！！</h3>
 <p>到这里，感觉很不爽，挖了很多的坑但是都没有好好的填好。但是至少证明了一件事情，使用UIKit默认的Outlet的强弱引用是可行的。我们只要注意高危操作和循环引用就可以了。而我个人的推荐也和苹果的<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/CocoaNibs/CocoaNibs.html#//apple_ref/doc/uid/10000051i-CH4-SW6">Nib Files文档</a>一样，正常视图outlet尽量用weak（尽管用strong没问题），顶层对象尽量用strong。而反向的强引用则可以改成更优雅的weak，甚至代理。</p>
 
+</div>
 </div>
 </body>
 </html>

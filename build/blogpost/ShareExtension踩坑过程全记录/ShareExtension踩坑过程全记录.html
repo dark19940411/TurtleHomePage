@@ -44,6 +44,11 @@
 </header>
 
 <div class="content-container">
+    <div class="content-inner-wraper">
+    <header>
+        <div class="content-stamp">2017-3-5  20: 7</div>
+        <h1>ShareExtension踩坑过程全记录</h1>
+    </header>
     <h2 id="-">前言</h2>
 <p>这是一篇记录踩坑的文章，而不是教程，所以如果你打算用这篇文章开启你ShareExtension世界的大门，那么你来错地方了。但是如果你已经对ShareExtension有所了解，打算开发一个ShareExtension，那这篇文章所提到的内容将有可能对你有所帮助。</p>
 <h2 id="-">第一坑——繁琐的取数据过程</h2>
@@ -81,6 +86,7 @@
 <p>首先得在extension的<code>info.plist</code>里添加一个<code>LSHasLocalizedDisplayName</code>的键，值填YES(类型是布尔)。完了再创建一个叫<code>InfoPlist.strings</code>（请注意大小写）的多语言文件，里面添加<code>CFBundleDisplayName</code>的键值就可以实现对extension的应用名的国际化。但是正是这么简单的一个过程，却难住了我。创建的多语言文件必须得叫<code>InfoPlist.strings</code>，只要差一个字母<code>CFBundleDisplayName</code>就完全不起作用，大小写对不上号也不行，但是其它的所有多语言键值对都可以被使用，只有应用名的这个键值是必须得再<code>InfoPlist.strings</code>内才能起作用。  </p>
 <p>以上的内容就是我在开发ShareExtension过程中遇到的坑。</p>
 
+</div>
 </div>
 </body>
 </html>

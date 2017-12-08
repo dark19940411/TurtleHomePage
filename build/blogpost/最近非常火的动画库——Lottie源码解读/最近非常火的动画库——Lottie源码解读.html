@@ -44,6 +44,11 @@
 </header>
 
 <div class="content-container">
+    <div class="content-inner-wraper">
+    <header>
+        <div class="content-stamp">2017-1-1  1: 39</div>
+        <h1>最近非常火的动画库——Lottie源码解读</h1>
+    </header>
     <p>Yep，finally，eventually，迎来了我的第一篇源码解读类的文章。相比之前粗略看过的ASDK，Lottie可谓是<strong>对开发者来说十分之不友好</strong>——因为几乎没有注释，本文作为自己的学习记录，也给大家参考。</p>
 <h3 id="-lottie-demo-">从Lottie的官方Demo讲起</h3>
 <p>Lottie的<a href="https://github.com/airbnb/lottie-ios">官方Demo</a>的一开始是一个很酷炫的header，以及一个只有三行的tableView：<br><img src="images/Lottie1.gif" alt=""><br>从每一行里点进去就发现第二个是一个打字相关的动画（显然作者把A-Z的字母显示都用AfterEffects做了一套动画用在了这里），第三行则是一个页面切换的动画。第一行里则是一个让你浏览整个demo里用到的动画的view——这里的动画甚至不是播放的，而是可以自己拖动进度条来带动变化。在第一第二行对应的demo里着重用到了lottie里的一个类——LOTAnimationView来显示动画，而在Animated Transition Demo中则是着重使用LOTAnimationTransitionController，跳到LOTAnimationTransitionController里看一看，原来这个controller不过是一个实现了<code>&lt;UIViewControllerAnimatedTransitioning&gt;</code>协议，结合LOTAnimationView来实现页面动画切换的一个类而已。  </p>
@@ -252,6 +257,7 @@ In after effects you can parent a layer to another layer. Though they call it pa
 <p>由于涉及到的类众多，而Lottie也用文件夹区分好了这些类，那我在介绍Lottie的整体架构的时候就不用类名而用Lottie的文件夹名来做解释吧。首先，JSON从LOTAnimationView进入（这里没办法，文件夹名没很好的表达出这个类的意思）。然后进入到Models解析并存储，紧接着利用Models初始化AnimatableLayers，AnimatableLayers在初始化过程中利用传入的Models里的AnimatableProperties生成CAKeyframeAnimation添加到自身之上，最后返还给LOTAnimationView，这就是整个Lottie的运作机制。  </p>
 <p>上个整体架构图：<br><img src="images/Lottie整体架构图.png" alt=""><br>那么，拼图完整了，Lottie解读完毕！</p>
 
+</div>
 </div>
 </body>
 </html>
