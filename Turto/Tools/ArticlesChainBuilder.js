@@ -54,6 +54,7 @@ function ArticleChainsBuilder() {
     var fs = require('fs');
     var grayMatter = require("gray-matter");
     var self = this;
+    var ArticleChainItem = require("../Model/ArticleChainItem");
     this.chain = [];
 
     this.build = function (callback) {
@@ -64,10 +65,10 @@ function ArticleChainsBuilder() {
                     return console.error(err);
                 }
                 var obj = grayMatter(data.toString());
-                var chainItem = {
+                var chainItem = new ArticleChainItem({
                     title: obj.data.title,
                     date: Date.parse(obj.data.date)
-                };
+                });
                 self.chain.__insert(chainItem);
 
                 count++;
