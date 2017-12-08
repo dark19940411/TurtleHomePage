@@ -6,9 +6,10 @@
     <%- articleContent%>
     <section class="content-readmore">
         <div class="content-readmore-item">
+            <% var articleAddress = '../' + latterArticle.title + '/' + latterArticle.title + '.html'%>
             <span class="content-readmore-item-dim">最近的文章</span>
             <h2 class="post-title">
-                <a href="<%= '../' + latterArticle.title + '/' + latterArticle.title + '.html'%>" title="<%= '跳转至' + latterArticle.title%>">
+                <a href="<%= articleAddress %>" title="<%= '跳转至' + latterArticle.title%>">
                     <%= latterArticle.title%>
                 </a>
             </h2>
@@ -17,12 +18,13 @@
                 <%= latterArticle.brev%>
             </p>
             <time class="content-stamp"><%= latterArticle.dateDescription%></time>
-            <a class="round-border-btn">继续阅读</a>
+            <a class="round-border-btn" href="<%= articleAddress %>">继续阅读</a>
         </div>
         <div class="content-readmore-item">
-            <span class="content-readmore-item-dim">最近的文章</span>
+            <% var articleAddress = '../' + formerArticle.title + '/' + formerArticle.title + '.html' %>
+            <span class="content-readmore-item-dim">更早的文章</span>
             <h2 class="post-title">
-                <a href="<%= '../' + formerArticle.title + '/' + formerArticle.title + '.html'%>" title="<%= '跳转至' + formerArticle.title%>">
+                <a href="<%= articleAddress%>" title="<%= '跳转至' + formerArticle.title;%>">
                     <%= formerArticle.title%>
                 </a>
             </h2>
@@ -31,7 +33,7 @@
                 <%= formerArticle.brev%>
             </p>
             <time class="content-stamp"><%= formerArticle.dateDescription%></time>
-            <a class="round-border-btn">继续阅读</a>
+            <a class="round-border-btn" href="<% articleAddress %>">继续阅读</a>
         </div>
     </section>
 </div>
