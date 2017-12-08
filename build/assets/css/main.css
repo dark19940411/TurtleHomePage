@@ -76,6 +76,17 @@ blockquote {
     border-left: 3px solid #F28500;
 }
 
+ol li, ul li {
+    margin: 0 0 .2em 0;
+    line-height: 1.6em;
+}
+
+::selection {
+    background: #E6D933; }
+
+::-moz-selection {
+    background: #E6D933; }
+
 /* Style classes */
 .social-media-menu {
     display: none;
@@ -172,8 +183,30 @@ blockquote {
     color: #ffffff;
 }
 
+/* 发布列表内容区域 */
+.post-title {
+    margin-top: 0;
+    margin-bottom: .2em;
+    font-size: 1.5em;
+    line-height: 1.3em;
+}
+
+.breviary {
+    margin: 0;
+    font-size: .9em;
+    color: #999999;
+}
+
+.round-border-btn {
+    border: 1px solid #007bff;
+    border-radius: 20px;
+    padding: 6px 8px;
+    font-size: .8em;
+    margin-left: 10px;
+}
+
 /*  -------------------------分割线-------------------------  */
-/*  内容区域的css */
+/*  文章内容区域的css */
 .content-container {
     width: 70%;
     margin-left: 30%;
@@ -203,6 +236,17 @@ blockquote {
     padding-top: 1.2em;
     padding-bottom: 1em;
     border-top: 1px solid #DDDDDD;
+}
+
+.content-readmore-item {
+    display: inline-block;
+    vertical-align: top;
+    width: 48%;
+}
+
+.content-readmore-item-dim {
+    color: #CC5500;
+    font-size: .8em;
 }
 
 /*  -------------------------分割线-------------------------  */

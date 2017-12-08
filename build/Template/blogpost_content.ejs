@@ -1,10 +1,37 @@
 <div class="content-inner-wraper">
     <header>
-        <div class="content-stamp"><%= dateDescription%></div>
+        <time class="content-stamp"><%= dateDescription%></time>
         <h1><%= title%></h1>
     </header>
     <%- articleContent%>
     <section class="content-readmore">
+        <div class="content-readmore-item">
+            <span class="content-readmore-item-dim">最近的文章</span>
+            <h2 class="post-title">
+                <a href="<%= '../' + latterArticle.title + '/' + latterArticle.title + '.html'%>" title="<%= '跳转至' + latterArticle.title%>">
+                    <%= latterArticle.title%>
+                </a>
+            </h2>
 
+            <p class="breviary">
+                <%= latterArticle.brev%>
+            </p>
+            <time class="content-stamp"><%= latterArticle.dateDescription%></time>
+            <a class="round-border-btn">继续阅读</a>
+        </div>
+        <div class="content-readmore-item">
+            <span class="content-readmore-item-dim">最近的文章</span>
+            <h2 class="post-title">
+                <a href="<%= '../' + formerArticle.title + '/' + formerArticle.title + '.html'%>" title="<%= '跳转至' + formerArticle.title%>">
+                    <%= formerArticle.title%>
+                </a>
+            </h2>
+
+            <p class="breviary">
+                <%= formerArticle.brev%>
+            </p>
+            <time class="content-stamp"><%= formerArticle.dateDescription%></time>
+            <a class="round-border-btn">继续阅读</a>
+        </div>
     </section>
 </div>
