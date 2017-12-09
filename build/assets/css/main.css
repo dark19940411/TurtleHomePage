@@ -82,7 +82,7 @@ ol li, ul li {
 }
 
 ::selection {
-    background: #E6D933; }
+    background: lightgray; }
 
 ::-moz-selection {
     background: #E6D933; }

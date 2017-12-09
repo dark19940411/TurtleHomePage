@@ -25,10 +25,11 @@ function DataReader() {
                     metadata = transformer.transform(metadata);
 
                     //将date转换成可读性字符串
-                    var date = new Date(metadata.date);
-                    var dateStr = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay()  + '  '
-                        + date.getHours() + ': ' + date.getMinutes();
-                    metadata.date = dateStr;
+                    // var date = new Date(metadata.date);
+                    // var dateStr = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay()  + '  '
+                    //     + date.getHours() + ': ' + date.getMinutes();
+                    // metadata.date = dateStr;
+                    metadata.date = String(metadata.date).replace(' GMT+0800 (CST)', '');
 
                     eachFileContentCallBack(fullpath, metadata, idx, articlesChain);
                 }
