@@ -19,7 +19,7 @@
                     <%= latterItem.brev%>
                 </p>
                 <time class="content-stamp"><%= latterItem.date%></time>
-                <a class="round-border-btn" href="<%= articleAddress %>">继续阅读</a>
+                <a href="<%= articleAddress %>" title="<%= '跳转至' + latterItem.title%>" class="round-border-btn">继续阅读</a>
             </div>
         <% } %>
         <% if (typeof formerItem !== 'undefined' && formerItem !== null) { %>
@@ -36,7 +36,7 @@
                     <%= formerItem.brev%>
                 </p>
                 <time class="content-stamp"><%= formerItem.date%></time>
-                <a class="round-border-btn" href="<% articleAddress %>">继续阅读</a>
+                <a href="<%= articleAddress %>" title="<%= '跳转至' + formerItem.title;%>" class="round-border-btn">继续阅读</a>
             </div>
         <% } %>
     </section>

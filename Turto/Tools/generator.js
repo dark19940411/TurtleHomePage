@@ -16,13 +16,13 @@ function Generator() {
         metadata.filepath = null;       //先把之前暂时存在对象内markdown文件的路径清除了
 
         var viewmodel = new BlogPostPageViewModel();
+        var renderedbpContent = renderBlogpostContent(metadata);
         viewmodel.formMainPanelRenderData(function (err, mpdata) {
             if (err) {
                 return console.error(err);
             }
 
             var renderedMainPanel = renderMainPanel(mpdata);
-            var renderedbpContent = renderBlogpostContent(metadata);
             metadata.content = renderedbpContent;
             viewmodel.formMainStructureRenderData(metadata, renderedMainPanel, function (err, msdata) {
                 if (err) {
@@ -46,8 +46,6 @@ function Generator() {
     }
 
     function renderBlogpostContent(regularizedData) {
-        console.log(regularizedData.formerItem);
-        console.log(regularizedData.latterItem);
         var viewmodel = new BlogPostPageViewModel();
         var articleContentRenderData = viewmodel.formPageContentRenderData(regularizedData);
         var bpcontentTempPath = __buildingTemplateDir.stringByAppendingPathComponent('blogpost_content.ejs');
