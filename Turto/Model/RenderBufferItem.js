@@ -1,4 +1,4 @@
-function ArticleRenderBufferPoolItem(options) {
+function RenderBufferItem(options) {
     this.title = options.title;
     this.date = option.date;
     this.brev = options.brev;//摘要
@@ -7,4 +7,4 @@ function ArticleRenderBufferPoolItem(options) {
     this.didRender = false;
 }
 
-module.exports = ArticleRenderBufferPoolItem;
+module.exports = RenderBufferItem;

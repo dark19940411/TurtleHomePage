@@ -1,5 +1,6 @@
-function ArticleRenderBufferPool() {
-    var pool = [];
+function RenderBufferPool() {
+    var bloglistBufferPool = [];
+    var articleBufferPool = [];
     this.push = function (item) {
         if (pool.length == 0) {
             pool.push(item);
@@ -18,5 +19,6 @@ function ArticleRenderBufferPool() {
         }
     }
 
-
 }
+
+module.exports = new RenderBufferPool();
