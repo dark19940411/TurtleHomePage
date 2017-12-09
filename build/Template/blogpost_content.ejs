@@ -1,38 +1,38 @@
 <div class="content-inner-wraper">
     <header>
-        <time class="content-stamp"><%= dateDescription%></time>
+        <time class="content-stamp"><%= date%></time>
         <h1><%= title%></h1>
     </header>
     <%- articleContent%>
     <section class="content-readmore">
         <div class="content-readmore-item">
-            <% var articleAddress = '../' + latterArticle.title + '/' + latterArticle.title + '.html'%>
+            <% var articleAddress = '../' + latterItem.title + '/' + latterItem.title + '.html'%>
             <span class="content-readmore-item-dim">最近的文章</span>
             <h2 class="post-title">
-                <a href="<%= articleAddress %>" title="<%= '跳转至' + latterArticle.title%>">
-                    <%= latterArticle.title%>
+                <a href="<%= articleAddress %>" title="<%= '跳转至' + latterItem.title%>">
+                    <%= latterItem.title%>
                 </a>
             </h2>
 
             <p class="breviary">
-                <%= latterArticle.brev%>
+                <%= latterItem.brev%>
             </p>
-            <time class="content-stamp"><%= latterArticle.dateDescription%></time>
+            <time class="content-stamp"><%= latterItem.date%></time>
             <a class="round-border-btn" href="<%= articleAddress %>">继续阅读</a>
         </div>
         <div class="content-readmore-item">
-            <% var articleAddress = '../' + formerArticle.title + '/' + formerArticle.title + '.html' %>
+            <% var articleAddress = '../' + formerItem.title + '/' + formerItem.title + '.html' %>
             <span class="content-readmore-item-dim">更早的文章</span>
             <h2 class="post-title">
-                <a href="<%= articleAddress%>" title="<%= '跳转至' + formerArticle.title;%>">
-                    <%= formerArticle.title%>
+                <a href="<%= articleAddress%>" title="<%= '跳转至' + formerItem.title;%>">
+                    <%= formerItem.title%>
                 </a>
             </h2>
 
             <p class="breviary">
-                <%= formerArticle.brev%>
+                <%= formerItem.brev%>
             </p>
-            <time class="content-stamp"><%= formerArticle.dateDescription%></time>
+            <time class="content-stamp"><%= formerItem.date%></time>
             <a class="round-border-btn" href="<% articleAddress %>">继续阅读</a>
         </div>
     </section>

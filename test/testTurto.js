@@ -295,7 +295,7 @@ describe('ArticleChainBuilder'.blue, function () {
 });
 
 describe('RenderBufferPool'.blue, function () {
-    var pool = require('../Turto/Tools/RenderBufferPool');
+    var pool = require('../Turto/Tools/render_buffer_pool');
     var RenderBufferItem = require('../Turto/Model/RenderBufferItem');
     var item1 = new RenderBufferItem({
         title: '1',

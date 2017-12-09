@@ -23,7 +23,14 @@ function DataReader() {
                     var metadata = new RegularizedArticleMetaData(grayMatter(data.toString()));
                     var transformer = new MarkdownFileTransformer();
                     metadata = transformer.transform(metadata);
-                    eachFileContentCallBack(fullpath, metadata);
+
+                    //将date转换成可读性字符串
+                    var date = new Date(metadata.date);
+                    var dateStr = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay()  + '  '
+                        + date.getHours() + ': ' + date.getMinutes();
+                    metadata.date = dateStr;
+
+                    eachFileContentCallBack(fullpath, metadata, idx, articlesChain);
                 }
                 catch (e) {
                     console.error(e);

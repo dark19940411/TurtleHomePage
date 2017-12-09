@@ -13,7 +13,7 @@ function BlogPostPageViewModel() {
         var data = {
             articleContent: regularizedArticleMetaData.content,
             title: regularizedArticleMetaData.title,
-            dateDescription: dateStr
+            date: dateStr
         };
         return data;
     };

@@ -9,6 +9,8 @@ function Generator() {
     var ejs = require('ejs');
     var fs = require('fs-extra');
     var path = require('path');
+    var renderbufferpool = require('./render_buffer_pool');
+    var RenderBufferItem = require('../Model/RenderBufferItem');
 
     function renderBlogPostPage(mdfilepath, metadata) {
         var viewmodel = new BlogPostPageViewModel();
@@ -82,8 +84,27 @@ function Generator() {
 
     this.generate = function () {
         var datareader = new DataReader();
-        datareader.readIn(function(mdfilepath, metadata) {
-            renderBlogPostPage(mdfilepath, metadata);
+        datareader.readIn(function(mdfilepath, metadata, idx) {
+            var renderBufferItem = new RenderBufferItem({
+                title: metadata.title,
+                date: metadata.date,
+                brev: metadata.brev
+            });
+
+
+            //临时把markdown转换出的html塞到renderBufferItem里，方便渲染。由于内存消耗大，所以渲染完成后就应该不再引用
+            renderBufferItem.content = metadata.content;
+            renderbufferpool.articlePoolPush(renderBufferItem);
+
+            var shouldRenderItem = renderbufferpool.shouldRenderArticleItem();
+            if (shouldRenderItem) {
+                //TODO: 渲染已有足够信息的文章页
+                renderBlogPostPage(mdfilepath, shouldRenderItem);
+            }
+
+            if (idx === articlesChain.length - 1) {
+                //TODO: 如果已经读取到了最后一篇文章，就应该把最后一篇文章也渲染了
+            }
         });
     }
 }
