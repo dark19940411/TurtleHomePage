@@ -7,13 +7,12 @@ function BlogPostPageViewModel() {
 
     // 生成页面右侧内容(文章以及标题以及导航按钮等)的渲染数据
     this.formPageContentRenderData = function (regularizedArticleMetaData) {
-        var date = new Date(regularizedArticleMetaData.date);
-        var dateStr = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay()  + '  '
-            + date.getHours() + ': ' + date.getMinutes();
         var data = {
             articleContent: regularizedArticleMetaData.content,
             title: regularizedArticleMetaData.title,
-            date: dateStr
+            date: regularizedArticleMetaData.date,
+            formerItem: regularizedArticleMetaData.formerItem,
+            latterItem: regularizedArticleMetaData.latterItem
         };
         return data;
     };

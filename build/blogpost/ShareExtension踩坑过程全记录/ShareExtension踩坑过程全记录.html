@@ -46,7 +46,7 @@
 <div class="content-container">
     <div class="content-inner-wraper">
     <header>
-        <div class="content-stamp">2017-3-5  20: 7</div>
+        <time class="content-stamp">2017-3-5  20: 7</time>
         <h1>ShareExtension踩坑过程全记录</h1>
     </header>
     <h2 id="-">前言</h2>
@@ -87,7 +87,40 @@
 <p>以上的内容就是我在开发ShareExtension过程中遇到的坑。</p>
 
     <section class="content-readmore">
+        
+            <div class="content-readmore-item">
+                
+                <span class="content-readmore-item-dim">最近的文章</span>
+                <h2 class="post-title">
+                    <a href="../如何在category里创建一个weak属性？/如何在category里创建一个weak属性？.html" title="跳转至如何在category里创建一个weak属性？">
+                        如何在category里创建一个weak属性？
+                    </a>
+                </h2>
 
+                <p class="breviary">
+                    最近在实现一个需求，为了使代码看起来更干净整洁，我给CALayer写了一个category，里面有一个animationDelegate的weak属性，由于layer的释放时间要比animationDelegate晚，所以animationDelegate得有在内存回收时自动置nil的的功能。然而，用过category创建属性的我们都知道，category创建的属性的setter和getter都只能是动态生成的(@dynamic)的，并且在category里我们不能添加ivar，所以只能通过ru……
+                </p>
+                <time class="content-stamp">2017-3-1  17: 24</time>
+                <a class="round-border-btn" href="../如何在category里创建一个weak属性？/如何在category里创建一个weak属性？.html">继续阅读</a>
+            </div>
+        
+        
+            <div class="content-readmore-item">
+                
+                <span class="content-readmore-item-dim">更早的文章</span>
+                <h2 class="post-title">
+                    <a href="../最近非常火的动画库——Lottie源码解读/最近非常火的动画库——Lottie源码解读.html" title="跳转至最近非常火的动画库——Lottie源码解读">
+                        最近非常火的动画库——Lottie源码解读
+                    </a>
+                </h2>
+
+                <p class="breviary">
+                    Yep，finally，eventually，迎来了我的第一篇源码解读类的文章。相比之前粗略看过的ASDK，Lottie可谓是对开发者来说十分之不友好——因为几乎没有注释，本文作为自己的学习记录，也给大家参考。Lottie的官方Demo的一开始是一个很酷炫的header，以及一个只有三行的tableView：从每一行里点进去就发现第二个是一个打字相关的动画（显然作者把A-Z的字母显示都用AfterEffects做了一套动画用在了这里），第三行则是一个页面切换的动画。第一行里则是一个让你浏览整个d……
+                </p>
+                <time class="content-stamp">2017-1-1  1: 39</time>
+                <a class="round-border-btn" href="">继续阅读</a>
+            </div>
+        
     </section>
 </div>
 </div>
