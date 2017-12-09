@@ -293,3 +293,55 @@ describe('ArticleChainBuilder'.blue, function () {
         });
     });
 });
+
+describe('RenderBufferPool'.blue, function () {
+    var pool = require('../Turto/Tools/RenderBufferPool');
+    var RenderBufferItem = require('../Turto/Model/RenderBufferItem');
+    describe('#articlePoolPush', function () {
+        it('should push render buffer item into articles pool properly', function () {
+            var item1 = new RenderBufferItem({
+                title: '1',
+                date: 1475071893000,
+                brev: 'testbrev'
+            });
+
+            var item2 = new RenderBufferItem({
+                title: '2',
+                date: 1477050518000,
+                brev: 'testbrev'
+            });
+
+            var item3 = new RenderBufferItem({
+                title: '3',
+                date: 1481111459000,
+                brev: 'testbrev'
+            });
+
+            var item4 = new RenderBufferItem({
+                title: '4',
+                date: 1488130799000,
+                brev: 'testbrev'
+            });
+
+            assert(pool.shouldRenderArticleItem() === null, 'empty pool, no renderable article item'.red);
+            pool.articlePoolPush(item1);
+            assert(pool.shouldRenderArticleItem() === null, pool.articleBufferPool.length + 'object in pool, no renderable article item'.red);
+            pool.articlePoolPush(item2);
+            assert(pool.articleBufferPool.length === 2, 'pool.articleBufferPool.length === 2');
+            assert(pool.shouldRenderArticleItem() === item1, 'pool.shouldRenderArticleItem() === item1'.red);
+            assert(pool.shouldRenderArticleItem().latterItem === item2, 'pool.shouldRenderArticleItem().latterItem === item2'.red);
+            pool.articlePoolPush(item3);
+            assert(pool.articleBufferPool.length === 3, 'third push: pool.articleBufferPool.length === 3'.red);
+            assert(pool.shouldRenderArticleItem() === item2, 'pool.shouldRenderArticleItem() === item2'.red);
+            assert(pool.shouldRenderArticleItem().formerItem === item1, 'pool.shouldRenderArticleItem().formerItem === item1'.red);
+            assert(pool.shouldRenderArticleItem().latterItem === item3, 'pool.shouldRenderArticleItem().latterItem === item3'.red);
+            pool.articlePoolPush(item4);
+            assert(pool.articleBufferPool.length === 3, 'fourth push: pool.articleBufferPool.length === 3'.red);
+            assert(pool.shouldRenderArticleItem() === item3, 'pool.shouldRenderArticleItem() === item3'.red);
+            assert(pool.shouldRenderArticleItem().formerItem === item2, 'pool.shouldRenderArticleItem().formerItem === item2'.red);
+            assert(pool.shouldRenderArticleItem().latterItem === item4, 'pool.shouldRenderArticleItem().latterItem === item4'.red);
+            assert(pool.articleBufferPool[0].formerItem === null, 'pool.articleBufferPool[0].formerItem === null');
+
+        });
+    });
+});
