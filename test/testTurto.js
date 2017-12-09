@@ -297,32 +297,31 @@ describe('ArticleChainBuilder'.blue, function () {
 describe('RenderBufferPool'.blue, function () {
     var pool = require('../Turto/Tools/RenderBufferPool');
     var RenderBufferItem = require('../Turto/Model/RenderBufferItem');
+    var item1 = new RenderBufferItem({
+        title: '1',
+        date: 1475071893000,
+        brev: 'testbrev'
+    });
+
+    var item2 = new RenderBufferItem({
+        title: '2',
+        date: 1477050518000,
+        brev: 'testbrev'
+    });
+
+    var item3 = new RenderBufferItem({
+        title: '3',
+        date: 1481111459000,
+        brev: 'testbrev'
+    });
+
+    var item4 = new RenderBufferItem({
+        title: '4',
+        date: 1488130799000,
+        brev: 'testbrev'
+    });
     describe('#articlePoolPush', function () {
         it('should push render buffer item into articles pool properly', function () {
-            var item1 = new RenderBufferItem({
-                title: '1',
-                date: 1475071893000,
-                brev: 'testbrev'
-            });
-
-            var item2 = new RenderBufferItem({
-                title: '2',
-                date: 1477050518000,
-                brev: 'testbrev'
-            });
-
-            var item3 = new RenderBufferItem({
-                title: '3',
-                date: 1481111459000,
-                brev: 'testbrev'
-            });
-
-            var item4 = new RenderBufferItem({
-                title: '4',
-                date: 1488130799000,
-                brev: 'testbrev'
-            });
-
             assert(pool.shouldRenderArticleItem() === null, 'empty pool, no renderable article item'.red);
             pool.articlePoolPush(item1);
             assert(pool.shouldRenderArticleItem() === null, pool.articleBufferPool.length + 'object in pool, no renderable article item'.red);
@@ -342,6 +341,32 @@ describe('RenderBufferPool'.blue, function () {
             assert(pool.shouldRenderArticleItem().latterItem === item4, 'pool.shouldRenderArticleItem().latterItem === item4'.red);
             assert(pool.articleBufferPool[0].formerItem === null, 'pool.articleBufferPool[0].formerItem === null');
 
+        });
+    });
+
+    describe('#clearArticleBufferPool', function () {
+        it('should empty the article buffer pool', function () {
+            pool.articlePoolPush(item1);
+            pool.clearArticleBufferPool();
+            assert(pool.articleBufferPool.length === 0);
+
+            pool.articlePoolPush(item1);
+            pool.articlePoolPush(item2);
+            pool.clearArticleBufferPool();
+            assert(pool.articleBufferPool.length === 0);
+
+            pool.articlePoolPush(item1);
+            pool.articlePoolPush(item2);
+            pool.articlePoolPush(item3);
+            pool.clearArticleBufferPool();
+            assert(pool.articleBufferPool.length === 0);
+
+            pool.articlePoolPush(item1);
+            pool.articlePoolPush(item2);
+            pool.articlePoolPush(item3);
+            pool.articlePoolPush(item4);
+            pool.clearArticleBufferPool();
+            assert(pool.articleBufferPool.length === 0);
         });
     });
 });

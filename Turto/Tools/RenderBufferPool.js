@@ -27,7 +27,7 @@ function RenderBufferPool() {
         else {
             return null;
         }
-    }
+    };
 
     this.shouldRenderArticleItem = function () {
         if (self.articleBufferPool.length > 1) {
@@ -36,7 +36,18 @@ function RenderBufferPool() {
         else {
             return null;
         }
-    }
+    };
+
+    this.clearArticleBufferPool = function () {
+        self.articleBufferPool.forEach(function (value, idx) {
+            value.formerItem = null;
+            value.latterItem = null;
+
+            if (idx === self.articleBufferPool.length - 1) {
+                self.articleBufferPool.splice(0, self.articleBufferPool.length);
+            }
+        });
+    };
 }
 
 module.exports = new RenderBufferPool();
