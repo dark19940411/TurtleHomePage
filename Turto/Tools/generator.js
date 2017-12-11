@@ -107,7 +107,8 @@ function Generator() {
         var renderedBlogsListContent = renderedBlogsListContent(items, pageNum);
         var metadata = {
             title: 'Turtle\'s Burrow',
-            content: renderedBlogsListContent
+            content: renderedBlogsListContent,
+            pageNum: pageNum
         };
 
         viewmodel.formMainStructureRenderData(metadata, renderedMainPanel, function (err, msdata) {
@@ -115,8 +116,12 @@ function Generator() {
                 return console.error(err);
             }
             var renderedMainStructure = renderMainStructure(msdata);
-            
+
         });
+    }
+
+    function writeBlogsListPageToDisk(mscontent, msdata) {
+
     }
 
     function renderBlogsListContent(items, pageNum) {
