@@ -1,7 +1,7 @@
 function BlogsListPageViewModel() {
 
     // 生成渲染完整的博客列表页面所需要的数据
-    this.formMainStructureRenderData = function (renderBufItem, mainPanelContent, callBack) {
+    this.formMainStructureRenderData = function (metadata, mainPanelContent, callBack) {
         var filerefpath = __buildingTemplateDir.stringByAppendingPathComponent('blogs_list_fileref');
         fs.readFile(filerefpath, function (err, data) {
             if (err) {
@@ -11,9 +11,9 @@ function BlogsListPageViewModel() {
 
             var msdata = new MSData({
                 fileref: data.toString(),
-                title: renderBufItem.title,
+                title: metadata.title,
                 mainPanel: mainPanelContent,
-                generatedContent: renderBufItem.content
+                generatedContent: metadata.content
             });
 
             callBack(null, msdata);

@@ -6,6 +6,7 @@ require('./utilities');
 function Generator() {
     var DataReader = require('./../MarkdownFileProcess/datareader');
     var BlogPostPageViewModel = require('../ViewModel/BlogPostPageViewModel');
+    var BlogListPageViewModel = require('../ViewModel/BlogsListPageViewModel');
     var ejs = require('ejs');
     var fs = require('fs-extra');
     var path = require('path');
@@ -86,11 +87,7 @@ function Generator() {
         });
     }
 
-    function startRenderingBlogPostPageProcess(mdfilepath, metadata, idx) {
-        //临时把markdown转换出的html塞到renderBufferItem里，方便渲染。由于内存消耗大，所以渲染完成后就应该不再引用
-        renderBufferItem.content = metadata.content;
-        //把对应的markdown文件的path暂存到renderBufferItem里，方便后续移动对应的图片目录，不过这个字符串，后续可清可不清
-        renderBufferItem.filepath = mdfilepath;
+    function startRenderingBlogPostPageProcess(mdfilepath, renderBufferItem, idx) {
         renderbufferpool.articlePoolPush(renderBufferItem);
 
         var shouldRenderItem = renderbufferpool.shouldRenderArticleItem();
@@ -105,8 +102,32 @@ function Generator() {
         }
     }
 
-    function startRenderingBlogsListPageProcess(metadata) {
+    function renderBlogsListPage(items, pageNum) {
+        var viewmodel = new BlogListPageViewModel();
+        var renderedBlogsListContent = renderedBlogsListContent(items, pageNum);
+        var metadata = {
+            title: 'Turtle\'s Burrow',
+            content: renderedBlogsListContent
+        };
 
+        viewmodel.formMainStructureRenderData(metadata, renderedMainPanel, function (err, msdata) {
+            if (err) {
+                return console.error(err);
+            }
+            var renderedMainStructure = renderMainStructure(msdata);
+            
+        });
+    }
+
+    function renderBlogsListContent(items, pageNum) {
+        var blogsListTmplPath = __buildingTemplateDir.stringByAppendingPathComponent('blogs_list.ejs');
+        var tmplStr = fs.readFileSync(blogsListTmplPath, { encoding: 'utf8' });
+        return ejs.render(tmplStr, { renderItems: items });
+    }
+
+    function startRenderingBlogsListPageProcess(renderBufferItem) {
+        renderbufferpool.evem.on(renderbufferpool.blogsListDataPreparedEventName, renderBlogsListPage);
+        renderbufferpool.bloglistPoolPush(renderBufferItem);
     }
 
     this.generate = function () {
@@ -125,8 +146,13 @@ function Generator() {
                     brev: metadata.brev
                 });
 
+                //临时把markdown转换出的html塞到renderBufferItem里，方便渲染。由于内存消耗大，所以渲染完成后就应该不再引用
+                renderBufferItem.content = metadata.content;
+                //把对应的markdown文件的path暂存到renderBufferItem里，方便后续移动对应的图片目录，不过这个字符串，后续可清可不清
+                renderBufferItem.filepath = mdfilepath;
 
-                startRenderingBlogPostPageProcess(mdfilepath, metadata, idx);
+                startRenderingBlogPostPageProcess(mdfilepath, renderBufferItem, idx);
+                startRenderingBlogsListPageProcess(renderBufferItem);
             });
 
         });
