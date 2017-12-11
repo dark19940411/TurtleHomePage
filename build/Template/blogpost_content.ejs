@@ -1,43 +1,41 @@
-<div class="content-inner-wraper">
-    <header>
-        <time class="content-stamp"><%= date%></time>
-        <h1><%= title%></h1>
-    </header>
-    <%- articleContent%>
-    <section class="content-readmore">
-        <% if (typeof latterItem !== 'undefined' && latterItem !== null) { %>
-            <div class="content-readmore-item">
-                <% var articleAddress = '../' + latterItem.title + '/' + latterItem.title + '.html'%>
-                <span class="content-readmore-item-dim">最近的文章</span>
-                <h2 class="post-title">
-                    <a href="<%= articleAddress %>" title="<%= '跳转至' + latterItem.title%>">
-                        <%= latterItem.title%>
-                    </a>
-                </h2>
+<header>
+    <time class="content-stamp"><%= date%></time>
+    <h1><%= title%></h1>
+</header>
+<%- articleContent%>
+<section class="content-readmore">
+    <% if (typeof latterItem !== 'undefined' && latterItem !== null) { %>
+        <div class="content-readmore-item">
+            <% var articleAddress = '../' + latterItem.title + '/' + latterItem.title + '.html'%>
+            <span class="content-readmore-item-dim">最近的文章</span>
+            <h2 class="post-title">
+                <a href="<%= articleAddress %>" title="<%= '跳转至' + latterItem.title%>">
+                    <%= latterItem.title%>
+                </a>
+            </h2>
 
-                <p class="breviary">
-                    <%= latterItem.brev%>
-                </p>
-                <time class="content-stamp"><%= latterItem.date%></time>
-                <a href="<%= articleAddress %>" title="<%= '跳转至' + latterItem.title%>" class="round-border-btn">继续阅读</a>
-            </div>
-        <% } %>
-        <% if (typeof formerItem !== 'undefined' && formerItem !== null) { %>
-            <div class="content-readmore-item">
-                <% var articleAddress = '../' + formerItem.title + '/' + formerItem.title + '.html' %>
-                <span class="content-readmore-item-dim">更早的文章</span>
-                <h2 class="post-title">
-                    <a href="<%= articleAddress%>" title="<%= '跳转至' + formerItem.title;%>">
-                        <%= formerItem.title%>
-                    </a>
-                </h2>
+            <p class="breviary">
+                <%= latterItem.brev%>
+            </p>
+            <time class="content-stamp"><%= latterItem.date%></time>
+            <a href="<%= articleAddress %>" title="<%= '跳转至' + latterItem.title%>" class="round-border-btn">继续阅读</a>
+        </div>
+    <% } %>
+    <% if (typeof formerItem !== 'undefined' && formerItem !== null) { %>
+        <div class="content-readmore-item">
+            <% var articleAddress = '../' + formerItem.title + '/' + formerItem.title + '.html' %>
+            <span class="content-readmore-item-dim">更早的文章</span>
+            <h2 class="post-title">
+                <a href="<%= articleAddress%>" title="<%= '跳转至' + formerItem.title;%>">
+                    <%= formerItem.title%>
+                </a>
+            </h2>
 
-                <p class="breviary">
-                    <%= formerItem.brev%>
-                </p>
-                <time class="content-stamp"><%= formerItem.date%></time>
-                <a href="<%= articleAddress %>" title="<%= '跳转至' + formerItem.title;%>" class="round-border-btn">继续阅读</a>
-            </div>
-        <% } %>
-    </section>
-</div>
+            <p class="breviary">
+                <%= formerItem.brev%>
+            </p>
+            <time class="content-stamp"><%= formerItem.date%></time>
+            <a href="<%= articleAddress %>" title="<%= '跳转至' + formerItem.title;%>" class="round-border-btn">继续阅读</a>
+        </div>
+    <% } %>
+</section>

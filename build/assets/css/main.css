@@ -184,6 +184,17 @@ ol li, ul li {
 }
 
 /* 发布列表内容区域 */
+.post-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: left;
+}
+
+.post-list li {
+    margin-bottom: 2.2em;
+}
+
 .post-title {
     margin-top: 0;
     margin-bottom: .2em;
@@ -193,6 +204,19 @@ ol li, ul li {
 
 .post-title a {
     color: #333333;
+}
+
+.post-list__meta {
+    display: block;
+    margin: .7em 0 0 0;
+    font-size: .9em;
+    color: #c7c7c7;
+}
+
+.post-list__divider {
+    width: 30%;
+    margin: 2.2em 0 2.1em 0;
+    border-top: 1px solid #DDDDDD;
 }
 
 .breviary {
