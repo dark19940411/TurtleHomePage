@@ -1,5 +1,6 @@
 function BlogsListPageViewModel() {
-
+    var fs = require('fs');
+    var MSData = require('../Model/MainStructureData');
     // 生成渲染完整的博客列表页面所需要的数据
     this.formMainStructureRenderData = function (metadata, mainPanelContent, callBack) {
         var filerefpath = __buildingTemplateDir.stringByAppendingPathComponent('blogs_list_fileref');

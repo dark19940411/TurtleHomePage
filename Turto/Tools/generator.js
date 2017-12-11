@@ -104,7 +104,7 @@ function Generator() {
 
     function renderBlogsListPage(items, pageNum) {
         var viewmodel = new BlogListPageViewModel();
-        var renderedBlogsListContent = renderedBlogsListContent(items, pageNum);
+        var renderedBlogsListContent = renderBlogsListContent(items, pageNum);
         var metadata = {
             title: 'Turtle\'s Burrow',
             content: renderedBlogsListContent,
@@ -116,18 +116,35 @@ function Generator() {
                 return console.error(err);
             }
             var renderedMainStructure = renderMainStructure(msdata);
-
+            writeBlogsListPageToDisk(renderedMainStructure, msdata);
         });
     }
 
-    function writeBlogsListPageToDisk(mscontent, msdata) {
-
-    }
 
     function renderBlogsListContent(items, pageNum) {
         var blogsListTmplPath = __buildingTemplateDir.stringByAppendingPathComponent('blogs_list.ejs');
         var tmplStr = fs.readFileSync(blogsListTmplPath, { encoding: 'utf8' });
         return ejs.render(tmplStr, { renderItems: items });
+    }
+
+    function writeBlogsListPageToDisk(mscontent, msdata) {
+        var pagePath;
+        if (msdata.pageNum === 1) {
+            pagePath = __builddir.stringByAppendingPathComponent('index.html');
+        }
+        else {
+            pagePath = __builddir.stringByAppendingPathComponent('bloglistpages')
+                .stringByAppendingPathComponent(String(msdata.pageNum))
+                .stringByAppendingPathComponent('index.html');
+        }
+
+        var pagePathFolder = path.dirname(pagePath);
+        fs.ensureDir(pagePathFolder, function (err) {
+            if (err) {
+                return console.error(err);
+            }
+            fs.writeFile(pagePath, mscontent);
+        });
     }
 
     function startRenderingBlogsListPageProcess(renderBufferItem) {
