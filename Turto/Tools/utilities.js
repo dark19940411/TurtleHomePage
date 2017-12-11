@@ -47,3 +47,4 @@ global.__buildingTemplateDir = __builddir.stringByAppendingPathComponent('Templa
 global.__postdir = path.resolve(__dirname, '../../Posts');
 
 global.__distdir = path.resolve(__dirname, '../../dist');
+global.__blogsPerPage = 10;

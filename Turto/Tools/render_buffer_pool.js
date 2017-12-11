@@ -1,7 +1,16 @@
+require('./utilities');
+
 function RenderBufferPool() {
     var self = this;
     self.bloglistBufferPool = [];
     self.articleBufferPool = [];
+    self.blogsListDataPreparedEventName = 'blogsListDataPreparedEvent';
+
+    var EventEmitter = require('events').EventEmitter;
+    var evem = new EventEmitter();
+    var blogslistPagesCount = Math.ceil(articlesChain.length / __blogsPerPage);
+    var currentGeneratedBlogListIndex = 0;
+
     this.articlePoolPush = function (item) {
         if (self.articleBufferPool.length == 0) {
             self.articleBufferPool.push(item);
@@ -17,15 +26,6 @@ function RenderBufferPool() {
             self.articleBufferPool[0].latterItem = null;
             self.articleBufferPool[1].formerItem = null;
             self.articleBufferPool.splice(0, 1);
-        }
-    };
-
-    this.lastArticleItem = function () {
-        if (self.articleBufferPool.length > 0) {
-            return self.articleBufferPool[self.articleBufferPool.length - 1];
-        }
-        else {
-            return null;
         }
     };
 
@@ -47,6 +47,23 @@ function RenderBufferPool() {
                 self.articleBufferPool.splice(0, self.articleBufferPool.length);
             }
         });
+    };
+
+    this.bloglistPoolPush = function (item) {
+        self.bloglistBufferPool.push(item);
+        if(currentGeneratedBlogListIndex === 0) {
+            var lastPageArticleNum = articlesChain.length % __blogsPerPage;
+            if (self.bloglistBufferPool.length === lastPageArticleNum) {
+                evem.emit(self.blogsListDataPreparedEventName, self.bloglistBufferPool, blogslistPagesCount - currentGeneratedBlogListIndex);
+                self.bloglistBufferPool = [];
+            }
+        }
+        else {
+            if (self.bloglistBufferPool.length === __blogsPerPage) {
+                evem.emit(self.blogsListDataPreparedEventName, self.bloglistBufferPool, blogslistPagesCount - currentGeneratedBlogListIndex);
+                self.bloglistBufferPool = [];
+            }
+        }
     };
 }
 
