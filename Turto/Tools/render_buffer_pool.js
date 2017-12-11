@@ -7,7 +7,7 @@ function RenderBufferPool() {
     self.blogsListDataPreparedEventName = 'blogsListDataPreparedEvent';
 
     var EventEmitter = require('events').EventEmitter;
-    var evem = new EventEmitter();
+    self.evem = new EventEmitter();
     var blogslistPagesCount = Math.ceil(articlesChain.length / __blogsPerPage);
     var currentGeneratedBlogListIndex = 0;
 
@@ -54,14 +54,16 @@ function RenderBufferPool() {
         if(currentGeneratedBlogListIndex === 0) {
             var lastPageArticleNum = articlesChain.length % __blogsPerPage;
             if (self.bloglistBufferPool.length === lastPageArticleNum) {
-                evem.emit(self.blogsListDataPreparedEventName, self.bloglistBufferPool, blogslistPagesCount - currentGeneratedBlogListIndex);
+                self.evem.emit(self.blogsListDataPreparedEventName, self.bloglistBufferPool, blogslistPagesCount - currentGeneratedBlogListIndex);
                 self.bloglistBufferPool = [];
+                currentGeneratedBlogListIndex++;
             }
         }
         else {
             if (self.bloglistBufferPool.length === __blogsPerPage) {
-                evem.emit(self.blogsListDataPreparedEventName, self.bloglistBufferPool, blogslistPagesCount - currentGeneratedBlogListIndex);
+                self.evem.emit(self.blogsListDataPreparedEventName, self.bloglistBufferPool, blogslistPagesCount - currentGeneratedBlogListIndex);
                 self.bloglistBufferPool = [];
+                currentGeneratedBlogListIndex++;
             }
         }
     };

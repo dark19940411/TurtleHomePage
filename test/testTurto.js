@@ -295,7 +295,6 @@ describe('ArticleChainBuilder'.blue, function () {
 });
 
 describe('RenderBufferPool'.blue, function () {
-    var pool = require('../Turto/Tools/render_buffer_pool');
     var RenderBufferItem = require('../Turto/Model/RenderBufferItem');
     var item1 = new RenderBufferItem({
         title: '1',
@@ -320,6 +319,12 @@ describe('RenderBufferPool'.blue, function () {
         date: 1488130799000,
         brev: 'testbrev'
     });
+
+    global.articlesChain = [item1, item2, item3, item4, item1, item2, item3, item4];
+    global.__blogsPerPage = 3;
+
+    var pool = require('../Turto/Tools/render_buffer_pool');
+
     describe('#articlePoolPush', function () {
         it('should push render buffer item into articles pool properly', function () {
             assert(pool.shouldRenderArticleItem() === null, 'empty pool, no renderable article item'.red);
@@ -369,4 +374,25 @@ describe('RenderBufferPool'.blue, function () {
             assert(pool.articleBufferPool.length === 0);
         });
     });
+
+    describe('#bloglistPoolPush', function () {
+        it('should push new item into blogs list buffer pool and emit an event at the right time.', function () {
+            pool.evem.on(pool.blogsListDataPreparedEventName, function (renderItems, pageNum) {
+                assert(pageNum <= 3, pageNum + ' === 3');
+                console.log(renderItems);
+                console.log('pageNum: ' + pageNum);
+                if (pageNum === 3) {
+                    assert(renderItems.length === 2, 'page '+ pageNum + ': renderItems.length === 2');
+                }
+                else {
+                    assert(renderItems.length === 3, 'page ' + pageNum + ': renderItems.length === 3');
+                }
+            });
+
+            articlesChain.forEach(function (item, idx) {
+                console.log(idx);
+                pool.bloglistPoolPush(item);
+            });
+        });
+    })
 });
