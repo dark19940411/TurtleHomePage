@@ -86,6 +86,29 @@ function Generator() {
         });
     }
 
+    function startRenderingBlogPostPageProcess(mdfilepath, metadata, idx) {
+        //临时把markdown转换出的html塞到renderBufferItem里，方便渲染。由于内存消耗大，所以渲染完成后就应该不再引用
+        renderBufferItem.content = metadata.content;
+        //把对应的markdown文件的path暂存到renderBufferItem里，方便后续移动对应的图片目录，不过这个字符串，后续可清可不清
+        renderBufferItem.filepath = mdfilepath;
+        renderbufferpool.articlePoolPush(renderBufferItem);
+
+        var shouldRenderItem = renderbufferpool.shouldRenderArticleItem();
+        if (shouldRenderItem) {
+            // 渲染已有足够信息的文章页
+            renderBlogPostPage(shouldRenderItem.filepath, shouldRenderItem);
+        }
+
+        if (idx === articlesChain.length - 1) {
+            // 如果已经读取到了最后一篇文章，就应该把最后一篇文章也渲染了
+            renderBlogPostPage(mdfilepath, renderBufferItem);
+        }
+    }
+
+    function startRenderingBlogsListPageProcess(metadata) {
+
+    }
+
     this.generate = function () {
         var viewmodel = new BlogPostPageViewModel();
         viewmodel.formMainPanelRenderData(function (err, mpdata) {
@@ -102,22 +125,8 @@ function Generator() {
                     brev: metadata.brev
                 });
 
-                //临时把markdown转换出的html塞到renderBufferItem里，方便渲染。由于内存消耗大，所以渲染完成后就应该不再引用
-                renderBufferItem.content = metadata.content;
-                //把对应的markdown文件的path暂存到renderBufferItem里，方便后续移动对应的图片目录，不过这个字符串，后续可清可不清
-                renderBufferItem.filepath = mdfilepath;
-                renderbufferpool.articlePoolPush(renderBufferItem);
 
-                var shouldRenderItem = renderbufferpool.shouldRenderArticleItem();
-                if (shouldRenderItem) {
-                    // 渲染已有足够信息的文章页
-                    renderBlogPostPage(shouldRenderItem.filepath, shouldRenderItem);
-                }
-
-                if (idx === articlesChain.length - 1) {
-                    // 如果已经读取到了最后一篇文章，就应该把最后一篇文章也渲染了
-                    renderBlogPostPage(mdfilepath, renderBufferItem);
-                }
+                startRenderingBlogPostPageProcess(mdfilepath, metadata, idx);
             });
 
         });
