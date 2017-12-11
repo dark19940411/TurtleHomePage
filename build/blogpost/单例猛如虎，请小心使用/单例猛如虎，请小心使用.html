@@ -45,11 +45,11 @@
 
 <div class="content-container">
     <div class="content-inner-wraper">
-    <header>
-        <time class="content-stamp">Fri Oct 21 2016 19:48:38</time>
-        <h1>单例猛如虎，请小心使用</h1>
-    </header>
-    <p>单例模式是一个在iOS里面备受使用的设计模式。但是我们在尽情使用它的时候，一定要注意到它其实也有很多隐含的问题。
+        <header>
+    <time class="content-stamp">Fri Oct 21 2016 19:48:38</time>
+    <h1>单例猛如虎，请小心使用</h1>
+</header>
+<p>单例模式是一个在iOS里面备受使用的设计模式。但是我们在尽情使用它的时候，一定要注意到它其实也有很多隐含的问题。
 其实这篇文章也相当于看了objcio上的<a href="https://objccn.io/issue-13-2/">避免滥用单例</a>的一篇总结。
 结合自己最近开发的心得，来讲一下单例的一些利与弊吧。</p>
 <h2 id="-">创建方式</h2>
@@ -158,43 +158,43 @@
 </ol>
 <p>单例模式，也有弊端，一个是因为它的全局特性可能被滥用，二是因为需求变更可能导致当年写的代码再也不适用（这个就是上述的第三点，感觉并不好避免，慎重一点吧！），使用的时候一定要小心为上啊！</p>
 
-    <section class="content-readmore">
-        
-            <div class="content-readmore-item">
-                
-                <span class="content-readmore-item-dim">最近的文章</span>
-                <h2 class="post-title">
-                    <a href="../IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？/IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？.html" title="跳转至IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？">
-                        IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？
-                    </a>
-                </h2>
+<section class="content-readmore">
+    
+        <div class="content-readmore-item">
+            
+            <span class="content-readmore-item-dim">最近的文章</span>
+            <h2 class="post-title">
+                <a href="../IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？/IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？.html" title="跳转至IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？">
+                    IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？
+                </a>
+            </h2>
 
-                <p class="breviary">
-                    这个问题困扰了我许久了，于是今天我决定终结这个疑惑。我谷歌了一下这个问题，于是在stackOverflow上看到了不同的答案，其中一个回答是说WWDC2015中的一个视频“Implementing UI Designs in Interface Builder”里的Apple工程师是这么说的：  And the last option I want to point out is the storage type, which can either be strong or weak. In g……
-                </p>
-                <time class="content-stamp">Wed Dec 07 2016 19:50:59</time>
-                <a href="../IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？/IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？.html" title="跳转至IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？" class="round-border-btn">继续阅读</a>
-            </div>
-        
-        
-            <div class="content-readmore-item">
-                
-                <span class="content-readmore-item-dim">更早的文章</span>
-                <h2 class="post-title">
-                    <a href="../用@package、@public、@private、@protected关键字改写extension里ivar的访问权限/用@package、@public、@private、@protected关键字改写extension里ivar的访问权限.html" title="跳转至用@package、@public、@private、@protected关键字改写extension里ivar的访问权限">
-                        用@package、@public、@private、@protected关键字改写extension里ivar的访问权限
-                    </a>
-                </h2>
+            <p class="breviary">
+                这个问题困扰了我许久了，于是今天我决定终结这个疑惑。我谷歌了一下这个问题，于是在stackOverflow上看到了不同的答案，其中一个回答是说WWDC2015中的一个视频“Implementing UI Designs in Interface Builder”里的Apple工程师是这么说的：  And the last option I want to point out is the storage type, which can either be strong or weak. In g……
+            </p>
+            <time class="content-stamp">Wed Dec 07 2016 19:50:59</time>
+            <a href="../IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？/IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？.html" title="跳转至IBOutlet为什么默认是weak的？到底应该设置成strong还是weak？" class="round-border-btn">继续阅读</a>
+        </div>
+    
+    
+        <div class="content-readmore-item">
+            
+            <span class="content-readmore-item-dim">更早的文章</span>
+            <h2 class="post-title">
+                <a href="../用@package、@public、@private、@protected关键字改写extension里ivar的访问权限/用@package、@public、@private、@protected关键字改写extension里ivar的访问权限.html" title="跳转至用@package、@public、@private、@protected关键字改写extension里ivar的访问权限">
+                    用@package、@public、@private、@protected关键字改写extension里ivar的访问权限
+                </a>
+            </h2>
 
-                <p class="breviary">
-                    最近在看ASDK（AsyncDisplayKit）源码的时候看到了ASDK写了一个ASDisplayNode的extension，里面声明了一堆ivar，然后又在各种ivar之前加入了@package、@protected、@public的字段，出于好奇它的作用，我先去查了一下这四种关键字的意义，如下：  当extension声明在.h或者声明在.m中，里面ivar的作用域是不同的。而如果extension是声明在.m文件里的，无论如何在这个.m以外，都无法获取到这个extension里变量。（……
-                </p>
-                <time class="content-stamp">Wed Sep 28 2016 22:11:33</time>
-                <a href="../用@package、@public、@private、@protected关键字改写extension里ivar的访问权限/用@package、@public、@private、@protected关键字改写extension里ivar的访问权限.html" title="跳转至用@package、@public、@private、@protected关键字改写extension里ivar的访问权限" class="round-border-btn">继续阅读</a>
-            </div>
-        
-    </section>
-</div>
+            <p class="breviary">
+                最近在看ASDK（AsyncDisplayKit）源码的时候看到了ASDK写了一个ASDisplayNode的extension，里面声明了一堆ivar，然后又在各种ivar之前加入了@package、@protected、@public的字段，出于好奇它的作用，我先去查了一下这四种关键字的意义，如下：  当extension声明在.h或者声明在.m中，里面ivar的作用域是不同的。而如果extension是声明在.m文件里的，无论如何在这个.m以外，都无法获取到这个extension里变量。（……
+            </p>
+            <time class="content-stamp">Wed Sep 28 2016 22:11:33</time>
+            <a href="../用@package、@public、@private、@protected关键字改写extension里ivar的访问权限/用@package、@public、@private、@protected关键字改写extension里ivar的访问权限.html" title="跳转至用@package、@public、@private、@protected关键字改写extension里ivar的访问权限" class="round-border-btn">继续阅读</a>
+        </div>
+    
+</section>
+    </div>
 </div>
 </body>
 </html>

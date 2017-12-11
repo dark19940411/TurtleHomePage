@@ -76,7 +76,13 @@ function Generator() {
             if (exist) {
                 fs.copy(articleImgsPath, pageImgsPath);
             }
-            fs.writeFile(pagePath, pagecontent);
+            fs.writeFile(pagePath, pagecontent, function (err) {
+                if (err) { return console.error(err); }
+                if (msdata.title === articlesChain[articlesChain.length - 1].title) {       //这个判断有点糙，如果已渲染完最后一个，就清空缓冲池
+                    renderbufferpool.clearArticleBufferPool();
+                    console.log('Did empty article buffer pool'.green);
+                }
+            });
         });
     }
 
