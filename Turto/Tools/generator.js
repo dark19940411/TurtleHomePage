@@ -16,6 +16,10 @@ function Generator() {
     var self = this;
     var renderedMainPanel;
 
+    function checkIfGeneratingProcessIsCompleted() {
+
+    }
+
     function renderBlogPostPage(mdfilepath, metadata) {
         metadata.filepath = null;       //先把之前暂时存在对象内markdown文件的路径清除了
 

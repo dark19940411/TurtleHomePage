@@ -183,6 +183,27 @@ ol li, ul li {
     color: #ffffff;
 }
 
+.panel-navi-item {
+    padding: 10px 20px;
+    border: 1px solid #FFF;
+    color: #FFF;
+    opacity: .8;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.panel-navi-item:hover {
+    opacity: 1;
+    color: #FFF;
+    border-color: #FFF;
+    text-decoration: none;
+}
+
+
 /* 发布列表内容区域 */
 .post-list {
     margin: 0;
@@ -307,6 +328,10 @@ ol li, ul li {
     }
 
     .panel-social-container {
+        display: none;
+    }
+
+    .panel-navi-item {
         display: none;
     }
 
