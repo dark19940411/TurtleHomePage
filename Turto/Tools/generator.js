@@ -137,13 +137,16 @@ function Generator() {
             pageNum: pageNum
         };
 
-        viewmodel.formMainStructureRenderData(metadata, renderedMainPanel, function (err, msdata) {
-            if (err) {
-                return console.error(err);
-            }
+        viewmodel.formMainPanelRenderData(pageNum, function (err, mpdata) {
+            var mpcontent = renderMainPanel(mpdata);
+            viewmodel.formMainStructureRenderData(metadata, mpcontent, function (err, msdata) {
+                if (err) {
+                    return console.error(err);
+                }
 
-            var renderedMainStructure = renderMainStructure(msdata);
-            writeBlogsListPageToDisk(renderedMainStructure, msdata);
+                var renderedMainStructure = renderMainStructure(msdata);
+                writeBlogsListPageToDisk(renderedMainStructure, msdata);
+            });
         });
     }
 

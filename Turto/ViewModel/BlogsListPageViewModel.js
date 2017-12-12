@@ -2,6 +2,8 @@ require('../Tools/utilities');
 function BlogsListPageViewModel() {
     var fs = require('fs');
     var MSData = require('../Model/MainStructureData');
+    var MPData = require('../Model/MainPanelData');
+    var path = require('path');
     this.formMainPanelRenderData = function (pageNum, callback) {
         var configFilePath = path.resolve(__dirname, '../config.json');
         fs.readFile(configFilePath, function (error, data) {
