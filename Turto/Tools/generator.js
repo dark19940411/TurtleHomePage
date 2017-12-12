@@ -142,13 +142,13 @@ function Generator() {
             if (err) {
                 return console.error(err);
             }
+
             var renderedMainStructure = renderMainStructure(msdata);
             writeBlogsListPageToDisk(renderedMainStructure, msdata);
         });
     }
 
     function startRenderingBlogsListPageProcess(renderBufferItem) {
-        renderbufferpool.evem.on(renderbufferpool.blogsListDataPreparedEventName, renderBlogsListPage);
         renderbufferpool.bloglistPoolPush(renderBufferItem);
     }
 
@@ -159,6 +159,8 @@ function Generator() {
                 console.error(err);
             }
             renderedMainPanel = renderMainPanel(mpdata);    //先生成只渲染一次的主面板
+
+            renderbufferpool.evem.on(renderbufferpool.blogsListDataPreparedEventName, renderBlogsListPage);
 
             var datareader = new DataReader();
             datareader.readIn(function(mdfilepath, metadata, idx) {
