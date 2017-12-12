@@ -46,6 +46,7 @@ function BlogPostPageViewModel() {
             }
             var jsonobj = JSON.parse(data.toString());
             jsonobj.icon = '../../assets/images/' + jsonobj.icon;
+            jsonobj.frontPageAddress = '../../';
             var mpdata = new MPData(jsonobj);
             callback(null, mpdata);
         });

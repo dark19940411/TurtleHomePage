@@ -14,9 +14,11 @@ function BlogsListPageViewModel() {
             var jsonobj = JSON.parse(data.toString());
             if (pageNum === 1) {
                 jsonobj.icon = 'assets/images/' + jsonobj.icon;
+                jsonobj.frontPageAddress = '/';
             }
             else {
                 jsonobj.icon = '../../assets/images/' + jsonobj.icon;
+                jsonobj.frontPageAddress = '../../';
             }
 
             var mpdata = new MPData(jsonobj);
