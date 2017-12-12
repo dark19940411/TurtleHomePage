@@ -130,6 +130,7 @@ function Generator() {
 
     function renderBlogsListPage(items, pageNum) {
         var viewmodel = new BlogListPageViewModel();
+        viewmodel.addAddressToEveryItem(pageNum, items);
         var renderedBlogsListContent = renderBlogsListContent(items, pageNum);
         var metadata = {
             title: 'Turtle\'s Burrow',
