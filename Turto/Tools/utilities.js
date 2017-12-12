@@ -27,16 +27,21 @@ colors.setTheme({
             }
         }
         return false;
-    }
+    };
 }());
 
 (function StringExtension() {
     String.prototype.stringByAppendingPathComponent = function (component) {
         return this + '/' + component;
-    }
+    };
 
     String.prototype.lastPathcomponent = function () {
         return this.replace(path.dirname(String(this)) + '/', '');
+    };
+
+    String.prototype.replaceAll = function (search, replacement) {
+        var target = this;
+        return target.replace(new RegExp(search, 'g'), replacement);
     }
 }());
 
