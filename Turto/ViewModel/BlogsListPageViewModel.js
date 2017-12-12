@@ -20,7 +20,7 @@ function BlogsListPageViewModel() {
 
             callBack(null, msdata);
         });
-    }
+    };
 
     this.addAddressToEveryItem = function (pageNum, items) {
         if (pageNum === 1) {
@@ -31,14 +31,14 @@ function BlogsListPageViewModel() {
             }
         }
         else {
-            for (var i = 0; i < items.length; ++i) {
-                var item = items[i];
+            for (i = 0; i < items.length; ++i) {
+                item = items[i];
                 item.address = '../..'.stringByAppendingPathComponent('blogpost')
                     .stringByAppendingPathComponent(item.title)
                     .stringByAppendingPathComponent(item.title + '.html');
             }
         }
-    }
+    };
 }
 
 module.exports = BlogsListPageViewModel;
