@@ -54,6 +54,7 @@ function RenderBufferPool() {
         if(currentGeneratedBlogListIndex === 0) {
             var lastPageArticleNum = articlesChain.length % __blogsPerPage;
             if (self.bloglistBufferPool.length === lastPageArticleNum) {
+                self.bloglistBufferPool.reverse();
                 self.evem.emit(self.blogsListDataPreparedEventName, self.bloglistBufferPool, blogslistPagesCount - currentGeneratedBlogListIndex);
                 self.bloglistBufferPool = [];
                 currentGeneratedBlogListIndex++;
@@ -61,6 +62,7 @@ function RenderBufferPool() {
         }
         else {
             if (self.bloglistBufferPool.length === __blogsPerPage) {
+                self.bloglistBufferPool.reverse();
                 self.evem.emit(self.blogsListDataPreparedEventName, self.bloglistBufferPool, blogslistPagesCount - currentGeneratedBlogListIndex);
                 self.bloglistBufferPool = [];
                 currentGeneratedBlogListIndex++;
