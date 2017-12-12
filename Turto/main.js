@@ -38,11 +38,26 @@ var buildchainjobfinshed = false;
 }());
 
 function clearjob(callback) {
+    var totalJobsCount = 2;
+    var finishedJobsCount = 0;
     fs.emptyDir(__buildingBlogPostDir, function (err) {
         if (err) {
             return console.error(err);
         }
-        callback();
+        finishedJobsCount++;
+        if (finishedJobsCount === totalJobsCount) {
+            callback();
+        }
+    });
+
+    fs.emptyDir(__builddir.stringByAppendingPathComponent('bloglistpages'), function (err) {
+        if (err) {
+            return console.error(err);
+        }
+        finishedJobsCount++;
+        if (finishedJobsCount === totalJobsCount) {
+            callback();
+        }
     });
     // moveNodeModulesDirToBuild();
 }
