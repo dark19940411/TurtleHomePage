@@ -14,7 +14,7 @@ function BlogsListPageViewModel() {
             var jsonobj = JSON.parse(data.toString());
             if (pageNum === 1) {
                 jsonobj.icon = 'assets/images/' + jsonobj.icon;
-                jsonobj.frontPageAddress = '/';
+                jsonobj.frontPageAddress = '';
             }
             else {
                 jsonobj.icon = '../../assets/images/' + jsonobj.icon;
@@ -38,6 +38,10 @@ function BlogsListPageViewModel() {
             var fileref = data.toString();
             if (metadata.pageNum === 1) {
                 fileref = fileref.replaceAll('\\.\\./\\.\\./', '');
+                var frontPageAddress = ''
+            }
+            else {
+                frontPageAddress = '../../';
             }
 
             var msdata = new MSData({
@@ -45,6 +49,7 @@ function BlogsListPageViewModel() {
                 title: metadata.title,
                 mainPanel: mainPanelContent,
                 generatedContent: metadata.content,
+                frontPageAddress: frontPageAddress
             });
             msdata.pageNum = metadata.pageNum;
             callBack(null, msdata);

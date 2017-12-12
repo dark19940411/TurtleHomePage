@@ -30,6 +30,7 @@ function BlogPostPageViewModel() {
                title: regularizedArticleMetaData.title,
                mainPanel: mainPanelContent,
                generatedContent: regularizedArticleMetaData.content,
+               frontPageAddress: '../../'
            });
 
            callBack(null, msdata);
