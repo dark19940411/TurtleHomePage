@@ -1,3 +1,4 @@
+require('../Tools/utilities');
 function BlogsListPageViewModel() {
     var fs = require('fs');
     var MSData = require('../Model/MainStructureData');
@@ -10,14 +11,18 @@ function BlogsListPageViewModel() {
                 return console.error(err);
             }
 
+            var fileref = data.toString();
+            if (metadata.pageNum === 1) {
+                fileref = fileref.replaceAll('\\.\\./\\.\\./', '');
+            }
+
             var msdata = new MSData({
-                fileref: data.toString(),
+                fileref: fileref,
                 title: metadata.title,
                 mainPanel: mainPanelContent,
                 generatedContent: metadata.content,
-                pageNum: metadata.pageNum
             });
-
+            msdata.pageNum = metadata.pageNum;
             callBack(null, msdata);
         });
     };
