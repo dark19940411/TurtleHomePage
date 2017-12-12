@@ -18,8 +18,7 @@ function Generator() {
         metadata.filepath = null;       //先把之前暂时存在对象内markdown文件的路径清除了
 
         var viewmodel = new BlogPostPageViewModel();
-        var renderedbpContent = renderBlogpostContent(metadata);
-        metadata.content = renderedbpContent;
+        metadata.content = renderBlogpostContent(metadata);
         viewmodel.formMainStructureRenderData(metadata, renderedMainPanel, function (err, msdata) {
             if (err) {
                 return console.error(err);
