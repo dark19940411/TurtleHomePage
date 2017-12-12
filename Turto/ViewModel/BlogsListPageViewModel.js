@@ -14,14 +14,31 @@ function BlogsListPageViewModel() {
                 fileref: data.toString(),
                 title: metadata.title,
                 mainPanel: mainPanelContent,
-                generatedContent: metadata.content
+                generatedContent: metadata.content,
+                pageNum: metadata.pageNum
             });
 
             callBack(null, msdata);
         });
     }
 
-
+    this.addAddressToEveryItem = function (pageNum, items) {
+        if (pageNum === 1) {
+            for (var i = 0; i < items.length; ++i) {
+                var item = items[i];
+                item.address = 'blogpost'.stringByAppendingPathComponent(item.title)
+                    .stringByAppendingPathComponent(item.title + '.html');
+            }
+        }
+        else {
+            for (var i = 0; i < items.length; ++i) {
+                var item = items[i];
+                item.address = '../..'.stringByAppendingPathComponent('blogpost')
+                    .stringByAppendingPathComponent(item.title)
+                    .stringByAppendingPathComponent(item.title + '.html');
+            }
+        }
+    }
 }
 
 module.exports = BlogsListPageViewModel;
