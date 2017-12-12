@@ -2,6 +2,26 @@ require('../Tools/utilities');
 function BlogsListPageViewModel() {
     var fs = require('fs');
     var MSData = require('../Model/MainStructureData');
+    this.formMainPanelRenderData = function (pageNum, callback) {
+        var configFilePath = path.resolve(__dirname, '../config.json');
+        fs.readFile(configFilePath, function (error, data) {
+            if (error) {
+                callback(error);
+                return console.error(error);
+            }
+            var jsonobj = JSON.parse(data.toString());
+            if (pageNum === 1) {
+                jsonobj.icon = 'assets/images/' + jsonobj.icon;
+            }
+            else {
+                jsonobj.icon = '../../assets/images/' + jsonobj.icon;
+            }
+
+            var mpdata = new MPData(jsonobj);
+            callback(null, mpdata);
+        });
+    };
+
     // 生成渲染完整的博客列表页面所需要的数据
     this.formMainStructureRenderData = function (metadata, mainPanelContent, callBack) {
         var filerefpath = __buildingTemplateDir.stringByAppendingPathComponent('blogs_list_fileref');
