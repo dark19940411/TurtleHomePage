@@ -12,6 +12,8 @@ function Generator() {
     var path = require('path');
     var renderbufferpool = require('./render_buffer_pool');
     var RenderBufferItem = require('../Model/RenderBufferItem');
+
+    var self = this;
     var renderedMainPanel;
 
     function renderBlogPostPage(mdfilepath, metadata) {
@@ -79,8 +81,9 @@ function Generator() {
             fs.writeFile(pagePath, pagecontent, function (err) {
                 if (err) { return console.error(err); }
                 if (msdata.title === articlesChain[articlesChain.length - 1].title) {       //这个判断有点糙，如果已渲染完最后一个，就清空缓冲池
-                    renderbufferpool.clearArticleBufferPool();
+                    renderbufferpool.clearArticleBufferPool();      //架构决定了文章内容页的数据需要被清理，而文章列表页会自动清理
                     console.log('Did empty article buffer pool'.green);
+                    //TODO: 判断是否生成完所有页面，如果是，执行self.callback回调，否则没事发生
                 }
             });
         });
@@ -123,7 +126,12 @@ function Generator() {
             if (err) {
                 return console.error(err);
             }
-            fs.writeFile(pagePath, mscontent);
+            fs.writeFile(pagePath, mscontent, function (err) {
+                if (err) {
+                    return console.error(err);
+                }
+                //TODO: 判断是否生成完所有页面，如果是，执行self.callback回调，否则没事发生
+            });
         });
     }
 
@@ -154,7 +162,9 @@ function Generator() {
         renderbufferpool.bloglistPoolPush(renderBufferItem);
     }
 
-    this.generate = function () {
+    this.generate = function(callback) {
+        self.callback = callback;
+
         var viewmodel = new BlogPostPageViewModel();
         viewmodel.formMainPanelRenderData(function (err, mpdata) {
             if (err) {
