@@ -1,17 +1,21 @@
-<ol class="post-list">
-    <% renderItems.forEach(function (item) { %>
-        <li>
-            <h2 class="post-title">
-                <a href="<%= item.address %>" title="<%= '跳转至' + item.title%>">
-                    <%= item.title%>
-                </a>
-            </h2>
-            <p class="breviary"><%= item.brev%></p>
-            <span class="post-list__meta">
-                <time class="content-stamp"><%= item.date%></time>
-                <a href="<%= item.address %>" title="<%= '跳转至' + item.title%>" class="round-border-btn">继续阅读</a>
-            </span>
-            <hr class="post-list__divider">
-        </li>
-    <% }) %>
-</ol>
+<div class="content-container">
+    <div class="content-inner-wraper">
+        <ol class="post-list">
+            <% renderItems.forEach(function (item) { %>
+                <li>
+                    <h2 class="post-title">
+                        <a href="<%= item.address %>" title="<%= '跳转至' + item.title%>">
+                            <%= item.title%>
+                        </a>
+                    </h2>
+                    <p class="breviary"><%= item.brev%></p>
+                    <span class="post-list__meta">
+                        <time class="content-stamp"><%= item.date%></time>
+                        <a href="<%= item.address %>" title="<%= '跳转至' + item.title%>" class="round-border-btn">继续阅读</a>
+                    </span>
+                    <hr class="post-list__divider">
+                </li>
+            <% }) %>
+        </ol>
+    </div>
+</div>
