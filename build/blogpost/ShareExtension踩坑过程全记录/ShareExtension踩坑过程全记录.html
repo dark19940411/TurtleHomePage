@@ -29,6 +29,9 @@
         </span>
 </div>
 
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1271332019'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1271332019%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+<script>document.getElementById('cnzz_stat_icon_1271332019').style.display = 'none';</script>
+
 <header class="main-panel">
     <div class="main-panel-cover d-flex justify-content-center">
         <div class="panel-info-flow-table d-flex align-content-center align-items-center justify-content-center flex-column">
@@ -50,14 +53,13 @@
         </div>
     </div>
 </header>
-
 <div class="content-container">
     <div class="content-inner-wraper">
         <header>
-    <time class="content-stamp">Fri Apr 07 2017 20:07:46</time>
-    <h1>ShareExtension踩坑过程全记录</h1>
-</header>
-<h2 id="-">前言</h2>
+            <time class="content-stamp">Fri Apr 07 2017 20:07:46</time>
+            <h1>ShareExtension踩坑过程全记录</h1>
+        </header>
+        <h2 id="-">前言</h2>
 <p>这是一篇记录踩坑的文章，而不是教程，所以如果你打算用这篇文章开启你ShareExtension世界的大门，那么你来错地方了。但是如果你已经对ShareExtension有所了解，打算开发一个ShareExtension，那这篇文章所提到的内容将有可能对你有所帮助。</p>
 <h2 id="-">第一坑——繁琐的取数据过程</h2>
 <p>假如你写过ShareExtension，那么你知道一段从extension里获取所选文件的过程可能长这样：</p>
@@ -94,51 +96,65 @@
 <p>首先得在extension的<code>info.plist</code>里添加一个<code>LSHasLocalizedDisplayName</code>的键，值填YES(类型是布尔)。完了再创建一个叫<code>InfoPlist.strings</code>（请注意大小写）的多语言文件，里面添加<code>CFBundleDisplayName</code>的键值就可以实现对extension的应用名的国际化。但是正是这么简单的一个过程，却难住了我。创建的多语言文件必须得叫<code>InfoPlist.strings</code>，只要差一个字母<code>CFBundleDisplayName</code>就完全不起作用，大小写对不上号也不行，但是其它的所有多语言键值对都可以被使用，只有应用名的这个键值是必须得再<code>InfoPlist.strings</code>内才能起作用。  </p>
 <p>以上的内容就是我在开发ShareExtension过程中遇到的坑。</p>
 
-<section class="content-readmore">
-    
-        <div class="content-readmore-item">
+        <section class="content-readmore">
             
-            <span class="content-readmore-item-dim">最近的文章</span>
-            <h2 class="post-title">
-                <a href="../如何在category里创建一个weak属性？/如何在category里创建一个weak属性？.html" title="跳转至如何在category里创建一个weak属性？">
-                    如何在category里创建一个weak属性？
-                </a>
-            </h2>
+                <div class="content-readmore-item">
+                    
+                    <span class="content-readmore-item-dim">最近的文章</span>
+                    <h2 class="post-title">
+                        <a href="../如何在category里创建一个weak属性？/如何在category里创建一个weak属性？.html" title="跳转至如何在category里创建一个weak属性？">
+                            如何在category里创建一个weak属性？
+                        </a>
+                    </h2>
 
-            <p class="breviary">
-                最近在实现一个需求，为了使代码看起来更干净整洁，我给CALayer写了一个category，里面有一个animationDelegate的weak属性，由于layer的释放时间要比animationDelegate晚，所以animationDelegate得有在内存回收时自动置nil的的功能。然而，用过category创建属性的我们都知道，category创建的属性的setter和getter都只能是动态生成的(@dynamic)的，并且在category里我们不能添加ivar，所以只能通过ru……
-            </p>
-            <time class="content-stamp">Mon Apr 17 2017 17:24:45</time>
-            <a href="../如何在category里创建一个weak属性？/如何在category里创建一个weak属性？.html" title="跳转至如何在category里创建一个weak属性？" class="round-border-btn">继续阅读</a>
-        </div>
-    
-    
-        <div class="content-readmore-item">
+                    <p class="breviary">
+                        最近在实现一个需求，为了使代码看起来更干净整洁，我给CALayer写了一个category，里面有一个animationDelegate的weak属性，由于layer的释放时间要比animationDelegate晚，所以animationDelegate得有在内存回收时自动置nil的的功能。然而，用过category创建属性的我们都知道，category创建的属性的setter和getter都只能是动态生成的(@dynamic)的，并且在category里我们不能添加ivar，所以只能通过ru……
+                    </p>
+                    <time class="content-stamp">Mon Apr 17 2017 17:24:45</time>
+                    <a href="../如何在category里创建一个weak属性？/如何在category里创建一个weak属性？.html" title="跳转至如何在category里创建一个weak属性？" class="round-border-btn">继续阅读</a>
+                </div>
             
-            <span class="content-readmore-item-dim">更早的文章</span>
-            <h2 class="post-title">
-                <a href="../最近非常火的动画库——Lottie源码解读/最近非常火的动画库——Lottie源码解读.html" title="跳转至最近非常火的动画库——Lottie源码解读">
-                    最近非常火的动画库——Lottie源码解读
-                </a>
-            </h2>
+            
+                <div class="content-readmore-item">
+                    
+                    <span class="content-readmore-item-dim">更早的文章</span>
+                    <h2 class="post-title">
+                        <a href="../最近非常火的动画库——Lottie源码解读/最近非常火的动画库——Lottie源码解读.html" title="跳转至最近非常火的动画库——Lottie源码解读">
+                            最近非常火的动画库——Lottie源码解读
+                        </a>
+                    </h2>
 
-            <p class="breviary">
-                Yep，finally，eventually，迎来了我的第一篇源码解读类的文章。相比之前粗略看过的ASDK，Lottie可谓是对开发者来说十分之不友好——因为几乎没有注释，本文作为自己的学习记录，也给大家参考。Lottie的官方Demo的一开始是一个很酷炫的header，以及一个只有三行的tableView：从每一行里点进去就发现第二个是一个打字相关的动画（显然作者把A-Z的字母显示都用AfterEffects做了一套动画用在了这里），第三行则是一个页面切换的动画。第一行里则是一个让你浏览整个d……
-            </p>
-            <time class="content-stamp">Mon Feb 27 2017 01:39:59</time>
-            <a href="../最近非常火的动画库——Lottie源码解读/最近非常火的动画库——Lottie源码解读.html" title="跳转至最近非常火的动画库——Lottie源码解读" class="round-border-btn">继续阅读</a>
-        </div>
-    
-</section>
+                    <p class="breviary">
+                        Yep，finally，eventually，迎来了我的第一篇源码解读类的文章。相比之前粗略看过的ASDK，Lottie可谓是对开发者来说十分之不友好——因为几乎没有注释，本文作为自己的学习记录，也给大家参考。Lottie的官方Demo的一开始是一个很酷炫的header，以及一个只有三行的tableView：从每一行里点进去就发现第二个是一个打字相关的动画（显然作者把A-Z的字母显示都用AfterEffects做了一套动画用在了这里），第三行则是一个页面切换的动画。第一行里则是一个让你浏览整个d……
+                    </p>
+                    <time class="content-stamp">Mon Feb 27 2017 01:39:59</time>
+                    <a href="../最近非常火的动画库——Lottie源码解读/最近非常火的动画库——Lottie源码解读.html" title="跳转至最近非常火的动画库——Lottie源码解读" class="round-border-btn">继续阅读</a>
+                </div>
+            
+        </section>
+        <div id="disqus_thread"></div>
+        <script>
+
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+            /*
+            var disqus_config = function () {
+            this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                s.src = 'https://turtles-burrow.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
 </div>
-
-<script>
-    window.onload = function (ev) {
-        document.getElementById('cnzz_stat_icon_1271332019').style.display = 'none';
-    };
-</script>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1271332019'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1271332019%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
 <!-- Go to www.addthis.com/dashboard to customize your tools --> <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a30e109c39d59b6"></script>
+
 </body>
 </html>

@@ -16,7 +16,7 @@ function Generator() {
     var self = this;
     var renderedMainPanel;
 
-    function checkIfGeneratingProcessIsCompleted() {
+    function checkIfGeneration() {
 
     }
 
