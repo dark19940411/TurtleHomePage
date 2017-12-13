@@ -101,6 +101,7 @@ ol li, ul li {
     font-size: 22px;
     color: #ffffff;
     justify-content: space-between;
+    align-items: center;
 }
 
 .social-media-menu-inner {
@@ -112,7 +113,9 @@ ol li, ul li {
 }
 
 .social-media-menu-frontpage {
-    top: 1px
+    position: relative;
+    top: 1px;
+    left: 2%;
 }
 
 .main-panel {
@@ -343,6 +346,12 @@ ol li, ul li {
     .content-container {
         margin-left: 0;
         width: 100%;
+    }
+}
+
+@media (max-width: 500px) {
+    .social-media-menu-inner {
+        width: 15%;
     }
 }
 
