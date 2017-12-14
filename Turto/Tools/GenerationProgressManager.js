@@ -1,14 +1,24 @@
+var EM = require('events').EventEmitter;
 function GenerationProgressManager() {
+
+    this.generationCompletedEventName = 'GenerationCompleted.';
+
     var totalBlogsListPagesCount = Math.ceil(articlesChain.length / __blogsPerPage);
     var generatedBlogsListPagesCount = 0;
     var generatedBlogPostPagesCount = 0;
 
     this.signalOneBLPageCompleted = function () {
         generatedBlogsListPagesCount++;
+        if (this.isGenerationCompleted()) {
+            this.emit(this.generationCompletedEventName);
+        }
     };
 
     this.signalOneBPPageCompleted = function () {
         generatedBlogPostPagesCount++;
+        if (this.isGenerationCompleted()) {
+            this.emit(this.generationCompletedEventName);
+        }
     };
 
     this.blGenerationProgress = function () {
@@ -36,4 +46,5 @@ function GenerationProgressManager() {
     };
 }
 
+GenerationProgressManager.prototype = EM;
 module.exports = GenerationProgressManager;
