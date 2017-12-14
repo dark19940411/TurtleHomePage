@@ -1,5 +1,4 @@
 function GenerationProgressManager() {
-    // console.log(articlesChain);
     var totalBlogsListPagesCount = Math.ceil(articlesChain.length / __blogsPerPage);
     var generatedBlogsListPagesCount = 0;
     var generatedBlogPostPagesCount = 0;
@@ -13,9 +12,6 @@ function GenerationProgressManager() {
     };
 
     this.blGenerationProgress = function () {
-        // console.log(generatedBlogsListPagesCount);
-        // console.log(totalBlogsListPagesCount);
-        // console.log(generatedBlogsListPagesCount / totalBlogsListPagesCount);
         return generatedBlogsListPagesCount / totalBlogsListPagesCount;
     };
 
