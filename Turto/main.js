@@ -73,6 +73,11 @@ function moveNodeModulesDirToBuild() {
 function setupGenerationTask() {
     if (clearjobfinshed && buildchainjobfinshed) {
         var generator = new Generator();
-        task.do('generating pages', generator.generate);
+        task.do('generating pages', function (done) {
+            generator.generate(function () {
+                done();
+                console.log('Generation is completed'.green);
+            });
+        });
     }
 }

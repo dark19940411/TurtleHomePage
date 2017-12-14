@@ -12,13 +12,11 @@ function Generator() {
     var path = require('path');
     var renderbufferpool = require('./render_buffer_pool');
     var RenderBufferItem = require('../Model/RenderBufferItem');
+    var GenerationProgressManager = require('./GenerationProgressManager');
+    var progressManager =  new GenerationProgressManager();
 
     var self = this;
     var renderedMainPanel;
-
-    function checkIfGeneration() {
-
-    }
 
     function renderBlogPostPage(mdfilepath, metadata) {
         metadata.filepath = null;       //先把之前暂时存在对象内markdown文件的路径清除了
@@ -84,10 +82,12 @@ function Generator() {
             }
             fs.writeFile(pagePath, pagecontent, function (err) {
                 if (err) { return console.error(err); }
-                if (msdata.title === articlesChain[articlesChain.length - 1].title) {       //这个判断有点糙，如果已渲染完最后一个，就清空缓冲池
+
+                progressManager.signalOneBPPageCompleted();
+
+                if (progressManager.isBpGenerationCompleted()) {       //这个判断有点糙，如果已渲染完最后一个，就清空缓冲池
                     renderbufferpool.clearArticleBufferPool();      //架构决定了文章内容页的数据需要被清理，而文章列表页会自动清理
                     console.log('Did empty article buffer pool'.green);
-                    //TODO: 判断是否生成完所有页面，如果是，执行self.callback回调，否则没事发生
                 }
             });
         });
@@ -134,7 +134,8 @@ function Generator() {
                 if (err) {
                     return console.error(err);
                 }
-                //TODO: 判断是否生成完所有页面，如果是，执行self.callback回调，否则没事发生
+
+                progressManager.signalOneBLPageCompleted();
             });
         });
     }
@@ -167,8 +168,6 @@ function Generator() {
     }
 
     this.generate = function(callback) {
-        self.callback = callback;
-
         var viewmodel = new BlogPostPageViewModel();
         viewmodel.formMainPanelRenderData(function (err, mpdata) {
             if (err) {
@@ -177,6 +176,7 @@ function Generator() {
             renderedMainPanel = renderMainPanel(mpdata);    //先生成只渲染一次的主面板
 
             renderbufferpool.evem.on(renderbufferpool.blogsListDataPreparedEventName, renderBlogsListPage);
+            progressManager.on(progressManager.generationCompletedEventName, callback);
 
             var datareader = new DataReader();
             datareader.readIn(function(mdfilepath, metadata, idx) {
