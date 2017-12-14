@@ -446,6 +446,11 @@ describe('GenerationProgressManager'.blue, function () {
         __blogsPerPage = 1;
 
         var pm = new GenerationProgressManager();
+
+        pm.on(pm.generationCompletedEventName, function () {
+            assert(pm.isGenerationCompleted());
+        });
+
         pm.signalOneBPPageCompleted();
         assert(pm.totalProgress() === 1/2, 'articlesChain: ' + articlesChain + '\n__blogsPerPage:' + __blogsPerPage + '\npm.totalProgress() === 1/2');
         pm.signalOneBLPageCompleted();
@@ -453,7 +458,11 @@ describe('GenerationProgressManager'.blue, function () {
         assert(pm.isGenerationCompleted());
 
         articlesChain = [1, 2];
+
         pm = new GenerationProgressManager();
+        pm.on(pm.generationCompletedEventName, function () {
+            assert(pm.isGenerationCompleted());
+        });
         pm.signalOneBPPageCompleted();
         assert(pm.totalProgress() === 1/4, 'pm.totalProgress() === 1/3');
         pm.signalOneBLPageCompleted();

@@ -1,4 +1,5 @@
 var EM = require('events').EventEmitter;
+var util = require('util');
 function GenerationProgressManager() {
 
     this.generationCompletedEventName = 'GenerationCompleted.';
@@ -46,5 +47,5 @@ function GenerationProgressManager() {
     };
 }
 
-GenerationProgressManager.prototype = EM;
+util.inherits(GenerationProgressManager, EM);
 module.exports = GenerationProgressManager;
