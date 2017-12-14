@@ -3,7 +3,7 @@
  */
 require('./Tools/utilities');
 
-var Generator = require('./Tools/generator');
+var Generator = require('./Tools/Generator');
 var path = require('path');
 var fs = require('fs-extra');
 var task = require('./Tools/task');
@@ -76,7 +76,6 @@ function setupGenerationTask() {
         task.do('generating pages', function (done) {
             generator.generate(function () {
                 done();
-                console.log('Generation is completed'.green);
             });
         });
     }
