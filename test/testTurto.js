@@ -396,3 +396,48 @@ describe('RenderBufferPool'.blue, function () {
         });
     })
 });
+
+describe('GenerationProgressManager'.blue, function () {
+
+    var GenerationProgressManager = require('../Turto/Tools/GenerationProgressManager');
+    global.articlesChain = [];
+    global.__blogsPerPage = 0;
+
+    it('should symbolize the process of blogs list page generation', function () {
+        articlesChain = [1];
+        __blogsPerPage = 1;
+        var pm = new GenerationProgressManager();
+        pm.signalOneBLPageCompleted();
+        assert(pm.isBlGenerationCompleted(),'articlesChain: ' + articlesChain + '\n__blogsPerPage:' + __blogsPerPage  + '\npm.isBlGenerationCompleted()');
+
+        articlesChain = [1, 2];
+        pm = new GenerationProgressManager();
+        pm.signalOneBLPageCompleted();
+        assert(pm.blGenerationProgress() === 1/2, 'articlesChain: ' + articlesChain + '\n__blogsPerPage:' + __blogsPerPage + '\nblGenerationProgress()');
+        pm.signalOneBLPageCompleted();
+        assert(pm.blGenerationProgress() === 1, 'articlesChain: ' + articlesChain + '\n__blogsPerPage:' + __blogsPerPage + '\nblGenerationProgress');
+        assert(pm.isBlGenerationCompleted(), 'articlesChain: ' + articlesChain + '\n__blogsPerPage:' + __blogsPerPage + '\nisBlGenerationCompleted');
+
+        __blogsPerPage = 2;
+        pm = new GenerationProgressManager();
+        pm.signalOneBLPageCompleted();
+        assert(pm.blGenerationProgress() === 1, 'articlesChain: ' + articlesChain + '\n__blogsPerPage:' + __blogsPerPage + '\nblGenerationProgress');
+        assert(pm.isBlGenerationCompleted(), 'articlesChain: ' + articlesChain + '\n__blogsPerPage:' + __blogsPerPage + '\nisBlGenerationCompleted');
+    });
+
+    it('should symbolize the process of blog post page generation', function () {
+        articlesChain = [1];
+        __blogsPerPage = 1;
+        var pm = new GenerationProgressManager();
+        pm.signalOneBPPageCompleted();
+        assert(pm.isBpGenerationCompleted(),'articlesChain: ' + articlesChain + '\npm.isBpGenerationCompleted()');
+
+        articlesChain = [1, 2];
+        pm = new GenerationProgressManager();
+        pm.signalOneBPPageCompleted();
+        assert(pm.bpGenerationProgress() === 1/2, 'articlesChain: ' + articlesChain + '\nbpGenerationProgress()');
+        pm.signalOneBPPageCompleted();
+        assert(pm.bpGenerationProgress() === 1, 'articlesChain: ' + articlesChain + '\nbpGenerationProgress');
+        assert(pm.isBpGenerationCompleted(), 'articlesChain: ' + articlesChain + __blogsPerPage + '\nisBpGenerationCompleted');
+    });
+});
