@@ -65,3 +65,4 @@ fabric.properties
 
 # Ignores generated blogpost folder
 build/blogpost
+dist/
