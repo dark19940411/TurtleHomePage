@@ -7,10 +7,8 @@ function DataReader() {
 
     var grayMatter = require("gray-matter");
     var fs = require("fs");
-    var postspath = __postdir;
     var RegularizedArticleMetaData = require('./RegularizedArticleMetaData');
     var MarkdownFileTransformer = require('./MarkdownFileTransformer');
-    var pdenumerator = require('../Tools/postsdir-enumerator');
     var task = require('../Tools/task');
 
     this.readIn = function (eachFileContentCallBack) {

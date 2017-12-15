@@ -9,6 +9,7 @@ var task = require('./Tools/task');
 var ArticlesChainBuilder = require('./Tools/ArticlesChainBuilder');
 var distributor = require('./Tools/distributor');
 var path = require('path');
+var matter = require('gray-matter');
 
 var clearjobfinshed = false;
 var buildchainjobfinshed = false;
@@ -20,7 +21,7 @@ var buildchainjobfinshed = false;
 
         startClearProcess();
 
-        task.do('build article chain', function (done) {
+        task.do('build articles chain', function (done) {
             var builder = new ArticlesChainBuilder();
             builder.build(function (chain) {
                 global.articlesChain = chain;
@@ -50,7 +51,23 @@ var buildchainjobfinshed = false;
         else {
             var ensureCount = 2;
             var currentEnsureIndex = 0;
-            function createJobDoneCheck(err) {
+
+            fs.ensureFile(newarticlepath, function (err) {
+                if (err) {
+                    return console.error(err);
+                }
+                var frontMatter = matter.stringify('', {title: title, date: new Date()});
+                fs.writeFile(newarticlepath, frontMatter, function (err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    currentEnsureIndex++;
+                    if (currentEnsureIndex === ensureCount) {
+                        console.log(String('Finished creating article "' + title + '" at ' + newarticlepath).green);
+                    }
+                })
+            });
+            fs.ensureDir(path.dirname(newarticlepath).stringByAppendingPathComponent('images'), function (err) {
                 if (err) {
                     return console.error(err);
                 }
@@ -58,10 +75,7 @@ var buildchainjobfinshed = false;
                 if (currentEnsureIndex === ensureCount) {
                     console.log(String('Finished creating article "' + title + '" at ' + newarticlepath).green);
                 }
-            }
-
-            fs.ensureFile(newarticlepath, createJobDoneCheck);
-            fs.ensureDir(path.dirname(newarticlepath).stringByAppendingPathComponent('images'), createJobDoneCheck);
+            });
         }
     }
 }());
@@ -109,4 +123,25 @@ function setupGenerationTask() {
             });
         });
     }
+}
+
+function formatDate(date,format){
+    var paddNum = function(num){
+        num += "";
+        return num.replace(/^(\d)$/,"0$1");
+    };
+    //指定格式字符
+    var cfg = {
+        yyyy : date.getFullYear() //年 : 4位
+        ,yy : date.getFullYear().toString().substring(2)//年 : 2位
+        ,M  : date.getMonth() + 1  //月 : 如果1位的时候不补0
+        ,MM : paddNum(date.getMonth() + 1) //月 : 如果1位的时候补0
+        ,d  : date.getDate()   //日 : 如果1位的时候不补0
+        ,dd : paddNum(date.getDate())//日 : 如果1位的时候补0
+        ,hh : date.getHours()  //时
+        ,mm : date.getMinutes() //分
+        ,ss : date.getSeconds() //秒
+    };
+    format || (format = "yyyy-MM-dd hh:mm:ss");
+    return format.replace(/([a-z])(\1)*/ig,function(m){return cfg[m];});
 }
