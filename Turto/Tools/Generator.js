@@ -87,7 +87,7 @@ function Generator() {
 
                 if (progressManager.isBpGenerationCompleted()) {       //这个判断有点糙，如果已渲染完最后一个，就清空缓冲池
                     renderbufferpool.clearArticleBufferPool();      //架构决定了文章内容页的数据需要被清理，而文章列表页会自动清理
-                    console.log('Did empty article buffer pool'.green);
+                    console.log('Did empty article buffer pool'.cyan);
                 }
             });
         });
