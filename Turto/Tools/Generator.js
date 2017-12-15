@@ -15,7 +15,6 @@ function Generator() {
     var GenerationProgressManager = require('./GenerationProgressManager');
     var progressManager =  new GenerationProgressManager();
 
-    var self = this;
     var renderedMainPanel;
 
     function renderBlogPostPage(mdfilepath, metadata) {
