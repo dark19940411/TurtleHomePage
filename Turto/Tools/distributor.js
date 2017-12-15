@@ -25,13 +25,18 @@ function Distributor() {
             .pipe(gulp.dest(__builddir + '/assets/css'));
     });
 
-    gulp.task('move to dist', ['concat'], function () {
+    gulp.task('buildimgs', function () {
+        gulp.src(__buildingTemplateDir.stringByAppendingPathComponent('images') + '/*', { base: __buildingTemplateDir.stringByAppendingPathComponent('images') })
+            .pipe(gulp.dest(__builddir.stringByAppendingPathComponent('assets/images')));
+    });
 
+    gulp.task('move to dist', ['concat', 'buildimgs'], function () {
+        
     });
 
     this.distribute = function () {
         gulp.start(['concat', 'move to dist']);
-    }
+    };
 }
 
 module.exports = new Distributor();
