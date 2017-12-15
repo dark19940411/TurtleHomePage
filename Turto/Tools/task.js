@@ -14,7 +14,7 @@ function Task() {
             task();
             completion(name, startdate);
         }
-    }
+    };
 
     function completion(name, startdate) {
         var finishedDate = new Date();

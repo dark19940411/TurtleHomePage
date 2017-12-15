@@ -63,14 +63,11 @@ fabric.properties
 
 # End of https://www.gitignore.io/api/webstorm+all
 
-# Ignores generated blogpost folder
+# Ignores generated stuffs
 build/blogpost/
-
-# Ignores generated bloglist folder
 build/bloglistpages/
-
-# Ignores generated index.html
 build/index.html
+build/assets/
 
 # Ignores dist folder
 dist/
