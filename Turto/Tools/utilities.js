@@ -50,6 +50,7 @@ global.__buildingBlogPostDir = __builddir.stringByAppendingPathComponent('blogpo
 global.__buildingTemplateDir = __builddir.stringByAppendingPathComponent('Template');
 
 global.__postdir = path.resolve(__dirname, '../../Posts');
+global.__nodemodulesdir = path.resolve(__dirname, '../../node_modules');
 
 global.__distdir = path.resolve(__dirname, '../../dist');
 global.__blogsPerPage = 10;

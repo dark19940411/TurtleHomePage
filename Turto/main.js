@@ -8,6 +8,7 @@ var path = require('path');
 var fs = require('fs-extra');
 var task = require('./Tools/task');
 var ArticlesChainBuilder = require('./Tools/ArticlesChainBuilder');
+var distributor = require('./Tools/distributor');
 
 var clearjobfinshed = false;
 var buildchainjobfinshed = false;
@@ -76,6 +77,7 @@ function setupGenerationTask() {
         task.do('generating pages', function (done) {
             generator.generate(function () {
                 done();
+                distributor.distribute();
             });
         });
     }
