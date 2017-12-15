@@ -39,7 +39,7 @@ var buildchainjobfinshed = false;
 }());
 
 function clearjob(callback) {
-    var totalJobsCount = 2;
+    var totalJobsCount = 3;
     var finishedJobsCount = 0;
     fs.emptyDir(__buildingBlogPostDir, function (err) {
         if (err) {
@@ -52,6 +52,16 @@ function clearjob(callback) {
     });
 
     fs.emptyDir(__builddir.stringByAppendingPathComponent('bloglistpages'), function (err) {
+        if (err) {
+            return console.error(err);
+        }
+        finishedJobsCount++;
+        if (finishedJobsCount === totalJobsCount) {
+            callback();
+        }
+    });
+
+    fs.emptyDir(__distdir, function (err) {
         if (err) {
             return console.error(err);
         }

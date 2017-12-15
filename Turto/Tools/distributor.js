@@ -16,11 +16,16 @@ function Distributor() {
             .pipe(concat('main.js', { newline: '\n' }))
             .pipe(gulp.dest(__builddir + '/assets/js'));
 
-        
+        var bootstrapcsspath = __nodemodulesdir + '/bootstrap/dist/css/bootstrap.min.css';
+        var highlightcsspath = __nodemodulesdir + '/highlight.js/styles/atom-one-dark.css';
+        var mycsspath = __builddir + '/assets/css/main.css'
+        gulp.src([bootstrapcsspath, highlightcsspath, mycsspath])
+            .pipe(concat('main.css', {newline: '\n'}))
+            .pipe(gulp.dest(__builddir + '/assets/css'));
     });
 
     this.distribute = function () {
-        gulp.start('concat');
+        gulp.start(['concat']);
     }
 }
 
