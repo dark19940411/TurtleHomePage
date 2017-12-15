@@ -39,9 +39,10 @@ var buildchainjobfinshed = false;
 }());
 
 function clearjob(callback) {
-    var totalJobsCount = 3;
+    var totalJobsCount = 4;
     var finishedJobsCount = 0;
-    fs.emptyDir(__buildingBlogPostDir, function (err) {
+
+    function unitedClosure(err) {
         if (err) {
             return console.error(err);
         }
@@ -49,36 +50,15 @@ function clearjob(callback) {
         if (finishedJobsCount === totalJobsCount) {
             callback();
         }
-    });
+    }
 
-    fs.emptyDir(__builddir.stringByAppendingPathComponent('bloglistpages'), function (err) {
-        if (err) {
-            return console.error(err);
-        }
-        finishedJobsCount++;
-        if (finishedJobsCount === totalJobsCount) {
-            callback();
-        }
-    });
+    fs.emptyDir(__buildingBlogPostDir, unitedClosure);
 
-    fs.emptyDir(__distdir, function (err) {
-        if (err) {
-            return console.error(err);
-        }
-        finishedJobsCount++;
-        if (finishedJobsCount === totalJobsCount) {
-            callback();
-        }
-    });
-    // moveNodeModulesDirToBuild();
-}
+    fs.emptyDir(__builddir.stringByAppendingPathComponent('bloglistpages'), unitedClosure);
 
-function moveNodeModulesDirToBuild() {
-    fs.copy(path.resolve(__dirname, '../node_modules'), path.resolve(__dirname, '../build/node_modules'), function (err) {
-        if (err) {
-            return console.error(err);
-        }
-    });
+    fs.emptyDir(__distdir, unitedClosure);
+
+    fs.emptyDir(__builddir.stringByAppendingPathComponent('assets'), unitedClosure);
 }
 
 function setupGenerationTask() {
