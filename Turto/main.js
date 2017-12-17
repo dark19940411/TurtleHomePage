@@ -112,22 +112,24 @@ function clearjob(callback) {
 
     fs.readdir(__distdir, function (err, files) {
         var removedItemsCount = 0;
+        var filterFiles = ['.git', 'README.md'];
+        for (var i = 0; i < filterFiles.length; ++i) {
+            var idx = files.indexOf(filterFiles[i]);
+            if (idx > -1) {
+                files.splice(idx, 1);
+            }
+        }
         files.forEach(function (value) {
-            if (value !== '.git') {
-                var filepath = __distdir.stringByAppendingPathComponent(value);
-                fs.remove(filepath, function (err) {
-                    if (err) {
-                        return console.error(err);
-                    }
-                    removedItemsCount++;
-                    if (removedItemsCount === files.length - 1) {
-                        unitedClosure(err);
-                    }
-                });
-            }
-            if (removedItemsCount === files.length - 1) {
-                unitedClosure(err);
-            }
+            var filepath = __distdir.stringByAppendingPathComponent(value);
+            fs.remove(filepath, function (err) {
+                if (err) {
+                    return console.error(err);
+                }
+                removedItemsCount++;
+                if (removedItemsCount === files.length) {
+                    unitedClosure(err);
+                }
+            });
         });
     });
 }
