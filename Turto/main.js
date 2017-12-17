@@ -108,9 +108,28 @@ function clearjob(callback) {
 
     fs.emptyDir(__builddir.stringByAppendingPathComponent('bloglistpages'), unitedClosure);
 
-    fs.emptyDir(__distdir, unitedClosure);
-
     fs.emptyDir(__builddir.stringByAppendingPathComponent('assets'), unitedClosure);
+
+    fs.readdir(__distdir, function (err, files) {
+        var removedItemsCount = 0;
+        files.forEach(function (value) {
+            if (value !== '.git') {
+                var filepath = __distdir.stringByAppendingPathComponent(value);
+                fs.remove(filepath, function (err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    removedItemsCount++;
+                    if (removedItemsCount === files.length - 1) {
+                        unitedClosure(err);
+                    }
+                });
+            }
+            if (removedItemsCount === files.length - 1) {
+                unitedClosure(err);
+            }
+        });
+    });
 }
 
 function setupGenerationTask() {

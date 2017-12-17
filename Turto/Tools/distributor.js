@@ -54,12 +54,27 @@ function Distributor() {
                 done();
                 cb();
                 console.log('Distribution is completed!'.green);
+            });
+        });
+    });
+
+    gulp.task('mkCNAME', function (cb) {
+        var cnamepath = __distdir.stringByAppendingPathComponent('CNAME');
+        fs.ensureFile(cnamepath, function (err) {
+            if (err) {
+                return console.error(err);
+            }
+            fs.writeFile(cnamepath, 'tech.imturtle.cn', function (err) {
+                if (err) {
+                    return console.error(err);
+                }
+                cb();
             })
         });
     });
 
     this.distribute = function () {
-        gulp.start(['concat', 'buildimgs', 'generate dist']);
+        gulp.start(['concat', 'buildimgs', 'generate dist', 'mkCNAME']);
     };
 }
 
