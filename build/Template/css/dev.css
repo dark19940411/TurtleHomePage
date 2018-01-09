@@ -81,6 +81,24 @@ ol li, ul li {
     line-height: 1.6em;
 }
 
+details {
+    border-radius: 3px;
+    background: #EEEEEE;
+    margin: 1em 0;
+}
+
+summary {
+    background: #DDDDDD;
+    color: #333333;
+    border-radius: 3px;
+    padding: 5px 10px;
+}
+
+details[open] summary {
+    background: #FF8C00;
+    color: #F8F8F8;
+}
+
 ::selection {
     background: lightgray; }
 

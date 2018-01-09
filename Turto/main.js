@@ -119,18 +119,23 @@ function clearjob(callback) {
                 files.splice(idx, 1);
             }
         }
-        files.forEach(function (value) {
-            var filepath = __distdir.stringByAppendingPathComponent(value);
-            fs.remove(filepath, function (err) {
-                if (err) {
-                    return console.error(err);
-                }
-                removedItemsCount++;
-                if (removedItemsCount === files.length) {
-                    unitedClosure(err);
-                }
+
+        if (files.length == removedItemsCount) {
+            unitedClosure(err);
+        } else {
+            files.forEach(function (value) {
+                var filepath = __distdir.stringByAppendingPathComponent(value);
+                fs.remove(filepath, function (err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    removedItemsCount++;
+                    if (removedItemsCount === files.length) {
+                        unitedClosure(err);
+                    }
+                });
             });
-        });
+        }
     });
 }
 
