@@ -266,6 +266,50 @@ details[open] summary {
     border-top: 1px solid #DDDDDD;
 }
 
+.paginating-nav {
+    margin: 120px 0 40px;
+    text-align: center;
+}
+
+.paginating-nav .prev,
+.paginating-nav .next,
+.paginating-nav .page-number,
+.paginating-nav .space {
+    display: inline-block;
+    position: relative;
+    top: -1px;
+    margin: 0 10px;
+    padding: 0 10px;
+    line-height: 30px;
+}
+
+.paginating-nav .prev {
+    margin-left: 0;
+}
+
+.paginating-nav .page-number .current {
+    color: #fff;
+    background: #ccc;
+    border-top: #ccc;
+}
+
+.paginating-nav .prev,
+.paginating-nav .next,
+.paginating-nav .page-number {
+    border-bottom: 0;
+    border-top: 1px solid #eee;
+    transition-property: border-color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+}
+
+.paginating-nav .prev:hover,
+.paginating-nav .next:hover,
+.paginating-nav .page-number:hover {
+    border-top-color: #222;
+}
+
 .breviary {
     margin: 0;
     font-size: .9em;
