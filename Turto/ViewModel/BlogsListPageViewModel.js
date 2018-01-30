@@ -49,9 +49,10 @@ function BlogsListPageViewModel() {
                 title: metadata.title,
                 mainPanel: mainPanelContent,
                 generatedContent: metadata.content,
-                frontPageAddress: frontPageAddress
+                frontPageAddress: frontPageAddress,
             });
             msdata.pageNum = metadata.pageNum;
+            msdata.currentPageIndex = metadata.currentPageIndex;
             callBack(null, msdata);
         });
     };

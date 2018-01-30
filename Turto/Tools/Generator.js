@@ -139,14 +139,15 @@ function Generator() {
         });
     }
 
-    function renderBlogsListPage(items, pageNum) {
+    function renderBlogsListPage(items, pageNum, currentPageIndex) {
         var viewmodel = new BlogListPageViewModel();
         viewmodel.addAddressToEveryItem(pageNum, items);
         var renderedBlogsListContent = renderBlogsListContent(items, pageNum);
         var metadata = {
             title: 'Turtle\'s Burrow',
             content: renderedBlogsListContent,
-            pageNum: pageNum
+            pageNum: pageNum,
+            currentPageIndex: currentPageIndex
         };
 
         viewmodel.formMainPanelRenderData(pageNum, function (err, mpdata) {
