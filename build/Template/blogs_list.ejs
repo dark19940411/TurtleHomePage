@@ -17,5 +17,74 @@
                 </li>
             <% }) %>
         </ol>
+        <% if (pageNum > 1) { %>
+            <nav class="paginating-nav">
+                <%var prevIndex = currentPageIndex - 1; var nextIndex = currentPageIndex + 1;%>
+                <% if(currentPageIndex != 1) { %>
+                    <% var href = '';%>
+                    <% if (currentPageIndex == 2) {%>
+                        <% href = '/'; %>
+                    <% } else {%>
+                        <% href = '/bloglistpages/' + (currentPageIndex - 1) + '/'; %>
+                    <% } %>
+                    <a class="prev" href="<%= href%>">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                <%}%>
+
+                <% if (pageNum > 5) {%>     <!--有更多的情况-->
+                    <%if (currentPageIndex == 1) {%>
+                        <span class="page-number current">1</span>
+                    <%} else {%>
+                        <a class="page-number" href="/">1</a>
+                    <%}%>
+
+                    <%if (prevIndex - 1 > 1) {%>  <!--处理有左侧"更多"的提示(省略号)-->
+                        <span class="space">...</span>
+                    <%}%>
+
+                    <%if (prevIndex > 1) {%>  <!--显示前置页-->
+                        <a class="page-number" href="/"><%= prevIndex%></a>
+                    <%}%>
+
+                    <%if (currentPageIndex != 1 && currentPageIndex != pageNum) {%>   <!--显示现在的选中页-->
+                        <span class="page-number current"><%= currentPageIndex%></span>
+                    <%}%>
+
+                    <%if (nextIndex < pageNum) {%>  <!--显示后置页-->
+                        <a class="page-number" href="/"><%= nextIndex%></a>
+                    <%}%>
+
+                    <%if ((pageNum - nextIndex) > 1) {%>  <!--显示右侧"更多"的提示（省略号）-->
+                        <span class="space">...</span>
+                    <%}%>
+
+                    <%if (currentPageIndex == pageNum) {%>
+                        <span class="page-number current"><%= pageNum%></span>
+                    <%} else {%>
+                        <a class="page-number" href="/"><%= pageNum%></a>
+                    <%}%>
+                <%} else {%>             <!--所有页索引都出现的情况-->
+                    <%for (var i = 1; i <= pageNum; i++) {%>
+                        <%if (i == currentPageIndex) {%>
+                            <span class="page-number current"><%= i%></span>
+                        <%} else {%>
+                            <%if (i == 1) {%>
+                                <a class="page-number" href="/"><%= i%></a>
+                            <%} else {%>
+                                <a class="page-number" href="<%= '/bloglistpages/' + i + '/'%>"><%= i%></a>
+                            <%}%>
+                        <%}%>
+                    <%}%>
+                <%}%>
+
+                <% if(currentPageIndex < pageNum) {%>
+                    <% href = '/bloglistpages/' + (currentPageIndex + 1) + '/'; %>
+                    <a class="next" href="<%= href%>">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                <%}%>
+            </nav>
+        <% } %>
     </div>
 </div>
