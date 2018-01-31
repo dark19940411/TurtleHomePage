@@ -107,10 +107,10 @@ function Generator() {
         }
     }
 
-    function renderBlogsListContent(items, pageNum) {
+    function renderBlogsListContent(items, pageNum, currentPageIndex) {
         var blogsListTmplPath = __buildingTemplateDir.stringByAppendingPathComponent('blogs_list.ejs');
         var tmplStr = fs.readFileSync(blogsListTmplPath, { encoding: 'utf8' });
-        return ejs.render(tmplStr, { renderItems: items });
+        return ejs.render(tmplStr, { renderItems: items, currentPageIndex: currentPageIndex, pageNum: pageNum });
     }
 
     function writeBlogsListPageToDisk(mscontent, msdata) {
@@ -142,12 +142,11 @@ function Generator() {
     function renderBlogsListPage(items, pageNum, currentPageIndex) {
         var viewmodel = new BlogListPageViewModel();
         viewmodel.addAddressToEveryItem(pageNum, items);
-        var renderedBlogsListContent = renderBlogsListContent(items, pageNum);
+        var renderedBlogsListContent = renderBlogsListContent(items, pageNum, currentPageIndex);
         var metadata = {
             title: 'Turtle\'s Burrow',
             content: renderedBlogsListContent,
-            pageNum: pageNum,
-            currentPageIndex: currentPageIndex
+            pageNum: pageNum
         };
 
         viewmodel.formMainPanelRenderData(pageNum, function (err, mpdata) {
