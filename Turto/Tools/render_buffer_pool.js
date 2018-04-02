@@ -56,7 +56,7 @@ function RenderBufferPool() {
         if(currentGeneratedBlogListIndex === 0 && lastPageArticleNum > 0) {       //博客的最后一页，且最后一页的文章数量大于0
             if (self.bloglistBufferPool.length === lastPageArticleNum) {
                 self.bloglistBufferPool.reverse();
-                self.evem.emit(self.blogsListDataPreparedEventName, self.bloglistBufferPool, blogslistPagesCount - currentGeneratedBlogListIndex, currentGeneratedBlogListIndex + 1);
+                self.evem.emit(self.blogsListDataPreparedEventName, self.bloglistBufferPool, blogslistPagesCount, blogslistPagesCount - currentGeneratedBlogListIndex);
                 self.bloglistBufferPool = [];
                 currentGeneratedBlogListIndex++;
             }
@@ -64,7 +64,7 @@ function RenderBufferPool() {
         else {
             if (self.bloglistBufferPool.length === __blogsPerPage) {
                 self.bloglistBufferPool.reverse();
-                self.evem.emit(self.blogsListDataPreparedEventName, self.bloglistBufferPool, blogslistPagesCount - currentGeneratedBlogListIndex, currentGeneratedBlogListIndex + 1);
+                self.evem.emit(self.blogsListDataPreparedEventName, self.bloglistBufferPool, blogslistPagesCount, blogslistPagesCount - currentGeneratedBlogListIndex);
                 self.bloglistBufferPool = [];
                 currentGeneratedBlogListIndex++;
             }

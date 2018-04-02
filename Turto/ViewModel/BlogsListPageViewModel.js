@@ -36,7 +36,7 @@ function BlogsListPageViewModel() {
             }
 
             var fileref = data.toString();
-            if (metadata.pageNum === 1) {
+            if (metadata.currentPageIndex === 1) {
                 fileref = fileref.replaceAll('\\.\\./\\.\\./', '');
                 var frontPageAddress = ''
             }

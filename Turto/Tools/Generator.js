@@ -115,12 +115,12 @@ function Generator() {
 
     function writeBlogsListPageToDisk(mscontent, msdata) {
         var pagePath;
-        if (msdata.pageNum === 1) {
+        if (msdata.currentPageIndex === 1) {
             pagePath = __builddir.stringByAppendingPathComponent('index.html');
         }
         else {
             pagePath = __builddir.stringByAppendingPathComponent('bloglistpages')
-                .stringByAppendingPathComponent(String(msdata.pageNum))
+                .stringByAppendingPathComponent(String(msdata.currentPageIndex))
                 .stringByAppendingPathComponent('index.html');
         }
 
@@ -141,15 +141,16 @@ function Generator() {
 
     function renderBlogsListPage(items, pageNum, currentPageIndex) {
         var viewmodel = new BlogListPageViewModel();
-        viewmodel.addAddressToEveryItem(pageNum, items);
+        viewmodel.addAddressToEveryItem(currentPageIndex, items);
         var renderedBlogsListContent = renderBlogsListContent(items, pageNum, currentPageIndex);
         var metadata = {
             title: 'Turtle\'s Burrow',
             content: renderedBlogsListContent,
-            pageNum: pageNum
+            pageNum: pageNum,
+            currentPageIndex: currentPageIndex
         };
 
-        viewmodel.formMainPanelRenderData(pageNum, function (err, mpdata) {
+        viewmodel.formMainPanelRenderData(currentPageIndex, function (err, mpdata) {
             var mpcontent = renderMainPanel(mpdata);
             viewmodel.formMainStructureRenderData(metadata, mpcontent, function (err, msdata) {
                 if (err) {
